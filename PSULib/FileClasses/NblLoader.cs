@@ -179,7 +179,7 @@ namespace psu_generic_parser
             }
             else
             {
-                encryptedSectionSize = (int)compressedSize;
+                encryptedSectionSize = (int)size;
             }
 
             if (encryptedSectionSize % 8 != 0)
