@@ -1,0 +1,107 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.0;net47;net48</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>WpfHexaEditor</RootNamespace>
+    <AssemblyName>WPFHexaEditor</AssemblyName>
+    <Title>WPFHexaEditor user control</Title>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Derek Tremblay (derektremblay666@gmail.com)</Authors>
+    <Company>Derek Tremblay (derektremblay666@gmail.com)</Company>
+    <Description>Wpf Hexeditor is a fast and fully customisable user control for editing file or stream as hexadecimal.
+Support .Net 4.7/4.8 and .Net Core 3.0</Description>
+    <PackageIcon>Logo-Icon.png</PackageIcon>
+    <PackageIconUrl />
+    <Product>WpfHexaEditor</Product>
+    <Copyright>Apache 2.0</Copyright>
+    <AssemblyVersion>2.0.2.0</AssemblyVersion>
+    <FileVersion>2.0.2.0</FileVersion>
+    <Version>2.0.2</Version>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PackageTags>character-table;hexadecimal;binary;editor;hexeditor;tbl;hexedit</PackageTags>
+    <ApplicationIcon />
+    <LangVersion>preview</LangVersion>
+    <PackageProjectUrl>https://github.com/abbaye/WpfHexEditorControl</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <IncludeSource>true</IncludeSource>
+    <IncludeSymbols>false</IncludeSymbols>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.1|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="license.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="Resources\Icon\Logo-Icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\EBCDIC-NoSpecialChar.tbl" />
+    <None Remove="Resources\EBCDIC.tbl" />
+    <None Remove="Resources\Icon\0x-Icon.ico" />
+    <None Remove="Resources\Icon\Add-Bookmark-Icon.ico" />
+    <None Remove="Resources\Icon\Clear-Bookmark-Icon.ico" />
+    <None Remove="Resources\Icon\Copy-Icon.ico" />
+    <None Remove="Resources\Icon\Delete-Icon.ico" />
+    <None Remove="Resources\Icon\Find-Icon.ico" />
+    <None Remove="Resources\Icon\Logo-Icon.ico" />
+    <None Remove="Resources\Icon\Paste-Icon.ico" />
+    <None Remove="Resources\Icon\Remove-Bookmark-Icon.ico" />
+    <None Remove="Resources\Icon\Undo-Icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\EBCDIC-NoSpecialChar.tbl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\EBCDIC.tbl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Icon\0x-Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icon\Add-Bookmark-Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icon\Clear-Bookmark-Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icon\Copy-Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icon\Delete-Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icon\Find-Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icon\Logo-Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icon\Paste-Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icon\Remove-Bookmark-Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Icon\Undo-Icon.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppendByteConfirmationString" xml:space="preserve">
+    <value>Достигнут конец файла. Добавить байт? Эта операция не может быть отменена.</value>
+  </data>
+  <data name="BookmarksString" xml:space="preserve">
+    <value>Закладки</value>
+  </data>
+  <data name="ByteActionString" xml:space="preserve">
+    <value>Байт действия</value>
+  </data>
+  <data name="ByteString" xml:space="preserve">
+    <value>Байт</value>
+  </data>
+  <data name="CancelLongProcessString" xml:space="preserve">
+    <value>Отменить длительный процесс</value>
+  </data>
+  <data name="CancelLongProcessToolTipString" xml:space="preserve">
+    <value>Нажмите, чтобы отменить длительный процесс.</value>
+  </data>
+  <data name="CancelString" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="ClearBookMarkString" xml:space="preserve">
+    <value>Очистить закладку</value>
+  </data>
+  <data name="ClearString" xml:space="preserve">
+    <value>Очистить</value>
+  </data>
+  <data name="ClickToGoAtPositionString" xml:space="preserve">
+    <value>Нажмите, чтобы перейти на позицию.</value>
+  </data>
+  <data name="CloseString" xml:space="preserve">
+    <value>Закрыть</value>
+  </data>
+  <data name="CopyAsASCIIString" xml:space="preserve">
+    <value>Скопировать как ASCII</value>
+  </data>
+  <data name="CopyAsDecimalString" xml:space="preserve">
+    <value>Копировать как десятичное число</value>
+  </data>
+  <data name="CopyAsHexadecimalString" xml:space="preserve">
+    <value>Копировать как шестнадцатеричное число</value>
+  </data>
+  <data name="CopyAsTBLString" xml:space="preserve">
+    <value>TBL (загруженный файл символов)</value>
+  </data>
+  <data name="CopySelectionAsString" xml:space="preserve">
+    <value>Копировать выделенное как...</value>
+  </data>
+  <data name="CountOfString" xml:space="preserve">
+    <value>Количество</value>
+  </data>
+  <data name="DefaultTBLString" xml:space="preserve">
+    <value>По умолчанию TBL</value>
+  </data>
+  <data name="DeleteString" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="DescriptionString" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="EndTagString" xml:space="preserve">
+    <value>&lt;End&gt;</value>
+  </data>
+  <data name="EnterHexValueMsgString" xml:space="preserve">
+    <value>Введите шестнадцатеричное значение...</value>
+  </data>
+  <data name="FileDroppingConfirmationString" xml:space="preserve">
+    <value>Вы хотите закрыть текущий файл и открыть:</value>
+  </data>
+  <data name="FillSelectionAloneString" xml:space="preserve">
+    <value>Заполните выбор байтом</value>
+  </data>
+  <data name="FillSelectionString" xml:space="preserve">
+    <value>Заполните выбор байтом...</value>
+  </data>
+  <data name="FindAllString" xml:space="preserve">
+    <value>Bce</value>
+  </data>
+  <data name="FindAndReplaceString" xml:space="preserve">
+    <value>Найти и заменить</value>
+  </data>
+  <data name="FindByteString" xml:space="preserve">
+    <value>Байт для поиска</value>
+  </data>
+  <data name="FindFirstString" xml:space="preserve">
+    <value>Найти первый</value>
+  </data>
+  <data name="FindLastString" xml:space="preserve">
+    <value>Найти последний</value>
+  </data>
+  <data name="FindNextString" xml:space="preserve">
+    <value>Найти следующий</value>
+  </data>
+  <data name="FindSelectionString" xml:space="preserve">
+    <value>Найти все случаи отбора</value>
+  </data>
+  <data name="FindString" xml:space="preserve">
+    <value>Найти</value>
+  </data>
+  <data name="FindWhatString" xml:space="preserve">
+    <value>Найти:</value>
+  </data>
+  <data name="FirstByteString" xml:space="preserve">
+    <value>Первый байт</value>
+  </data>
+  <data name="HexString" xml:space="preserve">
+    <value>Hex</value>
+  </data>
+  <data name="HighLightSettingString" xml:space="preserve">
+    <value>Выделить все найденные данные</value>
+  </data>
+  <data name="KBTagString" xml:space="preserve">
+    <value>Kb</value>
+  </data>
+  <data name="LengthString" xml:space="preserve">
+    <value>Длинна</value>
+  </data>
+  <data name="LineStatusBarTagString" xml:space="preserve">
+    <value>Ln</value>
+  </data>
+  <data name="LineTagString" xml:space="preserve">
+    <value>&lt;ln&gt;</value>
+  </data>
+  <data name="LongString" xml:space="preserve">
+    <value>Long</value>
+  </data>
+  <data name="MBTagString" xml:space="preserve">
+    <value>Mb</value>
+  </data>
+  <data name="OkString" xml:space="preserve">
+    <value>ОК</value>
+  </data>
+  <data name="PasteExtendByteConfirmationString" xml:space="preserve">
+    <value>Операция вставки достигла конца файла. Расширить файл для завершения операции? Эта операция не может быть отменена.</value>
+  </data>
+  <data name="PasteFromClipboardString" xml:space="preserve">
+    <value>Вставить из буфера обмена</value>
+  </data>
+  <data name="PasteNotInsertString" xml:space="preserve">
+    <value>Вставить без вставки</value>
+  </data>
+  <data name="PositionString" xml:space="preserve">
+    <value>Позиция</value>
+  </data>
+  <data name="ReplaceAllString" xml:space="preserve">
+    <value>Заменить всe</value>
+  </data>
+  <data name="ReplaceByByteString" xml:space="preserve">
+    <value>Заменить байтом</value>
+  </data>
+  <data name="ReplaceNextString" xml:space="preserve">
+    <value>Заменить следующие</value>
+  </data>
+  <data name="ReplaceSelectionString" xml:space="preserve">
+    <value>Заменить байт в выборе...</value>
+  </data>
+  <data name="ReplaceString" xml:space="preserve">
+    <value>Заменить</value>
+  </data>
+  <data name="ReplaceTrimSettingString" xml:space="preserve">
+    <value>Обрезать данные по длине нахождения при замене</value>
+  </data>
+  <data name="ReplaceWithByteString" xml:space="preserve">
+    <value>Заменить байт</value>
+  </data>
+  <data name="ReplaceWithString" xml:space="preserve">
+    <value>Заменить:</value>
+  </data>
+  <data name="SelectAllString" xml:space="preserve">
+    <value>Выделить все</value>
+  </data>
+  <data name="SetBookMarkString" xml:space="preserve">
+    <value>Установить закладку</value>
+  </data>
+  <data name="TBLString" xml:space="preserve">
+    <value>TBL</value>
+  </data>
+  <data name="ThisStringAreNotHexString" xml:space="preserve">
+    <value>Эта строка не является шестнадцатеричной</value>
+  </data>
+  <data name="UndoString" xml:space="preserve">
+    <value>Отменить</value>
+  </data>
+  <data name="ValueString" xml:space="preserve">
+    <value>Значение</value>
+  </data>
+  <data name="WritingErrorExeptionString" xml:space="preserve">
+    <value>При записи произошла ошибка.</value>
+  </data>
+  <data name="ZoomResetString" xml:space="preserve">
+    <value>Сбросить масштаб до 100%</value>
+  </data>
+  <data name="ZoomString" xml:space="preserve">
+    <value>Увеличить</value>
+  </data>
+</root>

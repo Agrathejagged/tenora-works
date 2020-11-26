@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1639A2E3-3A88-4F4A-8CA4-8C6530A70854}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PSULib</RootNamespace>
+    <AssemblyName>PSULib</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AfsLoader.cs" />
+    <Compile Include="BigEndianBinaryReader.cs" />
+    <Compile Include="BigEndianBinaryWriter.cs" />
+    <Compile Include="BlewFish.cs" />
+    <Compile Include="FileClasses\CommonInfoFile.cs" />
+    <Compile Include="FileClasses\ContainerFile.cs" />
+    <Compile Include="FileClasses\EnemyDropFile.cs" />
+    <Compile Include="FileClasses\EnemyLayoutFile.cs" />
+    <Compile Include="FileClasses\EnemyLevelParamFile.cs" />
+    <Compile Include="FileClasses\GimTextureFile.cs" />
+    <Compile Include="FileClasses\ItemBulletParamFile.cs" />
+    <Compile Include="FileClasses\ItemPriceFile.cs" />
+    <Compile Include="FileClasses\ItemSkillParamFile.cs" />
+    <Compile Include="FileClasses\ItemSuitParamFile.cs" />
+    <Compile Include="FileClasses\ItemTechParamFile.cs" />
+    <Compile Include="FileClasses\ItemUnitParamFile.cs" />
+    <Compile Include="FileClasses\ListFile.cs" />
+    <Compile Include="FileClasses\MiniAfsLoader.cs" />
+    <Compile Include="FileClasses\NblLoader.cs" />
+    <Compile Include="FileClasses\NomFile.cs" />
+    <Compile Include="FileClasses\ObjectDropFile.cs" />
+    <Compile Include="FileClasses\PackFile.cs" />
+    <Compile Include="FileClasses\PartsInfoFile.cs" />
+    <Compile Include="FileClasses\PointeredFile.cs" />
+    <Compile Include="FileClasses\Psp2TextFile.cs" />
+    <Compile Include="FileClasses\PsuFile.cs" />
+    <Compile Include="FileClasses\PsuFiles.cs" />
+    <Compile Include="FileClasses\QuestListFile.cs" />
+    <Compile Include="FileClasses\RawFile.cs" />
+    <Compile Include="FileClasses\RmagBulletParamFile.cs" />
+    <Compile Include="FileClasses\ScriptFile.cs" />
+    <Compile Include="FileClasses\SetFile.cs" />
+    <Compile Include="FileClasses\TableFile.cs" />
+    <Compile Include="FileClasses\TextFile.cs" />
+    <Compile Include="FileClasses\TextureFile.cs" />
+    <Compile Include="FileClasses\ThinkDragonFile.cs" />
+    <Compile Include="FileClasses\UnpointeredFile.cs" />
+    <Compile Include="FileClasses\UvrTextureFile.cs" />
+    <Compile Include="FileClasses\WeaponListFile.cs" />
+    <Compile Include="FileClasses\WeaponParamFile.cs" />
+    <Compile Include="FileClasses\XntFile.cs" />
+    <Compile Include="FileClasses\XvrTextureFile.cs" />
+    <Compile Include="FileClasses\XVR\Decoders\Dxt1Decoder.cs" />
+    <Compile Include="FileClasses\XVR\Decoders\Dxt2Decoder.cs" />
+    <Compile Include="FileClasses\XVR\Decoders\Dxt3Decoder.cs" />
+    <Compile Include="FileClasses\XVR\Decoders\Dxt4Decoder.cs" />
+    <Compile Include="FileClasses\XVR\Decoders\Dxt5Decoder.cs" />
+    <Compile Include="FileClasses\XVR\Decoders\DxtnDecoder.cs" />
+    <Compile Include="FileClasses\XVR\Decoders\XvrRasterDecoder.cs" />
+    <Compile Include="FileClasses\XVR\Decoders\XvrRasterDecoders.cs" />
+    <Compile Include="FileClasses\XVR\Decoders\XvrSimpleFormatDecoder.cs" />
+    <Compile Include="FileClasses\XVR\Encoders\DxtnEncoder.cs" />
+    <Compile Include="FileClasses\XVR\Encoders\XvrRasterEncoder.cs" />
+    <Compile Include="FileClasses\XVR\Encoders\XvrRasterEncoders.cs" />
+    <Compile Include="FileClasses\XVR\Encoders\XvrSimpleFormatEncoder.cs" />
+    <Compile Include="FileClasses\XVR\PsuColor.cs" />
+    <Compile Include="FileClasses\XVR\PsuTexturePixelFormat.cs" />
+    <Compile Include="FileClasses\XVR\XvrImageParameters.cs" />
+    <Compile Include="GimSharp\Core\PTMethods.cs" />
+    <Compile Include="GimSharp\Core\PTStream.cs" />
+    <Compile Include="GimSharp\GimTexture\GimDataCodec.cs" />
+    <Compile Include="GimSharp\GimTexture\GimExceptions.cs" />
+    <Compile Include="GimSharp\GimTexture\GimFormats.cs" />
+    <Compile Include="GimSharp\GimTexture\GimPixelCodec.cs" />
+    <Compile Include="GimSharp\GimTexture\GimTexture.cs" />
+    <Compile Include="GimSharp\GimTexture\GimTextureEncoder.cs" />
+    <Compile Include="GimSharp\WuQuantizer\Box.cs" />
+    <Compile Include="GimSharp\WuQuantizer\ColorData.cs" />
+    <Compile Include="GimSharp\WuQuantizer\CubeCut.cs" />
+    <Compile Include="GimSharp\WuQuantizer\IWuQuantizer.cs" />
+    <Compile Include="GimSharp\WuQuantizer\Lookup.cs" />
+    <Compile Include="GimSharp\WuQuantizer\LookupData.cs" />
+    <Compile Include="GimSharp\WuQuantizer\Pixel.cs" />
+    <Compile Include="GimSharp\WuQuantizer\QuantizationException.cs" />
+    <Compile Include="GimSharp\WuQuantizer\QuantizedPalette.cs" />
+    <Compile Include="GimSharp\WuQuantizer\WuQuantizer.cs" />
+    <Compile Include="GimSharp\WuQuantizer\WuQuantizerBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PrsCompDecomp.cs" />
+    <Compile Include="PrsCompressor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GimSharp\GimSharp.csproj" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

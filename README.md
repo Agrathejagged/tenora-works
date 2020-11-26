@@ -2,8 +2,9 @@
 PSULib, the PSU Generic Parser, and other smallish derived projects
 
 # What's Included
-  - **PSU Generic Parser**: Generalized research/editing tool for PSU (and \_sometimes\_ the portable games). Entirely focused on individual files--no correlation is done at all (e.g while you can edit the weapon stats and you can edit the weapon star ratings, you cannot edit these two things simultaneously as they are in separate files). Primarily focused on AotI PC; while 360 archives can be read, most files in those archives cannot.
   - **PSULib**: DLL containing all of the file classes.
+  - **PSU Generic Parser**: Generalized research/editing tool for PSU (and \_sometimes\_ the portable games). Entirely focused on individual files--no correlation is done at all (e.g while you can edit the weapon stats and you can edit the weapon star ratings, you cannot edit these two things simultaneously as they are in separate files). Primarily focused on AotI PC; while 360 archives can be read, most files in those archives cannot.
+  - **Mission Builder**: Used to compile individual missions from a quest NBL and zone NBL(s).
 
 # Supported Data
 Gameplay:

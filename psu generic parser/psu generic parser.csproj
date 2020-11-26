@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{15155AA9-777C-4A09-8629-742FECC6E6AF}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>psu_generic_parser</RootNamespace>
+    <AssemblyName>psu generic parser</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.0\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel.Web">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Forms\FileViewers\BinaryViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\BinaryViewer.Designer.cs">
+      <DependentUpon>BinaryViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ClothingFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ClothingFileViewer.Designer.cs">
+      <DependentUpon>ClothingFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\EnemyStatEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\EnemyStatEditor.Designer.cs">
+      <DependentUpon>EnemyStatEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\EnemyDropViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\EnemyDropViewer.Designer.cs">
+      <DependentUpon>EnemyDropViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\EnemyLayoutViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\EnemyLayoutViewer.Designer.cs">
+      <DependentUpon>EnemyLayoutViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ItemBulletParamViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ItemBulletParamViewer.Designer.cs">
+      <DependentUpon>ItemBulletParamViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ItemCommonInfoViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ItemCommonInfoViewer.Designer.cs">
+      <DependentUpon>ItemCommonInfoViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ItemPriceViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ItemPriceViewer.Designer.cs">
+      <DependentUpon>ItemPriceViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ItemSkillParamViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ItemSkillParamViewer.Designer.cs">
+      <DependentUpon>ItemSkillParamViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ItemTechParamViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ItemTechParamViewer.Designer.cs">
+      <DependentUpon>ItemTechParamViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ListFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ListFileViewer.Designer.cs">
+      <DependentUpon>ListFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\NomFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\NomFileViewer.Designer.cs">
+      <DependentUpon>NomFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\QuestListViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\QuestListViewer.Designer.cs">
+      <DependentUpon>QuestListViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\RmagBulletViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\RmagBulletViewer.Designer.cs">
+      <DependentUpon>RmagBulletViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ScriptFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ScriptFileViewer.Designer.cs">
+      <DependentUpon>ScriptFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\SetFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\SetFileViewer.Designer.cs">
+      <DependentUpon>SetFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ThinkDragonViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ThinkDragonViewer.Designer.cs">
+      <DependentUpon>ThinkDragonViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\UnitParamViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\UnitParamViewer.Designer.cs">
+      <DependentUpon>UnitParamViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\UnpointeredFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\UnpointeredFileViewer.Designer.cs">
+      <DependentUpon>UnpointeredFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\XntFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\XntFileViewer.Designer.cs">
+      <DependentUpon>XntFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\HexEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HexEditForm.Designer.cs">
+      <DependentUpon>HexEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainSettings.Designer.cs">
+      <DependentUpon>MainSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\PartsInfoViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\PartsInfoViewer.Designer.cs">
+      <DependentUpon>PartsInfoViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\PointeredFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\PointeredFileViewer.Designer.cs">
+      <DependentUpon>PointeredFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\FileViewers\BinaryViewer.resx">
+      <DependentUpon>BinaryViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\ClothingFileViewer.resx">
+      <DependentUpon>ClothingFileViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\EnemyStatEditor.resx">
+      <DependentUpon>EnemyStatEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\EnemyDropViewer.resx">
+      <DependentUpon>EnemyDropViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\EnemyLayoutViewer.resx">
+      <DependentUpon>EnemyLayoutViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\ItemBulletParamViewer.resx">
+      <DependentUpon>ItemBulletParamViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\ItemCommonInfoViewer.resx">
+      <DependentUpon>ItemCommonInfoViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\ItemPriceViewer.resx">
+      <DependentUpon>ItemPriceViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\ItemSkillParamViewer.resx">
+      <DependentUpon>ItemSkillParamViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\ItemTechParamViewer.resx">
+      <DependentUpon>ItemTechParamViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\ListFileViewer.resx">
+      <DependentUpon>ListFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\NomFileViewer.resx">
+      <DependentUpon>NomFileViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\QuestListViewer.resx">
+      <DependentUpon>QuestListViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\RmagBulletViewer.resx">
+      <DependentUpon>RmagBulletViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\ScriptFileViewer.resx">
+      <DependentUpon>ScriptFileViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\SetFileViewer.resx">
+      <DependentUpon>SetFileViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\ThinkDragonViewer.resx">
+      <DependentUpon>ThinkDragonViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\UnitParamViewer.resx">
+      <DependentUpon>UnitParamViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\UnpointeredFileViewer.resx">
+      <DependentUpon>UnpointeredFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\XntFileViewer.resx">
+      <DependentUpon>XntFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\HexEditForm.resx">
+      <DependentUpon>HexEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainSettings.resx">
+      <DependentUpon>MainSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\PartsInfoViewer.resx">
+      <DependentUpon>PartsInfoViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\PointeredFileViewer.resx">
+      <DependentUpon>PointeredFileViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\TextureViewer.resx">
+      <DependentUpon>TextureViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\TextViewer.resx">
+      <DependentUpon>TextViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\WeaponListEditor.resx">
+      <DependentUpon>WeaponListEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\WeaponParamViewer.resx">
+      <DependentUpon>WeaponParamViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\XvrViewer.resx">
+      <DependentUpon>XvrViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Forms\FileViewers\TextureViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\TextureViewer.Designer.cs">
+      <DependentUpon>TextureViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\TextViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\TextViewer.Designer.cs">
+      <DependentUpon>TextViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\WeaponListEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\WeaponListEditor.Designer.cs">
+      <DependentUpon>WeaponListEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\WeaponParamViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\WeaponParamViewer.Designer.cs">
+      <DependentUpon>WeaponParamViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\XvrViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\XvrViewer.Designer.cs">
+      <DependentUpon>XvrViewer.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PSULib\PSULib.csproj">
+      <Project>{1639a2e3-3a88-4f4a-8ca4-8c6530a70854}</Project>
+      <Name>PSULib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPFHexaEditor\WpfHexEditorCore.csproj">
+      <Project>{f5f025ff-aa90-4868-910d-46cf9b6b57d2}</Project>
+      <Name>WpfHexEditorCore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

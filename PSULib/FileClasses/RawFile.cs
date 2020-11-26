@@ -1,0 +1,154 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+
+namespace psu_generic_parser
+{
+    public class RawFile
+    {
+        public byte[] subHeader;
+        public byte[] fileContents;
+        public List<int> pointers = new List<int>();
+        public uint chunkSize = 0x60;
+        public uint fileOffset;
+        public string filename = "";
+        public string fileheader = "";
+
+        public RawFile()
+        {
+
+        }
+
+        //Creates a RawFile from my custom container format.
+        public RawFile(Stream inStream)
+        {
+            BinaryReader inReader = new BinaryReader(inStream);
+            fileheader = ASCIIEncoding.ASCII.GetString(inReader.ReadBytes(4));
+            inStream.Seek(0x10, SeekOrigin.Begin);
+            filename = ASCIIEncoding.ASCII.GetString(inReader.ReadBytes(0x20));
+            filename = filename.TrimEnd('\0');
+            fileOffset = inReader.ReadUInt32();
+            int fileLength = inReader.ReadInt32();
+            chunkSize = inReader.ReadUInt32();
+            int pointerCount = inReader.ReadInt32();
+            subHeader = inReader.ReadBytes(0x20);
+            fileContents = inReader.ReadBytes(fileLength);
+            inStream.Seek((inStream.Position + 0x7F) & 0xFFFFFF80, SeekOrigin.Begin);
+
+            for (int i = 0; i < pointerCount; i++)
+            {
+                pointers.Add(inReader.ReadInt32());
+            }
+            inReader.Close();
+        }
+
+        public void RebaseFile(uint newBaseLocation)
+        {
+            uint difference = newBaseLocation - fileOffset;
+            //fileOffset = 
+            for (int i = 0; i < pointers.Count; i++)
+            {
+                int pointerLoc = (int)(pointers[i] - fileOffset);
+                int newPointer = (int)(BitConverter.ToInt32(fileContents, pointerLoc) + difference);
+                byte[] newPointerBytes = BitConverter.GetBytes(newPointer);
+                Array.Copy(newPointerBytes, 0, fileContents, pointerLoc, 4);
+                pointers[i] += (int)difference;
+            }
+            fileOffset = newBaseLocation;
+        }
+        public void WriteToStream(Stream outStream)
+        {
+            byte[] toSave = fileContents;
+            BinaryWriter outWriter = new BinaryWriter(outStream);
+            if (pointers == null)
+                outWriter.Write(ASCIIEncoding.ASCII.GetBytes("STD\0"));
+            else
+                outWriter.Write(ASCIIEncoding.ASCII.GetBytes(filename.ToUpper().ToCharArray(filename.Length - 3, 3)));
+            outWriter.Seek(0x4, SeekOrigin.Begin);
+            outWriter.Write((int)0x60);
+            outStream.Seek(0x10, SeekOrigin.Begin);
+            outWriter.Write(ASCIIEncoding.ASCII.GetBytes(filename.PadRight(0x20, '\0')));
+            outWriter.Write((int)0);
+            outWriter.Write(toSave.Length);
+            outWriter.Write((int)0);
+            if (pointers != null)
+                outWriter.Write((int)pointers.Count);
+            else
+                outWriter.Write((int)0);
+            if (subHeader != null)
+                outWriter.Write(subHeader);
+            else
+                outStream.Seek(0x60, SeekOrigin.Begin);
+            outWriter.Write(toSave);
+            outStream.Seek((outStream.Position + 0x7F) & 0xFFFFFF80, SeekOrigin.Begin);
+            if (pointers != null)
+            {
+                for (int i = 0; i < pointers.Count; i++)
+                    outWriter.Write(pointers[i]);
+            }
+            outWriter.Close();
+        }
+
+        public byte[] WriteToBytes(bool writeMetaData = false)
+        {
+            List<byte> output = new List<byte>();
+            byte[] toSave = fileContents;
+            string fileNameSansPath = Path.GetFileName(filename);
+
+            if (writeMetaData == true)
+            {
+                if (pointers == null)
+                {
+                    output.AddRange(ASCIIEncoding.ASCII.GetBytes("STD\0"));
+                }
+                else
+                {
+                    output.AddRange(ASCIIEncoding.ASCII.GetBytes(fileNameSansPath.ToUpper().ToCharArray(fileNameSansPath.Length - 3, 3)));
+                    output.Add(0);
+                }
+
+                output.AddRange(new byte[0xC]);
+                output.AddRange(ASCIIEncoding.ASCII.GetBytes(fileNameSansPath.PadRight(0x20, '\0')));
+                output.AddRange(new byte[0x4]);
+                output.AddRange(BitConverter.GetBytes(toSave.Length));
+                output.AddRange(new byte[0x4]);
+
+                if (pointers != null)
+                {
+                    output.AddRange(BitConverter.GetBytes(pointers.Count));
+                }
+                else
+                {
+                    output.AddRange(new byte[0x4]);
+                }
+                if (subHeader != null)
+                {
+                    output.AddRange(subHeader);
+                }
+                else
+                {
+                    output.AddRange(new byte[0x20]);
+                }
+            }
+            output.AddRange(toSave);
+
+            if (writeMetaData == true)
+            {
+                if (pointers != null)
+                {
+                    //Calc padding to get to pointer start
+                    long pointerPadding = ((output.Count + 0x7F) & 0xFFFFFF80) - output.Count;
+                    output.AddRange(new byte[pointerPadding]);
+                    for (int i = 0; i < pointers.Count; i++)
+                    {
+                        output.AddRange(BitConverter.GetBytes(pointers[i]));
+                    }
+                }
+            }
+
+            return output.ToArray();
+        }
+    }
+}

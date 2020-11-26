@@ -1,0 +1,92 @@
+﻿<!--
+    Apache 2.0  - 2016-2018
+    Author : Derek Tremblay (derektremblay666@gmail.com)
+-->
+
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:p="clr-namespace:WpfHexaEditor.Properties">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="./MiscelanousDictionary.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  USED FOR TOOLTIP OF IBYTECONTROL  -->
+    <ToolTip x:Key="ByteToolTip">
+        <ToolTip.RenderTransform>
+            <ScaleTransform ScaleX="0.7" ScaleY="0.7" />
+        </ToolTip.RenderTransform>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Width="120"
+                    Content="{x:Static p:Resources.ValueString}"
+                    FontWeight="Bold" />
+                <Label
+                    Width="50"
+                    Content="{x:Static p:Resources.ByteString}"
+                    FontWeight="Bold" />
+                <Label Width="70" Content="{Binding Byte, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="{x:Static p:Resources.HexString}" FontWeight="Bold" />
+                <Label Content="{Binding Byte, Converter={StaticResource LongHexConverter}, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Width="120"
+                    Content="{x:Static p:Resources.PositionString}"
+                    FontWeight="Bold" />
+                <Label
+                    Width="50"
+                    Content="{x:Static p:Resources.LongString}"
+                    FontWeight="Bold" />
+                <Label Width="70" Content="{Binding BytePositionInStream, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="{x:Static p:Resources.HexString}" FontWeight="Bold" />
+                <Label Content="{Binding BytePositionInStream, Converter={StaticResource LongHexConverter}, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <Separator />
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Width="120"
+                    Content="{x:Static p:Resources.ByteActionString}"
+                    FontWeight="Bold" />
+                <Label Content="{Binding Action, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <Separator />
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Width="120"
+                    Content="{x:Static p:Resources.DescriptionString}"
+                    FontWeight="Bold" />
+                <Label Content="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+        </StackPanel>
+    </ToolTip>
+
+    <!--  USED FOR TOOLTIP OF SCROLL MARKER  -->
+    <ToolTip x:Key="ScrollMarkerSearchToolTip">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Width="120"
+                    Content="{x:Static p:Resources.PositionString}"
+                    FontWeight="Bold" />
+                <Label Content="{x:Static p:Resources.LongString}" FontWeight="Bold" />
+                <Label Content="{Binding BytePositionInStream, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="{x:Static p:Resources.HexString}" FontWeight="Bold" />
+                <Label Content="{Binding BytePositionInStream, Converter={StaticResource LongHexConverter}, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Label
+                    Width="120"
+                    Content="{x:Static p:Resources.DescriptionString}"
+                    FontWeight="Bold" />
+                <Label Content="{Binding Description, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <Separator />
+            <StackPanel Orientation="Horizontal">
+                <Label Content="{x:Static p:Resources.ClickToGoAtPositionString}" FontWeight="Bold" />
+            </StackPanel>
+        </StackPanel>
+    </ToolTip>
+</ResourceDictionary>
