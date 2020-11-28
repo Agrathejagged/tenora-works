@@ -34,7 +34,6 @@
             this.exportMetaDataCheckBox = new System.Windows.Forms.CheckBox();
             this.BatchExportSubContainersCheckBox = new System.Windows.Forms.CheckBox();
             this.BatchExportSubDirectoriesCheckBox = new System.Windows.Forms.CheckBox();
-            this.ForceSaveNBLInOldFormat = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // ExportPNGCheckBox
@@ -107,23 +106,11 @@
             this.BatchExportSubDirectoriesCheckBox.UseVisualStyleBackColor = true;
             this.BatchExportSubDirectoriesCheckBox.CheckedChanged += new System.EventHandler(this.BatchExportSubDirectories_CheckedChanged);
             // 
-            // checkBox1
-            // 
-            this.ForceSaveNBLInOldFormat.AutoSize = true;
-            this.ForceSaveNBLInOldFormat.Location = new System.Drawing.Point(12, 146);
-            this.ForceSaveNBLInOldFormat.Name = "checkBox1";
-            this.ForceSaveNBLInOldFormat.Size = new System.Drawing.Size(176, 17);
-            this.ForceSaveNBLInOldFormat.TabIndex = 8;
-            this.ForceSaveNBLInOldFormat.Text = "Force save NBLs in PSU format";
-            this.ForceSaveNBLInOldFormat.UseVisualStyleBackColor = true;
-            this.ForceSaveNBLInOldFormat.CheckedChanged += new System.EventHandler(this.ForceSaveNBLInOldFormat_CheckedChanged);
-            // 
             // MainSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(228, 168);
-            this.Controls.Add(this.ForceSaveNBLInOldFormat);
+            this.ClientSize = new System.Drawing.Size(228, 149);
             this.Controls.Add(this.BatchExportSubDirectoriesCheckBox);
             this.Controls.Add(this.BatchExportSubContainersCheckBox);
             this.Controls.Add(this.exportMetaDataCheckBox);
@@ -146,6 +133,5 @@
         private System.Windows.Forms.CheckBox exportMetaDataCheckBox;
         private System.Windows.Forms.CheckBox BatchExportSubContainersCheckBox;
         private System.Windows.Forms.CheckBox BatchExportSubDirectoriesCheckBox;
-        private System.Windows.Forms.CheckBox ForceSaveNBLInOldFormat;
     }
 }

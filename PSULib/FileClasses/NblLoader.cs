@@ -37,7 +37,8 @@ namespace psu_generic_parser
         }
 
         public List<NblChunk> chunks = new List<NblChunk>();
-        public bool isCompressed = false;
+        public bool isCompressed { get { return chunks.Count > 0 && chunks[0].compressed; } }
+                
         public bool isBigEndian = false;
 
         //Calculated data.
@@ -90,13 +91,13 @@ namespace psu_generic_parser
 
         public NblLoader(List<RawFile> nmllFiles, List<RawFile> tmllFiles)
         {
-            if(nmllFiles != null && nmllFiles.Count > 0)
+            if (nmllFiles != null && nmllFiles.Count > 0)
             {
                 NblChunk nmllChunk = new NblChunk { chunkID = "NMLL", versionNumber = 2, fileContents = nmllFiles };
                 chunks.Add(nmllChunk);
             }
 
-            if(tmllFiles != null && tmllFiles.Count > 0)
+            if (tmllFiles != null && tmllFiles.Count > 0)
             {
                 NblChunk tmllChunk = new NblChunk { chunkID = "TMLL", versionNumber = 2, fileContents = tmllFiles };
                 chunks.Add(tmllChunk);
@@ -195,7 +196,7 @@ namespace psu_generic_parser
             }
             else
                 decryptedFiles = fileLoader.ReadBytes((int)size + 7);
-            
+
             if (compressedSize != 0)
             {
                 if (fileVersion == 0x1002)
@@ -230,7 +231,7 @@ namespace psu_generic_parser
                 tempFile.subHeader = groupHeaders[i].subHeader;
                 tempFile.chunkSize = groupHeaders[i].chunkSize;
                 tempFile.fileOffset = groupHeaders[i].filePosition;
-                
+
                 tempFile.fileContents = new byte[groupHeaders[i].fileSize];
                 Array.Copy(decompressedFiles, groupHeaders[i].filePosition, tempFile.fileContents, 0, groupHeaders[i].fileSize);
                 if (tempFile.fileContents.Length > 0)
@@ -322,7 +323,9 @@ namespace psu_generic_parser
                 decryptHeader = decryptor.decryptBlock(headerReader.ReadBytes(0x30));
             }
             else
+            {
                 decryptHeader = headerReader.ReadBytes(0x30);
+            }
             MemoryStream alpha = new MemoryStream(decryptHeader);
             BinaryReader beta = getBinaryReader(alpha);
             toReturn.fileName = new string(beta.ReadChars(0x20)).TrimEnd('\0');
@@ -336,7 +339,7 @@ namespace psu_generic_parser
 
         public void replaceFile(string toReplace, Stream importFile)
         {
-            
+
             BinaryReader inReader = getBinaryReader(importFile);
             string identifier = ASCIIEncoding.ASCII.GetString(inReader.ReadBytes(4));
             importFile.Seek(0x10, SeekOrigin.Begin);
@@ -350,7 +353,7 @@ namespace psu_generic_parser
             byte[] rawFile = inReader.ReadBytes(fileLength);
             importFile.Seek((importFile.Position + 0x7F) & 0xFFFFFF80, SeekOrigin.Begin);
             List<int> pointers = new List<int>();
-            for(int i = 0; i < pointerCount; i++)
+            for (int i = 0; i < pointerCount; i++)
             {
                 pointers.Add(inReader.ReadInt32());
             }
@@ -428,13 +431,13 @@ public override bool MatchesFile(string filename, byte[] fileContents, int[] poi
     public class NblChunk : PsuFile, ContainerFile
     {
         public string chunkID;
-        public short versionNumber; 
+        public short versionNumber;
         public bool compressed = false;
         public bool encrypted = false;
         public bool bigEndian = false;
         public uint encryptionKey;
         public List<RawFile> fileContents = new List<RawFile>();
-        Dictionary<string, PsuFile> loadedFileCache = new Dictionary<string,PsuFile>();
+        Dictionary<string, PsuFile> loadedFileCache = new Dictionary<string, PsuFile>();
 
         public byte[] SaveFile(bool discardChanges)
         {
@@ -459,15 +462,15 @@ public override bool MatchesFile(string filename, byte[] fileContents, int[] poi
             List<int> pointers = new List<int>();
             //Annoying, this one has to be a running tally, can't do it any other way.
             ushort filenamelength = 0;
-            for(int i = 0; i < fileContents.Count; i++)
+            for (int i = 0; i < fileContents.Count; i++)
             {
                 //Figure out whether to take the cached copy or the original
-                if(this.loadedFileCache.ContainsKey(fileContents[i].filename) && !discardChanges)
+                if (this.loadedFileCache.ContainsKey(fileContents[i].filename) && !discardChanges)
                 {
                     savedFiles[i] = loadedFileCache[fileContents[i].filename].ToRawFile((uint)groupFileStream.Position);
                     savedFiles[i].chunkSize = fileContents[i].chunkSize;
                 }
-                else if(savedFiles[i].fileOffset != (uint)groupFileStream.Position)
+                else if (savedFiles[i].fileOffset != (uint)groupFileStream.Position)
                 {
                     savedFiles[i].RebaseFile((uint)groupFileStream.Position);
                 }
@@ -477,7 +480,7 @@ public override bool MatchesFile(string filename, byte[] fileContents, int[] poi
                 string identifier = "STD\0";
                 if (this.chunkID.StartsWith("TML"))
                     identifier = "NNVR";
-                else if(savedFiles[i].subHeader != null && savedFiles[i].subHeader[0] == 0x4E) //'N'--so hopefully just NXIF or NUIF
+                else if (savedFiles[i].subHeader != null && savedFiles[i].subHeader[0] == 0x4E) //'N'--so hopefully just NXIF or NUIF
                     identifier = Path.GetExtension(savedFiles[i].filename).Substring(1).ToUpper().PadRight(4, '\0');
                 groupHeaderWriter.Write(ASCIIEncoding.ASCII.GetBytes(identifier));
                 groupHeaderWriter.Write(savedFiles[i].chunkSize);
@@ -494,7 +497,7 @@ public override bool MatchesFile(string filename, byte[] fileContents, int[] poi
                     groupHeaderWriter.Write(savedFiles[i].subHeader);
 
                 //Update filename length (include \0 terminator).
-                if(this.chunkID.StartsWith("NML"))
+                if (this.chunkID.StartsWith("NML"))
                     filenamelength += (ushort)(savedFiles[i].filename.Length + 1);
 
                 //Now put the data into the file pieces.
@@ -506,7 +509,28 @@ public override bool MatchesFile(string filename, byte[] fileContents, int[] poi
             int headerLength = (int)groupHeaderStream.Position;
             groupHeaderStream.Seek((groupHeaderStream.Position + paddingAmount) & mask, SeekOrigin.Begin);
             int uncompressedSize = (int)groupFileStream.Position;
-            byte[] rawData = compressed ? PrsCompDecomp.compress(groupFileStream.ToArray()) : groupFileStream.ToArray();
+            byte[] rawData;
+            if (compressed)
+            {
+                if(versionNumber == 0x1002) // PSP2 files use Deflate.
+                {
+                    groupFileStream.Seek(0, SeekOrigin.Begin);
+                    MemoryStream compressedStream = new MemoryStream();
+                    using(DeflateStream ds = new DeflateStream(compressedStream, CompressionMode.Compress))
+                    {
+                        groupFileStream.CopyTo(ds);
+                    }
+                    rawData = compressedStream.ToArray();
+                }
+                else //PSU uses PRS.
+                {
+                    rawData = PrsCompDecomp.compress(groupFileStream.ToArray());
+                }
+            }
+            else
+            {
+                rawData = groupFileStream.ToArray();
+            }
             int fileLength = rawData.Length;
             groupHeaderWriter.Write(rawData);
             //Write out pointers (if applicable)
@@ -514,7 +538,7 @@ public override bool MatchesFile(string filename, byte[] fileContents, int[] poi
             for (int i = 0; i < pointers.Count; i++)
                 groupHeaderWriter.Write(pointers[i]);
             groupHeaderWriter.Write(new byte[((groupHeaderStream.Position + paddingAmount) & mask) - groupHeaderStream.Position]);
-            
+
             //Now fill in the header (leaving the space if necessary).
             groupHeaderStream.Seek(0, SeekOrigin.Begin);
             groupHeaderWriter.Write(ASCIIEncoding.ASCII.GetBytes(this.chunkID));

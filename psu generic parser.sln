@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mission Builder", "MissionB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfHexEditorCore", "WPFHexaEditor\WpfHexEditorCore.csproj", "{F5F025FF-AA90-4868-910D-46CF9B6B57D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPB Extractor", "FPB Extractor\FPB Extractor.csproj", "{23340141-5EF9-4881-90A4-B5EA63024C45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F5F025FF-AA90-4868-910D-46CF9B6B57D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5F025FF-AA90-4868-910D-46CF9B6B57D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5F025FF-AA90-4868-910D-46CF9B6B57D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23340141-5EF9-4881-90A4-B5EA63024C45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23340141-5EF9-4881-90A4-B5EA63024C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23340141-5EF9-4881-90A4-B5EA63024C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23340141-5EF9-4881-90A4-B5EA63024C45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

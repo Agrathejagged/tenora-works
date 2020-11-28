@@ -58,10 +58,5 @@ namespace psu_generic_parser
         {
             mainForm.batchRecursive = BatchExportSubDirectoriesCheckBox.Checked;
         }
-
-        private void ForceSaveNBLInOldFormat_CheckedChanged(object sender, EventArgs e)
-        {
-            mainForm.forceNblToPsu = ForceSaveNBLInOldFormat.Checked;
-        }
     }
 }

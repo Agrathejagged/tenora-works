@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using System.Collections;
 using psu_generic_parser.FileViewers;
 using psu_generic_parser.FileClasses;
 using System.Security.Cryptography;
 using Microsoft.WindowsAPICodePack.Dialogs;
-using static psu_generic_parser.HexEditForm;
 
 namespace psu_generic_parser
 {
@@ -30,7 +25,6 @@ namespace psu_generic_parser
         public bool compressNMLL = false;
         public bool compressTMLL = false;
         public bool exportMetaData = false;
-        public bool forceNblToPsu = true;
 
         public MainForm()
         {
@@ -67,6 +61,7 @@ namespace psu_generic_parser
                 splitContainer1.Panel2.Controls.Clear();
                 addChildFiles(treeNodeCollection, loadedNbl);
                 compressNMLL = loadedNbl.isCompressed;
+                compressTMLL = loadedNbl.chunks.Count > 1 && loadedNbl.chunks[1].compressed;
                 isValidArchive = true;
             } 
             else if (identifier == "AFS\0")
