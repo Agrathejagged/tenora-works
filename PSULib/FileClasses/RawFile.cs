@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using PSULib;
 
 namespace psu_generic_parser
 {
@@ -25,9 +26,9 @@ namespace psu_generic_parser
         public RawFile(Stream inStream)
         {
             BinaryReader inReader = new BinaryReader(inStream);
-            fileheader = ASCIIEncoding.ASCII.GetString(inReader.ReadBytes(4));
+            fileheader = Encoding.ASCII.GetString(inReader.ReadBytes(4));
             inStream.Seek(0x10, SeekOrigin.Begin);
-            filename = ASCIIEncoding.ASCII.GetString(inReader.ReadBytes(0x20));
+            filename = Encoding.GetEncoding("shift-jis").GetString(inReader.ReadBytes(0x20));
             filename = filename.TrimEnd('\0');
             fileOffset = inReader.ReadUInt32();
             int fileLength = inReader.ReadInt32();
@@ -63,13 +64,13 @@ namespace psu_generic_parser
             byte[] toSave = fileContents;
             BinaryWriter outWriter = new BinaryWriter(outStream);
             if (pointers == null)
-                outWriter.Write(ASCIIEncoding.ASCII.GetBytes("STD\0"));
+                outWriter.Write(Encoding.ASCII.GetBytes("STD\0"));
             else
-                outWriter.Write(ASCIIEncoding.ASCII.GetBytes(filename.ToUpper().ToCharArray(filename.Length - 3, 3)));
+                outWriter.Write(Encoding.ASCII.GetBytes(filename.ToUpper().ToCharArray(filename.Length - 3, 3)));
             outWriter.Seek(0x4, SeekOrigin.Begin);
             outWriter.Write((int)0x60);
             outStream.Seek(0x10, SeekOrigin.Begin);
-            outWriter.Write(ASCIIEncoding.ASCII.GetBytes(filename.PadRight(0x20, '\0')));
+            outWriter.Write(ContainerUtilities.encodePaddedSjisString(filename, 0x20));
             outWriter.Write((int)0);
             outWriter.Write(toSave.Length);
             outWriter.Write((int)0);
@@ -101,16 +102,16 @@ namespace psu_generic_parser
             {
                 if (pointers == null)
                 {
-                    output.AddRange(ASCIIEncoding.ASCII.GetBytes("STD\0"));
+                    output.AddRange(Encoding.ASCII.GetBytes("STD\0"));
                 }
                 else
                 {
-                    output.AddRange(ASCIIEncoding.ASCII.GetBytes(fileNameSansPath.ToUpper().ToCharArray(fileNameSansPath.Length - 3, 3)));
+                    output.AddRange(Encoding.ASCII.GetBytes(fileNameSansPath.ToUpper().ToCharArray(fileNameSansPath.Length - 3, 3)));
                     output.Add(0);
                 }
 
                 output.AddRange(new byte[0xC]);
-                output.AddRange(ASCIIEncoding.ASCII.GetBytes(fileNameSansPath.PadRight(0x20, '\0')));
+                output.AddRange(ContainerUtilities.encodePaddedSjisString(fileNameSansPath, 0x20));
                 output.AddRange(new byte[0x4]);
                 output.AddRange(BitConverter.GetBytes(toSave.Length));
                 output.AddRange(new byte[0x4]);

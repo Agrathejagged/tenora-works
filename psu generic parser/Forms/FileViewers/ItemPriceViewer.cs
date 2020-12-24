@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
@@ -14,7 +8,6 @@ namespace psu_generic_parser
     {
         ItemPriceFile internalFile;
         int[] selection = { -1, -1 };
-        bool updating = true;
 
         public ItemPriceViewer()
         {
@@ -50,14 +43,12 @@ namespace psu_generic_parser
 
         private void treeView1_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
-            updating = true;
             if (e.Node.Level == 1)
             {
                 
                 selection = (int[])e.Node.Tag;dataGridView1.DataSource = internalFile.itemPrices[selection[0]][selection[1]];
                 dataGridView1.Columns[0].DefaultCellStyle.Format = "X8";
             }
-            updating = false;
         }
 
         private void dataGridView1_CellParsing(object sender, DataGridViewCellParsingEventArgs e)
@@ -75,19 +66,6 @@ namespace psu_generic_parser
                     //Bad parse.
                 }
             }
-        }
-
-        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-/*            if (!updating)
-            {
-                switch (e.ColumnIndex)
-                {
-                    case 0: internalFile.itemPrices[selection[0]][selection[1]][e.RowIndex][e.ColumnIndex] = (int)dataGridView1[e.ColumnIndex, e.RowIndex].Value; break;
-                    case 1: internalFile.itemPrices[selection[0]][selection[1]][e.RowIndex].ItemPrice = (int)dataGridView1[e.ColumnIndex, e.RowIndex].Value; break;
-                }
-                
-            }*/
         }
 
         private void button1_Click(object sender, EventArgs e)

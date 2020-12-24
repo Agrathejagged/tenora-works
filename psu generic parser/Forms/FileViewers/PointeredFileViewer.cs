@@ -32,7 +32,7 @@ namespace psu_generic_parser
                 writerLine = 0;
 
                 writeTrackedLine("Header:");
-                writeTrackedLine(ASCIIEncoding.ASCII.GetString(internalFile.splitData[0].contents, 0, 4).Replace("\0", ""));
+                writeTrackedLine(Encoding.ASCII.GetString(internalFile.splitData[0].contents, 0, 4).Replace("\0", ""));
                 for (int i = 4; i < internalFile.splitData[0].contents.Length; i++)
                 {
                     if (internalFile.pointerToDestination.ContainsKey(i))

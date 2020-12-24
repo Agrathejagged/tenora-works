@@ -28,18 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.storeButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.insertButton = new System.Windows.Forms.Button();
-            this.textLB = new System.Windows.Forms.ListBox();
-            this.addButton = new System.Windows.Forms.Button();
-            this.removeButton = new System.Windows.Forms.Button();
+            this.deleteButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // treeView1
+            // 
+            this.treeView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.treeView1.HideSelection = false;
+            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(137, 370);
+            this.treeView1.TabIndex = 0;
+            this.treeView1.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.treeView1_BeforeSelect);
             // 
             // textBox1
             // 
@@ -48,7 +59,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(6, 32);
+            this.textBox1.Location = new System.Drawing.Point(4, 0);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(263, 370);
@@ -59,11 +70,11 @@
             // 
             this.storeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.storeButton.Enabled = false;
-            this.storeButton.Location = new System.Drawing.Point(6, 10);
+            this.storeButton.Location = new System.Drawing.Point(4, 376);
             this.storeButton.Name = "storeButton";
             this.storeButton.Size = new System.Drawing.Size(75, 23);
             this.storeButton.TabIndex = 2;
-            this.storeButton.Text = "Save";
+            this.storeButton.Text = "Store";
             this.storeButton.UseVisualStyleBackColor = true;
             this.storeButton.Click += new System.EventHandler(this.storeButton_Click);
             // 
@@ -75,10 +86,9 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.deleteButton);
             this.splitContainer1.Panel1.Controls.Add(this.insertButton);
-            this.splitContainer1.Panel1.Controls.Add(this.textLB);
-            this.splitContainer1.Panel1.Controls.Add(this.addButton);
-            this.splitContainer1.Panel1.Controls.Add(this.removeButton);
+            this.splitContainer1.Panel1.Controls.Add(this.treeView1);
             // 
             // splitContainer1.Panel2
             // 
@@ -90,44 +100,25 @@
             // 
             // insertButton
             // 
-            this.insertButton.Location = new System.Drawing.Point(70, 3);
+            this.insertButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.insertButton.Location = new System.Drawing.Point(4, 376);
             this.insertButton.Name = "insertButton";
-            this.insertButton.Size = new System.Drawing.Size(61, 23);
-            this.insertButton.TabIndex = 5;
+            this.insertButton.Size = new System.Drawing.Size(60, 23);
+            this.insertButton.TabIndex = 1;
             this.insertButton.Text = "Insert";
             this.insertButton.UseVisualStyleBackColor = true;
             this.insertButton.Click += new System.EventHandler(this.insertButton_Click);
             // 
-            // textLB
+            // deleteButton
             // 
-            this.textLB.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.textLB.FormattingEnabled = true;
-            this.textLB.Location = new System.Drawing.Point(0, 73);
-            this.textLB.Name = "textLB";
-            this.textLB.ScrollAlwaysVisible = true;
-            this.textLB.Size = new System.Drawing.Size(137, 329);
-            this.textLB.TabIndex = 3;
-            this.textLB.SelectedIndexChanged += new System.EventHandler(this.textLB_SelectedIndexChanged);
-            // 
-            // addButton
-            // 
-            this.addButton.Location = new System.Drawing.Point(3, 3);
-            this.addButton.Name = "addButton";
-            this.addButton.Size = new System.Drawing.Size(61, 23);
-            this.addButton.TabIndex = 3;
-            this.addButton.Text = "Add";
-            this.addButton.UseVisualStyleBackColor = true;
-            this.addButton.Click += new System.EventHandler(this.addButton_Click);
-            // 
-            // removeButton
-            // 
-            this.removeButton.Location = new System.Drawing.Point(3, 32);
-            this.removeButton.Name = "removeButton";
-            this.removeButton.Size = new System.Drawing.Size(61, 23);
-            this.removeButton.TabIndex = 4;
-            this.removeButton.Text = "Remove";
-            this.removeButton.UseVisualStyleBackColor = true;
-            this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
+            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.deleteButton.Location = new System.Drawing.Point(70, 376);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(64, 23);
+            this.deleteButton.TabIndex = 2;
+            this.deleteButton.Text = "Delete";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
             // TextViewer
             // 
@@ -146,12 +137,12 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button storeButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ListBox textLB;
-        private System.Windows.Forms.Button removeButton;
-        private System.Windows.Forms.Button addButton;
+        private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button insertButton;
     }
 }

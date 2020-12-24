@@ -120,7 +120,7 @@ namespace psu_generic_parser
             int padSize = (int)((outStream.Position + 0xF) & 0xFFFFFFF0);
             outWriter.Write(new byte[padSize - outStream.Position]);
             outStream.Seek(0, SeekOrigin.Begin);
-            outWriter.Write(ASCIIEncoding.ASCII.GetBytes("NXR\0"));
+            outWriter.Write(Encoding.ASCII.GetBytes("NXR\0"));
             outWriter.Write((int)padSize);    //Size to be.
             outWriter.Write((int)headerLoc);    //Header location.
             outWriter.Write((int)0);    //I don't even know if this stuff does anything...

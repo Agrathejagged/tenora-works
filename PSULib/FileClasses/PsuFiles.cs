@@ -36,7 +36,7 @@ namespace psu_generic_parser
                 return new XntFile(filename, rawData, inHeader, ptrs, baseAddr);
             else if (parseScripts && (filename.Contains("script.bin") || filename.Contains("Tutor.bin")))
                 return new ScriptFile(filename, rawData, bigEndian);
-            else if ((filename.EndsWith(".k") || filename.Contains(".bin")) && BitConverter.ToInt32(rawData, 0) == rawData.Length && new string(ASCIIEncoding.ASCII.GetChars(rawData, 0, 4)) != "RIPC")
+            else if ((filename.EndsWith(".k") || filename.Contains(".bin")) && BitConverter.ToInt32(rawData, 0) == rawData.Length && new string(Encoding.ASCII.GetChars(rawData, 0, 4)) != "RIPC")
                 return new TextFile(filename, rawData);
             else if (filename.Contains("item00ValueData"))
                 return new ItemPriceFile(filename, rawData, inHeader, ptrs, baseAddr);
@@ -50,13 +50,13 @@ namespace psu_generic_parser
                 return new ItemSkillParamFile(filename, rawData, inHeader, ptrs, baseAddr);
             else if (filename.Contains("itemLineUnitParam"))
                 return new ItemUnitParamFile(filename, rawData, inHeader, ptrs, baseAddr);
-            else if (filename.Contains(".nbl") || ASCIIEncoding.ASCII.GetString(rawData, 0, 4) == "NMLL")
+            else if (filename.Contains(".nbl") || Encoding.ASCII.GetString(rawData, 0, 4) == "NMLL")
             {
                 NblLoader toReturn = new NblLoader(new MemoryStream(rawData));
                 toReturn.filename = filename;
                 return toReturn;
             }
-            else if (ASCIIEncoding.ASCII.GetString(rawData, 0, 3) == "AFS")
+            else if (Encoding.ASCII.GetString(rawData, 0, 3) == "AFS")
             {
                 AfsLoader toReturn = new AfsLoader(filename, new MemoryStream(rawData));
             }
@@ -92,11 +92,11 @@ namespace psu_generic_parser
             {
                 return new PartsInfoFile(filename, rawData, inHeader, ptrs, baseAddr);
             }
-            else if (inHeader != null && ASCIIEncoding.ASCII.GetString(inHeader, 0, 4) == "NXIF" || ASCIIEncoding.ASCII.GetString(inHeader, 0, 4) == "NUIF" || ASCIIEncoding.ASCII.GetString(inHeader, 0, 4) == "NSIF")
+            else if (inHeader != null && Encoding.ASCII.GetString(inHeader, 0, 4) == "NXIF" || Encoding.ASCII.GetString(inHeader, 0, 4) == "NUIF" || Encoding.ASCII.GetString(inHeader, 0, 4) == "NSIF")
             {
                 return new PointeredFile(filename, rawData, inHeader, ptrs, baseAddr, false);
             }
-            else if (inHeader != null && ASCIIEncoding.ASCII.GetString(inHeader, 0, 4) == "NYIF")
+            else if (inHeader != null && Encoding.ASCII.GetString(inHeader, 0, 4) == "NYIF")
             {
                 return new PointeredFile(filename, rawData, inHeader, ptrs, baseAddr, true);
             }

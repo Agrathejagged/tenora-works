@@ -48,6 +48,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.pixelFormatDropDown = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -174,7 +175,7 @@
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Location = new System.Drawing.Point(7, 49);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(393, 308);
+            this.panel1.Size = new System.Drawing.Size(387, 308);
             this.panel1.TabIndex = 10;
             // 
             // label2
@@ -217,16 +218,26 @@
             // 
             this.pixelFormatDropDown.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.pixelFormatDropDown.FormattingEnabled = true;
-            this.pixelFormatDropDown.Location = new System.Drawing.Point(337, 178);
+            this.pixelFormatDropDown.Location = new System.Drawing.Point(400, 204);
             this.pixelFormatDropDown.Name = "pixelFormatDropDown";
             this.pixelFormatDropDown.Size = new System.Drawing.Size(121, 21);
             this.pixelFormatDropDown.TabIndex = 15;
             this.pixelFormatDropDown.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(400, 188);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(109, 13);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Save Texture Format:";
+            // 
             // XvrViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.pixelFormatDropDown);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -273,5 +284,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox pixelFormatDropDown;
+        private System.Windows.Forms.Label label6;
     }
 }

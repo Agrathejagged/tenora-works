@@ -36,7 +36,6 @@ namespace psu_generic_parser
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.setObjectListBox = new System.Windows.Forms.ListBox();
             this.areaLabel = new System.Windows.Forms.Label();
-            this.areaValueNUD = new System.Windows.Forms.NumericUpDown();
             this.mapListCB = new System.Windows.Forms.ComboBox();
             this.mapListLabel = new System.Windows.Forms.Label();
             this.objectListCB = new System.Windows.Forms.ComboBox();
@@ -53,8 +52,6 @@ namespace psu_generic_parser
             this.objIDUD = new System.Windows.Forms.NumericUpDown();
             this.unkIntLabel = new System.Windows.Forms.Label();
             this.unkIntUD = new System.Windows.Forms.NumericUpDown();
-            this.editStartBytesButton = new System.Windows.Forms.Button();
-            this.editObjectMetaDataButton = new System.Windows.Forms.Button();
             this.editObjectSetHeaderBytesButton = new System.Windows.Forms.Button();
             this.addMapListButton = new System.Windows.Forms.Button();
             this.removeMapListButton = new System.Windows.Forms.Button();
@@ -66,7 +63,17 @@ namespace psu_generic_parser
             this.duplicateObjectButton = new System.Windows.Forms.Button();
             this.mapListNumberLabel = new System.Windows.Forms.Label();
             this.mapListNumberUD = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.areaValueNUD)).BeginInit();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.metadataGroupBox = new System.Windows.Forms.GroupBox();
+            this.headerInt3UD = new System.Windows.Forms.NumericUpDown();
+            this.headerInt2UD = new System.Windows.Forms.NumericUpDown();
+            this.headerShort1UD = new System.Windows.Forms.NumericUpDown();
+            this.headerInt1UD = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.areaIdComboBox = new System.Windows.Forms.ComboBox();
+            this.objectNameLabel = new System.Windows.Forms.Label();
             this.positionGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.posZUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.posYUD)).BeginInit();
@@ -78,11 +85,22 @@ namespace psu_generic_parser
             ((System.ComponentModel.ISupportInitialize)(this.objIDUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.unkIntUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapListNumberUD)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.headerInt3UD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.headerInt2UD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.headerShort1UD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.headerInt1UD)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ExportJSONButton
             // 
-            this.ExportJSONButton.Location = new System.Drawing.Point(410, 298);
+            this.ExportJSONButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ExportJSONButton.Location = new System.Drawing.Point(425, 549);
             this.ExportJSONButton.Name = "ExportJSONButton";
             this.ExportJSONButton.Size = new System.Drawing.Size(83, 23);
             this.ExportJSONButton.TabIndex = 0;
@@ -92,7 +110,8 @@ namespace psu_generic_parser
             // 
             // ImportJSONButton
             // 
-            this.ImportJSONButton.Location = new System.Drawing.Point(410, 269);
+            this.ImportJSONButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ImportJSONButton.Location = new System.Drawing.Point(336, 549);
             this.ImportJSONButton.Name = "ImportJSONButton";
             this.ImportJSONButton.Size = new System.Drawing.Size(83, 23);
             this.ImportJSONButton.TabIndex = 1;
@@ -106,11 +125,14 @@ namespace psu_generic_parser
             // 
             // setObjectListBox
             // 
+            this.setObjectListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.setObjectListBox.FormattingEnabled = true;
-            this.setObjectListBox.Location = new System.Drawing.Point(4, 37);
+            this.setObjectListBox.Location = new System.Drawing.Point(8, 49);
             this.setObjectListBox.Name = "setObjectListBox";
             this.setObjectListBox.ScrollAlwaysVisible = true;
-            this.setObjectListBox.Size = new System.Drawing.Size(172, 212);
+            this.setObjectListBox.Size = new System.Drawing.Size(155, 316);
             this.setObjectListBox.TabIndex = 2;
             this.setObjectListBox.SelectedIndexChanged += new System.EventHandler(this.setObjectListBox_SelectedIndexChanged);
             // 
@@ -119,32 +141,15 @@ namespace psu_generic_parser
             this.areaLabel.AutoSize = true;
             this.areaLabel.Location = new System.Drawing.Point(3, 0);
             this.areaLabel.Name = "areaLabel";
-            this.areaLabel.Size = new System.Drawing.Size(35, 13);
+            this.areaLabel.Size = new System.Drawing.Size(74, 13);
             this.areaLabel.TabIndex = 3;
-            this.areaLabel.Text = "Area: ";
-            // 
-            // areaValueNUD
-            // 
-            this.areaValueNUD.Location = new System.Drawing.Point(6, 16);
-            this.areaValueNUD.Maximum = new decimal(new int[] {
-            32767,
-            0,
-            0,
-            0});
-            this.areaValueNUD.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
-            this.areaValueNUD.Name = "areaValueNUD";
-            this.areaValueNUD.Size = new System.Drawing.Size(60, 20);
-            this.areaValueNUD.TabIndex = 4;
-            this.areaValueNUD.ValueChanged += new System.EventHandler(this.areaValueNUD_ValueChanged);
+            this.areaLabel.Text = "Zone Area ID:";
             // 
             // mapListCB
             // 
+            this.mapListCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.mapListCB.FormattingEnabled = true;
-            this.mapListCB.Location = new System.Drawing.Point(182, 16);
+            this.mapListCB.Location = new System.Drawing.Point(118, 15);
             this.mapListCB.Name = "mapListCB";
             this.mapListCB.Size = new System.Drawing.Size(73, 21);
             this.mapListCB.TabIndex = 5;
@@ -153,16 +158,17 @@ namespace psu_generic_parser
             // mapListLabel
             // 
             this.mapListLabel.AutoSize = true;
-            this.mapListLabel.Location = new System.Drawing.Point(196, 1);
+            this.mapListLabel.Location = new System.Drawing.Point(122, 0);
             this.mapListLabel.Name = "mapListLabel";
-            this.mapListLabel.Size = new System.Drawing.Size(47, 13);
+            this.mapListLabel.Size = new System.Drawing.Size(68, 13);
             this.mapListLabel.TabIndex = 6;
-            this.mapListLabel.Text = "Map List";
+            this.mapListLabel.Text = "Current Map:";
             // 
             // objectListCB
             // 
+            this.objectListCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.objectListCB.FormattingEnabled = true;
-            this.objectListCB.Location = new System.Drawing.Point(343, 16);
+            this.objectListCB.Location = new System.Drawing.Point(287, 15);
             this.objectListCB.Name = "objectListCB";
             this.objectListCB.Size = new System.Drawing.Size(73, 21);
             this.objectListCB.TabIndex = 7;
@@ -171,18 +177,18 @@ namespace psu_generic_parser
             // objectSetLabel
             // 
             this.objectSetLabel.AutoSize = true;
-            this.objectSetLabel.Location = new System.Drawing.Point(352, 1);
+            this.objectSetLabel.Location = new System.Drawing.Point(284, -1);
             this.objectSetLabel.Name = "objectSetLabel";
-            this.objectSetLabel.Size = new System.Drawing.Size(57, 13);
+            this.objectSetLabel.Size = new System.Drawing.Size(97, 13);
             this.objectSetLabel.TabIndex = 8;
-            this.objectSetLabel.Text = "Object List";
+            this.objectSetLabel.Text = "Current Object List:";
             // 
             // positionGroupBox
             // 
             this.positionGroupBox.Controls.Add(this.posZUD);
             this.positionGroupBox.Controls.Add(this.posYUD);
             this.positionGroupBox.Controls.Add(this.posXUD);
-            this.positionGroupBox.Location = new System.Drawing.Point(182, 123);
+            this.positionGroupBox.Location = new System.Drawing.Point(3, 55);
             this.positionGroupBox.Name = "positionGroupBox";
             this.positionGroupBox.Size = new System.Drawing.Size(311, 47);
             this.positionGroupBox.TabIndex = 9;
@@ -249,7 +255,7 @@ namespace psu_generic_parser
             // objIDLabel
             // 
             this.objIDLabel.AutoSize = true;
-            this.objIDLabel.Location = new System.Drawing.Point(186, 84);
+            this.objIDLabel.Location = new System.Drawing.Point(7, 16);
             this.objIDLabel.Name = "objIDLabel";
             this.objIDLabel.Size = new System.Drawing.Size(52, 13);
             this.objIDLabel.TabIndex = 10;
@@ -260,7 +266,7 @@ namespace psu_generic_parser
             this.rotationGroupBox.Controls.Add(this.rotZUD);
             this.rotationGroupBox.Controls.Add(this.rotYUD);
             this.rotationGroupBox.Controls.Add(this.rotXUD);
-            this.rotationGroupBox.Location = new System.Drawing.Point(182, 174);
+            this.rotationGroupBox.Location = new System.Drawing.Point(3, 106);
             this.rotationGroupBox.Name = "rotationGroupBox";
             this.rotationGroupBox.Size = new System.Drawing.Size(311, 47);
             this.rotationGroupBox.TabIndex = 11;
@@ -326,17 +332,12 @@ namespace psu_generic_parser
             // 
             // objIDUD
             // 
-            this.objIDUD.Location = new System.Drawing.Point(189, 100);
+            this.objIDUD.Location = new System.Drawing.Point(10, 32);
             this.objIDUD.Maximum = new decimal(new int[] {
             32767,
             0,
             0,
             0});
-            this.objIDUD.Minimum = new decimal(new int[] {
-            32768,
-            0,
-            0,
-            -2147483648});
             this.objIDUD.Name = "objIDUD";
             this.objIDUD.Size = new System.Drawing.Size(61, 20);
             this.objIDUD.TabIndex = 12;
@@ -345,7 +346,7 @@ namespace psu_generic_parser
             // unkIntLabel
             // 
             this.unkIntLabel.AutoSize = true;
-            this.unkIntLabel.Location = new System.Drawing.Point(258, 84);
+            this.unkIntLabel.Location = new System.Drawing.Point(79, 16);
             this.unkIntLabel.Name = "unkIntLabel";
             this.unkIntLabel.Size = new System.Drawing.Size(42, 13);
             this.unkIntLabel.TabIndex = 13;
@@ -353,7 +354,7 @@ namespace psu_generic_parser
             // 
             // unkIntUD
             // 
-            this.unkIntUD.Location = new System.Drawing.Point(261, 100);
+            this.unkIntUD.Location = new System.Drawing.Point(82, 32);
             this.unkIntUD.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -369,59 +370,39 @@ namespace psu_generic_parser
             this.unkIntUD.TabIndex = 14;
             this.unkIntUD.ValueChanged += new System.EventHandler(this.unkIntUD_ValueChanged);
             // 
-            // editStartBytesButton
-            // 
-            this.editStartBytesButton.Location = new System.Drawing.Point(199, 227);
-            this.editStartBytesButton.Name = "editStartBytesButton";
-            this.editStartBytesButton.Size = new System.Drawing.Size(128, 23);
-            this.editStartBytesButton.TabIndex = 15;
-            this.editStartBytesButton.Text = "View Object Start Bytes";
-            this.editStartBytesButton.UseVisualStyleBackColor = true;
-            this.editStartBytesButton.Click += new System.EventHandler(this.editStartBytesButton_Click);
-            // 
-            // editObjectMetaDataButton
-            // 
-            this.editObjectMetaDataButton.Location = new System.Drawing.Point(344, 227);
-            this.editObjectMetaDataButton.Name = "editObjectMetaDataButton";
-            this.editObjectMetaDataButton.Size = new System.Drawing.Size(128, 23);
-            this.editObjectMetaDataButton.TabIndex = 16;
-            this.editObjectMetaDataButton.Text = "View Object Meta Data";
-            this.editObjectMetaDataButton.UseVisualStyleBackColor = true;
-            this.editObjectMetaDataButton.Click += new System.EventHandler(this.editObjectMetaDataButton_Click);
-            // 
             // editObjectSetHeaderBytesButton
             // 
-            this.editObjectSetHeaderBytesButton.Location = new System.Drawing.Point(182, 43);
+            this.editObjectSetHeaderBytesButton.Location = new System.Drawing.Point(367, 13);
             this.editObjectSetHeaderBytesButton.Name = "editObjectSetHeaderBytesButton";
-            this.editObjectSetHeaderBytesButton.Size = new System.Drawing.Size(164, 23);
+            this.editObjectSetHeaderBytesButton.Size = new System.Drawing.Size(118, 23);
             this.editObjectSetHeaderBytesButton.TabIndex = 17;
-            this.editObjectSetHeaderBytesButton.Text = "View Object List Header Bytes";
+            this.editObjectSetHeaderBytesButton.Text = "View List Header";
             this.editObjectSetHeaderBytesButton.UseVisualStyleBackColor = true;
             this.editObjectSetHeaderBytesButton.Click += new System.EventHandler(this.editObjectSetHeaderBytesButton_Click);
             // 
             // addMapListButton
             // 
-            this.addMapListButton.Location = new System.Drawing.Point(257, 0);
+            this.addMapListButton.Location = new System.Drawing.Point(118, 42);
             this.addMapListButton.Name = "addMapListButton";
-            this.addMapListButton.Size = new System.Drawing.Size(84, 21);
+            this.addMapListButton.Size = new System.Drawing.Size(73, 21);
             this.addMapListButton.TabIndex = 18;
-            this.addMapListButton.Text = "Add List";
+            this.addMapListButton.Text = "Add Map";
             this.addMapListButton.UseVisualStyleBackColor = true;
             this.addMapListButton.Click += new System.EventHandler(this.addMapListButton_Click);
             // 
             // removeMapListButton
             // 
-            this.removeMapListButton.Location = new System.Drawing.Point(257, 20);
+            this.removeMapListButton.Location = new System.Drawing.Point(191, 42);
             this.removeMapListButton.Name = "removeMapListButton";
-            this.removeMapListButton.Size = new System.Drawing.Size(84, 21);
+            this.removeMapListButton.Size = new System.Drawing.Size(90, 21);
             this.removeMapListButton.TabIndex = 19;
-            this.removeMapListButton.Text = "Remove List";
+            this.removeMapListButton.Text = "Remove Map";
             this.removeMapListButton.UseVisualStyleBackColor = true;
             this.removeMapListButton.Click += new System.EventHandler(this.removeMapListButton_Click);
             // 
             // addObjectList
             // 
-            this.addObjectList.Location = new System.Drawing.Point(420, 0);
+            this.addObjectList.Location = new System.Drawing.Point(287, 42);
             this.addObjectList.Name = "addObjectList";
             this.addObjectList.Size = new System.Drawing.Size(74, 21);
             this.addObjectList.TabIndex = 20;
@@ -431,7 +412,7 @@ namespace psu_generic_parser
             // 
             // removeObjectList
             // 
-            this.removeObjectList.Location = new System.Drawing.Point(420, 20);
+            this.removeObjectList.Location = new System.Drawing.Point(367, 42);
             this.removeObjectList.Name = "removeObjectList";
             this.removeObjectList.Size = new System.Drawing.Size(74, 21);
             this.removeObjectList.TabIndex = 21;
@@ -441,7 +422,8 @@ namespace psu_generic_parser
             // 
             // addObjectButton
             // 
-            this.addObjectButton.Location = new System.Drawing.Point(4, 251);
+            this.addObjectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.addObjectButton.Location = new System.Drawing.Point(8, 381);
             this.addObjectButton.Name = "addObjectButton";
             this.addObjectButton.Size = new System.Drawing.Size(75, 23);
             this.addObjectButton.TabIndex = 22;
@@ -451,7 +433,8 @@ namespace psu_generic_parser
             // 
             // removeObjectButton
             // 
-            this.removeObjectButton.Location = new System.Drawing.Point(4, 273);
+            this.removeObjectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.removeObjectButton.Location = new System.Drawing.Point(8, 403);
             this.removeObjectButton.Name = "removeObjectButton";
             this.removeObjectButton.Size = new System.Drawing.Size(75, 23);
             this.removeObjectButton.TabIndex = 23;
@@ -461,7 +444,8 @@ namespace psu_generic_parser
             // 
             // clearObjectsButton
             // 
-            this.clearObjectsButton.Location = new System.Drawing.Point(4, 295);
+            this.clearObjectsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.clearObjectsButton.Location = new System.Drawing.Point(8, 425);
             this.clearObjectsButton.Name = "clearObjectsButton";
             this.clearObjectsButton.Size = new System.Drawing.Size(75, 23);
             this.clearObjectsButton.TabIndex = 24;
@@ -471,7 +455,8 @@ namespace psu_generic_parser
             // 
             // duplicateObjectButton
             // 
-            this.duplicateObjectButton.Location = new System.Drawing.Point(81, 251);
+            this.duplicateObjectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.duplicateObjectButton.Location = new System.Drawing.Point(85, 381);
             this.duplicateObjectButton.Name = "duplicateObjectButton";
             this.duplicateObjectButton.Size = new System.Drawing.Size(75, 23);
             this.duplicateObjectButton.TabIndex = 25;
@@ -482,15 +467,15 @@ namespace psu_generic_parser
             // mapListNumberLabel
             // 
             this.mapListNumberLabel.AutoSize = true;
-            this.mapListNumberLabel.Location = new System.Drawing.Point(119, 1);
+            this.mapListNumberLabel.Location = new System.Drawing.Point(8, 8);
             this.mapListNumberLabel.Name = "mapListNumberLabel";
-            this.mapListNumberLabel.Size = new System.Drawing.Size(57, 13);
+            this.mapListNumberLabel.Size = new System.Drawing.Size(38, 13);
             this.mapListNumberLabel.TabIndex = 26;
-            this.mapListNumberLabel.Text = "Map List #";
+            this.mapListNumberLabel.Text = "Map #";
             // 
             // mapListNumberUD
             // 
-            this.mapListNumberUD.Location = new System.Drawing.Point(122, 16);
+            this.mapListNumberUD.Location = new System.Drawing.Point(11, 23);
             this.mapListNumberUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -506,41 +491,222 @@ namespace psu_generic_parser
             this.mapListNumberUD.TabIndex = 27;
             this.mapListNumberUD.ValueChanged += new System.EventHandler(this.mapListNumberUD_ValueChanged);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.objectNameLabel);
+            this.groupBox1.Controls.Add(this.metadataGroupBox);
+            this.groupBox1.Controls.Add(this.headerInt3UD);
+            this.groupBox1.Controls.Add(this.headerInt2UD);
+            this.groupBox1.Controls.Add(this.headerShort1UD);
+            this.groupBox1.Controls.Add(this.headerInt1UD);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.objIDLabel);
+            this.groupBox1.Controls.Add(this.positionGroupBox);
+            this.groupBox1.Controls.Add(this.rotationGroupBox);
+            this.groupBox1.Controls.Add(this.objIDUD);
+            this.groupBox1.Controls.Add(this.unkIntLabel);
+            this.groupBox1.Controls.Add(this.unkIntUD);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(324, 451);
+            this.groupBox1.TabIndex = 29;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Current Object";
+            // 
+            // metadataGroupBox
+            // 
+            this.metadataGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.metadataGroupBox.Location = new System.Drawing.Point(6, 229);
+            this.metadataGroupBox.Name = "metadataGroupBox";
+            this.metadataGroupBox.Size = new System.Drawing.Size(312, 216);
+            this.metadataGroupBox.TabIndex = 39;
+            this.metadataGroupBox.TabStop = false;
+            this.metadataGroupBox.Text = "Metadata";
+            // 
+            // headerInt3UD
+            // 
+            this.headerInt3UD.Location = new System.Drawing.Point(214, 177);
+            this.headerInt3UD.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.headerInt3UD.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.headerInt3UD.Name = "headerInt3UD";
+            this.headerInt3UD.Size = new System.Drawing.Size(90, 20);
+            this.headerInt3UD.TabIndex = 38;
+            // 
+            // headerInt2UD
+            // 
+            this.headerInt2UD.Location = new System.Drawing.Point(112, 177);
+            this.headerInt2UD.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.headerInt2UD.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.headerInt2UD.Name = "headerInt2UD";
+            this.headerInt2UD.Size = new System.Drawing.Size(90, 20);
+            this.headerInt2UD.TabIndex = 37;
+            // 
+            // headerShort1UD
+            // 
+            this.headerShort1UD.Location = new System.Drawing.Point(9, 203);
+            this.headerShort1UD.Maximum = new decimal(new int[] {
+            32767,
+            0,
+            0,
+            0});
+            this.headerShort1UD.Minimum = new decimal(new int[] {
+            32768,
+            0,
+            0,
+            -2147483648});
+            this.headerShort1UD.Name = "headerShort1UD";
+            this.headerShort1UD.Size = new System.Drawing.Size(62, 20);
+            this.headerShort1UD.TabIndex = 36;
+            // 
+            // headerInt1UD
+            // 
+            this.headerInt1UD.Location = new System.Drawing.Point(10, 177);
+            this.headerInt1UD.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.headerInt1UD.Minimum = new decimal(new int[] {
+            -2147483648,
+            0,
+            0,
+            -2147483648});
+            this.headerInt1UD.Name = "headerInt1UD";
+            this.headerInt1UD.Size = new System.Drawing.Size(90, 20);
+            this.headerInt1UD.TabIndex = 33;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 160);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(110, 13);
+            this.label4.TabIndex = 32;
+            this.label4.Text = "Header Mystery Data:";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.splitContainer1);
+            this.groupBox2.Location = new System.Drawing.Point(6, 72);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(502, 470);
+            this.groupBox2.TabIndex = 30;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Current Map";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(3, 16);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.setObjectListBox);
+            this.splitContainer1.Panel1.Controls.Add(this.mapListNumberLabel);
+            this.splitContainer1.Panel1.Controls.Add(this.duplicateObjectButton);
+            this.splitContainer1.Panel1.Controls.Add(this.mapListNumberUD);
+            this.splitContainer1.Panel1.Controls.Add(this.clearObjectsButton);
+            this.splitContainer1.Panel1.Controls.Add(this.removeObjectButton);
+            this.splitContainer1.Panel1.Controls.Add(this.addObjectButton);
+            this.splitContainer1.Panel1MinSize = 168;
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.AutoScroll = true;
+            this.splitContainer1.Panel2.AutoScrollMinSize = new System.Drawing.Size(0, 451);
+            this.splitContainer1.Panel2.Controls.Add(this.groupBox1);
+            this.splitContainer1.Size = new System.Drawing.Size(496, 451);
+            this.splitContainer1.SplitterDistance = 168;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // areaIdComboBox
+            // 
+            this.areaIdComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.areaIdComboBox.FormattingEnabled = true;
+            this.areaIdComboBox.Items.AddRange(new object[] {
+            "00: 99 / Empty",
+            "01: 00 / Test maps",
+            "02: cg / Colony",
+            "03: cx / Parum",
+            "04: cy / Neudaiz",
+            "05: cz / Moatoob",
+            "06: sn / Linear Line",
+            "07: sp / Endrum/Il Cabo",
+            "08: ss / Lobby areas (combat)",
+            "09: sb / HIVE",
+            "0A: mf / Raffon Lakeshore",
+            "0B: sf / Raffon Meadow",
+            "0C: sc / Train/PSO areas",
+            "0D: mc / Habirao",
+            "0E: sl / Rozenom",
+            "0F: sk / Neudaiz forest",
+            "10: si / Neudaiz islands",
+            "11: st / Temple",
+            "12: sm / Moatoob caves",
+            "13: sv / Canyon",
+            "14: sd / Desert",
+            "15: sr / Relics",
+            "16: cm / My room",
+            "17: bs / Boss arenas"});
+            this.areaIdComboBox.Location = new System.Drawing.Point(6, 15);
+            this.areaIdComboBox.Name = "areaIdComboBox";
+            this.areaIdComboBox.Size = new System.Drawing.Size(106, 21);
+            this.areaIdComboBox.TabIndex = 32;
+            this.areaIdComboBox.SelectedIndexChanged += new System.EventHandler(this.areaIdComboBox_SelectedIndexChanged);
+            // 
+            // objectNameLabel
+            // 
+            this.objectNameLabel.AutoSize = true;
+            this.objectNameLabel.Location = new System.Drawing.Point(152, 34);
+            this.objectNameLabel.Name = "objectNameLabel";
+            this.objectNameLabel.Size = new System.Drawing.Size(72, 13);
+            this.objectNameLabel.TabIndex = 40;
+            this.objectNameLabel.Text = "current object";
+            // 
             // SetFileViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.mapListNumberUD);
-            this.Controls.Add(this.mapListNumberLabel);
-            this.Controls.Add(this.duplicateObjectButton);
-            this.Controls.Add(this.clearObjectsButton);
-            this.Controls.Add(this.removeObjectButton);
-            this.Controls.Add(this.addObjectButton);
+            this.AutoScroll = true;
+            this.Controls.Add(this.areaIdComboBox);
+            this.Controls.Add(this.removeMapListButton);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.removeObjectList);
             this.Controls.Add(this.addObjectList);
-            this.Controls.Add(this.removeMapListButton);
             this.Controls.Add(this.addMapListButton);
             this.Controls.Add(this.editObjectSetHeaderBytesButton);
-            this.Controls.Add(this.editObjectMetaDataButton);
-            this.Controls.Add(this.editStartBytesButton);
-            this.Controls.Add(this.unkIntUD);
-            this.Controls.Add(this.unkIntLabel);
-            this.Controls.Add(this.objIDUD);
-            this.Controls.Add(this.rotationGroupBox);
-            this.Controls.Add(this.objIDLabel);
-            this.Controls.Add(this.positionGroupBox);
             this.Controls.Add(this.objectSetLabel);
             this.Controls.Add(this.objectListCB);
             this.Controls.Add(this.mapListLabel);
             this.Controls.Add(this.mapListCB);
-            this.Controls.Add(this.areaValueNUD);
             this.Controls.Add(this.areaLabel);
-            this.Controls.Add(this.setObjectListBox);
             this.Controls.Add(this.ImportJSONButton);
             this.Controls.Add(this.ExportJSONButton);
             this.Name = "SetFileViewer";
-            this.Size = new System.Drawing.Size(496, 324);
-            ((System.ComponentModel.ISupportInitialize)(this.areaValueNUD)).EndInit();
+            this.Size = new System.Drawing.Size(518, 575);
             this.positionGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.posZUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.posYUD)).EndInit();
@@ -552,6 +718,18 @@ namespace psu_generic_parser
             ((System.ComponentModel.ISupportInitialize)(this.objIDUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.unkIntUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapListNumberUD)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.headerInt3UD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.headerInt2UD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.headerShort1UD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.headerInt1UD)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -565,7 +743,6 @@ namespace psu_generic_parser
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ListBox setObjectListBox;
         private System.Windows.Forms.Label areaLabel;
-        private System.Windows.Forms.NumericUpDown areaValueNUD;
         private System.Windows.Forms.ComboBox mapListCB;
         private System.Windows.Forms.Label mapListLabel;
         private System.Windows.Forms.ComboBox objectListCB;
@@ -582,8 +759,6 @@ namespace psu_generic_parser
         private System.Windows.Forms.NumericUpDown objIDUD;
         private System.Windows.Forms.Label unkIntLabel;
         private System.Windows.Forms.NumericUpDown unkIntUD;
-        private System.Windows.Forms.Button editStartBytesButton;
-        private System.Windows.Forms.Button editObjectMetaDataButton;
         private System.Windows.Forms.Button editObjectSetHeaderBytesButton;
         private System.Windows.Forms.Button addMapListButton;
         private System.Windows.Forms.Button removeMapListButton;
@@ -595,5 +770,16 @@ namespace psu_generic_parser
         private System.Windows.Forms.Button duplicateObjectButton;
         private System.Windows.Forms.Label mapListNumberLabel;
         private System.Windows.Forms.NumericUpDown mapListNumberUD;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ComboBox areaIdComboBox;
+        private System.Windows.Forms.NumericUpDown headerShort1UD;
+        private System.Windows.Forms.NumericUpDown headerInt1UD;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown headerInt3UD;
+        private System.Windows.Forms.NumericUpDown headerInt2UD;
+        private System.Windows.Forms.GroupBox metadataGroupBox;
+        private System.Windows.Forms.Label objectNameLabel;
     }
 }

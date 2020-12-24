@@ -71,7 +71,7 @@ namespace psu_generic_parser
                     bytes.Add(currentChar);
                     currentChar = inReader.ReadByte();
                 }
-                fileEntries[i].filename = Encoding.ASCII.GetString(bytes.ToArray());
+                fileEntries[i].filename = Encoding.GetEncoding("shift-jis").GetString(bytes.ToArray());
             }
         }
 
@@ -89,7 +89,7 @@ namespace psu_generic_parser
             for (int i = 0; i < textOffsets.Length; i++)
             {
                 textOffsets[i] = (int)outStream.Position;
-                outWriter.Write(ASCIIEncoding.ASCII.GetBytes(fileEntries[i].filename));
+                outWriter.Write(Encoding.GetEncoding("shift-jis").GetBytes(fileEntries[i].filename));
                 outWriter.Write(new byte[4 - (outStream.Position % 4)]);
             }
 

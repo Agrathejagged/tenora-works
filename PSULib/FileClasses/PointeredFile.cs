@@ -39,10 +39,30 @@ namespace psu_generic_parser
             fileLength = BitConverter.ToInt32(rawData, 4);
             if (ptrs == null)
                 ptrs = new int[0];
-            var memStream = new MemoryStream(rawData);
+
+            //Check if the file pointers make sense, update the raw data to be relative to 0 rather than relative to baseAddr
+            byte[] modifiedData = (byte[])rawData.Clone();
+            int[] rebasedPointers = new int[ptrs.Length];
+            for (int i = 0; i < rebasedPointers.Length; i++)
+            {
+                rebasedPointers[i] = ptrs[i] - baseAddr;
+                if(rebasedPointers[i] < 0 || rebasedPointers[i] >= rawData.Length)
+                {
+                    markFileBroken(rawData, ptrs, baseAddr);
+                }
+                int pointerDestination = BitConverter.ToInt32(rawData, rebasedPointers[i]) - baseAddr;
+                if(pointerDestination < 0 || pointerDestination >= rawData.Length)
+                {
+                    markFileBroken(rawData, ptrs, baseAddr);
+                }
+                Array.Copy(BitConverter.GetBytes(pointerDestination), 0, modifiedData, rebasedPointers[i], 4);
+            }
+
+            var memStream = new MemoryStream(modifiedData);
             var fileReader = BigEndianBinaryReader.GetEndianSpecificBinaryReader(memStream, useAsBigEndian);
 
-            List<int> pointerDestinations = new List<int>(ptrs.Length + 1);
+            //+1 because the base pointer in the file isn't a calculated value
+            List<int> pointerDestinations = new List<int>(rebasedPointers.Length + 1);
             memStream.Seek(8, SeekOrigin.Begin);
 
             int rootPtr = fileReader.ReadInt32();
@@ -54,23 +74,12 @@ namespace psu_generic_parser
 
             addToMaps(8, rootPtr);
 
-            for (int i = 0; i < ptrs.Length; i++)
+            for (int i = 0; i < rebasedPointers.Length; i++)
             {
-                int effectivePtr = ptrs[i] - baseAddr;
-                if(effectivePtr < 0 || effectivePtr >= rawData.Length)
-                {
-                    markFileBroken(rawData, ptrs, baseAddr);
-                    return;
-                }
-
+                int effectivePtr = rebasedPointers[i];
                 memStream.Seek(effectivePtr, SeekOrigin.Begin);
                 int tempPtr = fileReader.ReadInt32();
-                if (tempPtr - baseAddr < 0 || tempPtr - baseAddr > rawData.Length)
-                {
-                    markFileBroken(rawData, ptrs, baseAddr);
-                    return;
-                }
-                addToMaps(effectivePtr, tempPtr - baseAddr);
+                addToMaps(effectivePtr, tempPtr);
             }
 
             int startAddr = 0;
@@ -126,7 +135,8 @@ namespace psu_generic_parser
                     outputWriter.Write(splitData[i].contents);
                 }
 
-                calculatedPointers = pointerToDestination.Keys.ToArray();
+                calculatedPointers = new int[pointerToDestination.Keys.Count - 1];
+                Array.Copy(pointerToDestination.Keys.ToArray(), 1, calculatedPointers, 0, calculatedPointers.Length);
                 byte[] toOut = outputStream.ToArray();
                 return toOut;
             }

@@ -66,14 +66,41 @@ namespace psu_generic_parser.FileClasses
             parseData();
         }
 
+        public XvrTextureFile(List<Bitmap> mips, PsuTexturePixelFormat pixelFormat, string inFilename) : this(mips.ToArray(), pixelFormat, inFilename)
+        {
+
+        }
+
+        public XvrTextureFile(Bitmap[] mips, PsuTexturePixelFormat pixelFormat, string inFilename)
+        {
+            filename = inFilename;
+            rawData = new byte[0];
+            this.mips = (Bitmap[])mips.Clone();
+
+            unknown1 = 0;
+            subFormat = "PVRT";
+
+            OriginalPixelFormat = pixelFormat;
+            SavePixelFormat = pixelFormat;
+            OriginalTextureType = PsuTextureType.Raster;
+            SaveTextureType = PsuTextureType.Raster;
+            
+            
+            mipDirty = new bool[mips.Length];
+            for(int i = 0; i < mipDirty.Length; i++)
+            {
+                mipDirty[i] = true;
+            }
+        }
+
         void parseData()
         {
             MemoryStream imageStream = new MemoryStream(rawData);
             BinaryReader imageReader = new BinaryReader(imageStream);
-            string superFormat = new string(ASCIIEncoding.ASCII.GetChars(header, 0, 4));
+            string superFormat = new string(Encoding.ASCII.GetChars(header, 0, 4));
             int globalIndex = BitConverter.ToInt32(header, 4);
             unknown1 = BitConverter.ToInt32(header, 8);
-            subFormat = new string(ASCIIEncoding.ASCII.GetChars(header, 0x10, 4));
+            subFormat = new string(Encoding.ASCII.GetChars(header, 0x10, 4));
             if (subFormat != "PVRT")
                 throw new Exception("Invalid format");
             //ignoring "filesize" value; if it's not accurate, TOO BAD

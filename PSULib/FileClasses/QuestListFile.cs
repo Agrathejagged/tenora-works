@@ -62,7 +62,7 @@ namespace psu_generic_parser
             for(int i = 0; i < questList.Count; i++)
             {
                 questFilenameLocs[i] = (int)outStream.Position;
-                outWriter.Write(ASCIIEncoding.ASCII.GetBytes(questList[i].FileName + "\0"));
+                outWriter.Write(Encoding.GetEncoding("shift-jis").GetBytes(questList[i].FileName + "\0"));
                 outStream.Seek((outStream.Position + 3) & 0xFFFFFFFC, SeekOrigin.Begin);
             }
             int questListLoc = (int)outStream.Position;

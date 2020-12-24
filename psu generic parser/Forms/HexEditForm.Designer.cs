@@ -34,8 +34,8 @@ namespace psu_generic_parser
             this.elementHost = new System.Windows.Forms.Integration.ElementHost();
             this.hexEditor = new WpfHexaEditor.HexEditor();
             this.toolStripBar1 = new System.Windows.Forms.ToolStrip();
-            this.toggleReadOnlyButton = new System.Windows.Forms.ToolStripButton();
             this.saveButton = new System.Windows.Forms.ToolStripButton();
+            this.toggleReadOnlyButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
@@ -48,7 +48,7 @@ namespace psu_generic_parser
             // toolStripContainer1.ContentPanel
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this.elementHost);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(868, 412);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(868, 387);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
@@ -65,7 +65,7 @@ namespace psu_generic_parser
             this.elementHost.Dock = System.Windows.Forms.DockStyle.Fill;
             this.elementHost.Location = new System.Drawing.Point(0, 0);
             this.elementHost.Name = "elementHost";
-            this.elementHost.Size = new System.Drawing.Size(868, 412);
+            this.elementHost.Size = new System.Drawing.Size(868, 387);
             this.elementHost.TabIndex = 3;
             this.elementHost.Text = "elementHost";
             this.elementHost.Child = this.hexEditor;
@@ -79,17 +79,8 @@ namespace psu_generic_parser
             this.toggleReadOnlyButton});
             this.toolStripBar1.Location = new System.Drawing.Point(3, 0);
             this.toolStripBar1.Name = "toolStripBar1";
-            this.toolStripBar1.Size = new System.Drawing.Size(181, 25);
+            this.toolStripBar1.Size = new System.Drawing.Size(150, 25);
             this.toolStripBar1.TabIndex = 0;
-            // 
-            // toggleReadOnlyButton
-            // 
-            this.toggleReadOnlyButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toggleReadOnlyButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toggleReadOnlyButton.Name = "toggleReadOnlyButton";
-            this.toggleReadOnlyButton.Size = new System.Drawing.Size(103, 22);
-            this.toggleReadOnlyButton.Text = "Toggle Read Only";
-            this.toggleReadOnlyButton.Click += new System.EventHandler(this.toggleReadOnlyButton_Click);
             // 
             // saveButton
             // 
@@ -99,6 +90,15 @@ namespace psu_generic_parser
             this.saveButton.Size = new System.Drawing.Size(35, 22);
             this.saveButton.Text = "Save";
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
+            // toggleReadOnlyButton
+            // 
+            this.toggleReadOnlyButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toggleReadOnlyButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toggleReadOnlyButton.Name = "toggleReadOnlyButton";
+            this.toggleReadOnlyButton.Size = new System.Drawing.Size(103, 22);
+            this.toggleReadOnlyButton.Text = "Toggle Read Only";
+            this.toggleReadOnlyButton.Click += new System.EventHandler(this.toggleReadOnlyButton_Click);
             // 
             // HexEditForm
             // 

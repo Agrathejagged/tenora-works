@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.IO.Compression;
+using PSULib;
 
 namespace psu_generic_parser
 {
@@ -236,7 +237,7 @@ namespace psu_generic_parser
                 Array.Copy(decompressedFiles, groupHeaders[i].filePosition, tempFile.fileContents, 0, groupHeaders[i].fileSize);
                 if (tempFile.fileContents.Length > 0)
                 {
-                    tempFile.fileheader = new String(ASCIIEncoding.ASCII.GetChars(tempFile.fileContents, 0, 4));
+                    tempFile.fileheader = new String(Encoding.ASCII.GetChars(tempFile.fileContents, 0, 4));
                 }
                 if (groupHeaders[i].pointerSize > 0)
                     tempFile.pointers = pointers.GetRange((int)groupHeaders[i].pointerPosition / 4, (int)groupHeaders[i].pointerSize / 4);
@@ -328,7 +329,8 @@ namespace psu_generic_parser
             }
             MemoryStream alpha = new MemoryStream(decryptHeader);
             BinaryReader beta = getBinaryReader(alpha);
-            toReturn.fileName = new string(beta.ReadChars(0x20)).TrimEnd('\0');
+            byte[] rawFilename = beta.ReadBytes(0x20);
+            toReturn.fileName = Encoding.GetEncoding("shift-jis").GetString(rawFilename).TrimEnd('\0');
             toReturn.filePosition = beta.ReadUInt32();
             toReturn.fileSize = beta.ReadUInt32();
             toReturn.pointerPosition = beta.ReadUInt32();
@@ -341,9 +343,9 @@ namespace psu_generic_parser
         {
 
             BinaryReader inReader = getBinaryReader(importFile);
-            string identifier = ASCIIEncoding.ASCII.GetString(inReader.ReadBytes(4));
+            string identifier = Encoding.ASCII.GetString(inReader.ReadBytes(4));
             importFile.Seek(0x10, SeekOrigin.Begin);
-            string actualName = ASCIIEncoding.ASCII.GetString(inReader.ReadBytes(0x20));
+            string actualName = Encoding.GetEncoding("shift-jis").GetString(inReader.ReadBytes(0x20));
             actualName.TrimEnd('\0');
             int baseAddr = inReader.ReadInt32();
             int fileLength = inReader.ReadInt32();
@@ -420,7 +422,7 @@ namespace psu_generic_parser
         /*
 public override bool MatchesFile(string filename, byte[] fileContents, int[] pointers)
 {
-   if (filename.EndsWith(".nbl") || ASCIIEncoding.ASCII.GetString(fileContents, 0, 4) == "NMLL")
+   if (filename.EndsWith(".nbl") || Encoding.ASCII.GetString(fileContents, 0, 4) == "NMLL")
        return true;
    return false;
 }*/
@@ -482,11 +484,11 @@ public override bool MatchesFile(string filename, byte[] fileContents, int[] poi
                     identifier = "NNVR";
                 else if (savedFiles[i].subHeader != null && savedFiles[i].subHeader[0] == 0x4E) //'N'--so hopefully just NXIF or NUIF
                     identifier = Path.GetExtension(savedFiles[i].filename).Substring(1).ToUpper().PadRight(4, '\0');
-                groupHeaderWriter.Write(ASCIIEncoding.ASCII.GetBytes(identifier));
+                groupHeaderWriter.Write(Encoding.ASCII.GetBytes(identifier));
                 groupHeaderWriter.Write(savedFiles[i].chunkSize);
                 groupHeaderWriter.Write((int)0); //"unknown1"
                 groupHeaderWriter.Write((int)0); //"unknown2"
-                groupHeaderWriter.Write(ASCIIEncoding.ASCII.GetBytes(savedFiles[i].filename.PadRight(0x20, '\0')));
+                groupHeaderWriter.Write(ContainerUtilities.encodePaddedSjisString(savedFiles[i].filename, 0x20));
                 groupHeaderWriter.Write(savedFiles[i].fileOffset);
                 groupHeaderWriter.Write(savedFiles[i].fileContents.Length);
                 groupHeaderWriter.Write(pointers.Count * 4);
@@ -541,7 +543,7 @@ public override bool MatchesFile(string filename, byte[] fileContents, int[] poi
 
             //Now fill in the header (leaving the space if necessary).
             groupHeaderStream.Seek(0, SeekOrigin.Begin);
-            groupHeaderWriter.Write(ASCIIEncoding.ASCII.GetBytes(this.chunkID));
+            groupHeaderWriter.Write(Encoding.ASCII.GetBytes(this.chunkID));
             groupHeaderWriter.Write(this.versionNumber);
             groupHeaderWriter.Write(filenamelength);
             groupHeaderWriter.Write(headerLength);

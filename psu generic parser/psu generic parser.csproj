@@ -94,12 +94,6 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\FileViewers\BinaryViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\FileViewers\BinaryViewer.Designer.cs">
-      <DependentUpon>BinaryViewer.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FileViewers\ClothingFileViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -184,6 +178,13 @@
     <Compile Include="Forms\FileViewers\ScriptFileViewer.Designer.cs">
       <DependentUpon>ScriptFileViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FileViewers\SetEditorSupportClasses\HexMetadataEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\SetEditorSupportClasses\HexMetadataEditor.Designer.cs">
+      <DependentUpon>HexMetadataEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\SetEditorSupportClasses\SetObjectMetadataEditors.cs" />
     <Compile Include="Forms\FileViewers\SetFileViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -246,10 +247,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Forms\FileViewers\BinaryViewer.resx">
-      <DependentUpon>BinaryViewer.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\ClothingFileViewer.resx">
       <DependentUpon>ClothingFileViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -303,6 +300,9 @@
     <EmbeddedResource Include="Forms\FileViewers\ScriptFileViewer.resx">
       <DependentUpon>ScriptFileViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\SetEditorSupportClasses\HexMetadataEditor.resx">
+      <DependentUpon>HexMetadataEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\SetFileViewer.resx">
       <DependentUpon>SetFileViewer.cs</DependentUpon>

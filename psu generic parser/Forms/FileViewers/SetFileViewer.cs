@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Runtime.Serialization.Json;
 using System.IO;
-using System.Reflection;
 using static psu_generic_parser.SetFile;
 using static psu_generic_parser.HexEditForm;
+using psu_generic_parser.Forms.FileViewers.SetEditorSupportClasses;
+using PSULib.FileClasses.Sets;
 
 namespace psu_generic_parser
 {
@@ -19,9 +16,9 @@ namespace psu_generic_parser
         public SetFile internalFile;
         public ObjectEntry objectEntry;
         public HexEditForm objectListHeaderForm;
-        public HexEditForm objectStartBytes;
         public HexEditForm objectMetaData;
-        
+        private int currentMapIndex = -1; //to make sure it doesn't reload when we rename the current map
+
         DataContractJsonSerializer tempJson = new DataContractJsonSerializer(typeof(SetFile));
         public SetFileViewer(SetFile inFile)
         {
@@ -33,7 +30,7 @@ namespace psu_generic_parser
 
         private void InitializeDisplay()
         {
-            areaValueNUD.Value = internalFile.areaID;
+            areaIdComboBox.SelectedIndex = internalFile.areaID;
             //Initially load first set of first map list
             //Load Map List. This won't change again for this set file
             mapListCB.BeginUpdate();
@@ -51,10 +48,6 @@ namespace psu_generic_parser
         //Updates object display visuals to current object's
         private void updateObjectDisplay()
         {
-            if (objectStartBytes != null)
-            {
-                objectStartBytes.Close();
-            }
             if (objectMetaData != null)
             {
                 objectMetaData.Close();
@@ -67,7 +60,32 @@ namespace psu_generic_parser
             posZUD.Value = Convert.ToDecimal(objectEntry.objZ);
             rotXUD.Value = Convert.ToDecimal(objectEntry.objRotX);
             rotYUD.Value = Convert.ToDecimal(objectEntry.objRotY);
-            posZUD.Value = Convert.ToDecimal(objectEntry.objRotZ);
+            rotZUD.Value = Convert.ToDecimal(objectEntry.objRotZ);
+            headerInt1UD.Value = Convert.ToDecimal(objectEntry.headerInt1);
+            headerInt2UD.Value = Convert.ToDecimal(objectEntry.headerInt2);
+            headerInt3UD.Value = Convert.ToDecimal(objectEntry.headerInt3);
+            headerShort1UD.Value = Convert.ToDecimal(objectEntry.headerShort1);
+
+            if(SetObjectDefinitions.definitions.ContainsKey(objectEntry.objID))
+            {
+                objectNameLabel.Text = SetObjectDefinitions.definitions[objectEntry.objID].name;
+            }
+            else
+            {
+                objectNameLabel.Text = "INVALID OBJECT";
+            }
+            reloadMetadataEditor();
+        }
+
+        private void reloadMetadataEditor()
+        {
+            UserControl newControl = SetObjectMetadataEditors.getMetadataEditor(objectEntry, false);
+            if (metadataGroupBox.Controls.Count == 0 || metadataGroupBox.Controls[0] != newControl)
+            {
+                metadataGroupBox.Controls.Clear();
+                newControl.Dock = DockStyle.Fill;
+                metadataGroupBox.Controls.Add(newControl);
+            }
         }
 
         private void updateObjectList()
@@ -131,40 +149,12 @@ namespace psu_generic_parser
             updateObjectDisplay();
         }
 
-        private void editStartBytesButton_Click(object sender, EventArgs e)
-        {
-            objectStartBytes = new HexEditForm(objectEntry.startBytes, $"Map List {mapListCB.SelectedIndex}, " +
-                $"Set {objectListCB.SelectedIndex}, Object {setObjectListBox.SelectedIndex} Start Bytes", false, null);
-            objectStartBytes.Show();
-            objectStartBytes.setBytesDelegate = new SetBytesDelegate(this.setStartBytes);
-        }
-
-        private void editObjectMetaDataButton_Click(object sender, EventArgs e)
-        {
-            objectMetaData = new HexEditForm(objectEntry.metadata, $"Map List {mapListCB.SelectedIndex}," +
-                $" Set {objectListCB.SelectedIndex}, Object {setObjectListBox.SelectedIndex} MetaData", false, null);
-            objectMetaData.Show();
-            objectStartBytes.setBytesDelegate = new SetBytesDelegate(this.setMetaDataBytes);
-        }
-
         private void editObjectSetHeaderBytesButton_Click(object sender, EventArgs e)
         {
             objectListHeaderForm = new HexEditForm(internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].headerBytes,
                 $"Map List {mapListCB.SelectedIndex}, Set {objectListCB.SelectedIndex}, Object {setObjectListBox.SelectedIndex}", false, null);
             objectListHeaderForm.Show();
-            objectStartBytes.setBytesDelegate = new SetBytesDelegate(this.setObjectSetHeaderBytes);
-        }
-
-        private void setStartBytes(byte[] bytes)
-        {
-            objectEntry.startBytes = bytes;
-            assignToObject();
-        }
-
-        private void setMetaDataBytes(byte[] bytes)
-        {
-            objectEntry.metadata = bytes;
-            assignToObject();
+            objectListHeaderForm.setBytesDelegate = new SetBytesDelegate(this.setObjectSetHeaderBytes);
         }
 
         private void setObjectSetHeaderBytes(byte[] bytes)
@@ -174,8 +164,12 @@ namespace psu_generic_parser
 
         private void mapListCB_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mapListNumberUD.Value = internalFile.mapData[mapListCB.SelectedIndex].mapNumber;
-            updateObjectList();
+            if (currentMapIndex != mapListCB.SelectedIndex)
+            {
+                currentMapIndex = mapListCB.SelectedIndex;
+                mapListNumberUD.Value = internalFile.mapData[mapListCB.SelectedIndex].mapNumber;
+                updateObjectList();
+            }
         }
 
         private void objectListCB_SelectedIndexChanged(object sender, EventArgs e)
@@ -189,6 +183,7 @@ namespace psu_generic_parser
             
             ObjectEntry[] newObjectList = new ObjectEntry[1];
             newObjectList[0] = new ObjectEntry();
+            newObjectList[0].metadata = new byte[0];
 
             ListHeader newListHeader = new ListHeader();
             newListHeader.headerBytes = new byte[36];
@@ -237,6 +232,7 @@ namespace psu_generic_parser
 
             ObjectEntry[] newObjectList = new ObjectEntry[1];
             newObjectList[0] = new ObjectEntry();
+            newObjectList[0].metadata = new byte[0];
 
             ListHeader newListHeader = new ListHeader();
             newListHeader.headerBytes = new byte[36];
@@ -282,7 +278,6 @@ namespace psu_generic_parser
             List<ObjectEntry> newObjList = internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].objects.ToList();
             ObjectEntry newObjectEntry = new ObjectEntry();
             newObjectEntry.metadata = new byte[4];
-            newObjectEntry.startBytes = new byte[14];
             newObjList.Add(newObjectEntry);
             internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].objects = newObjList.ToArray();
 
@@ -326,7 +321,6 @@ namespace psu_generic_parser
             newObjList.Clear();
             ObjectEntry newObjectEntry = new ObjectEntry();
             newObjectEntry.metadata = new byte[0];
-            newObjectEntry.startBytes = new byte[14];
             newObjList.Add(newObjectEntry);
             internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].objects = newObjList.ToArray();
 
@@ -340,11 +334,13 @@ namespace psu_generic_parser
         private void duplicateObjectButton_Click(object sender, EventArgs e)
         {
             List<ObjectEntry> newObjList = internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].objects.ToList();
-            List<byte> newStartBytes = newObjList[setObjectListBox.SelectedIndex].startBytes.ToList();
-            List<byte> newMetaData = newObjList[setObjectListBox.SelectedIndex].startBytes.ToList();
+            List<byte> newMetaData = newObjList[setObjectListBox.SelectedIndex].metadata.ToList();
 
             ObjectEntry newObjectEntry = new ObjectEntry();
-            newObjectEntry.metadataLength = newObjList[setObjectListBox.SelectedIndex].metadataLength;
+            newObjectEntry.headerInt1 = newObjList[setObjectListBox.SelectedIndex].headerInt1;
+            newObjectEntry.headerInt2 = newObjList[setObjectListBox.SelectedIndex].headerInt2;
+            newObjectEntry.headerInt3 = newObjList[setObjectListBox.SelectedIndex].headerInt3;
+            newObjectEntry.headerShort1 = newObjList[setObjectListBox.SelectedIndex].headerShort1;
             newObjectEntry.objID = newObjList[setObjectListBox.SelectedIndex].objID;
             newObjectEntry.objRotX = newObjList[setObjectListBox.SelectedIndex].objRotX;
             newObjectEntry.objRotY = newObjList[setObjectListBox.SelectedIndex].objRotY;
@@ -354,7 +350,6 @@ namespace psu_generic_parser
             newObjectEntry.objZ = newObjList[setObjectListBox.SelectedIndex].objZ;
             newObjectEntry.unkInt1 = newObjList[setObjectListBox.SelectedIndex].unkInt1;
             newObjectEntry.metadata = newMetaData.ToArray();
-            newObjectEntry.startBytes = newStartBytes.ToArray();
             newObjList.Add(newObjectEntry);
             internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].objects = newObjList.ToArray();
 
@@ -367,54 +362,51 @@ namespace psu_generic_parser
         private void objIDUD_ValueChanged(object sender, EventArgs e)
         {
             objectEntry.objID = (short)objIDUD.Value;
-            assignToObject();
+            if(SetObjectDefinitions.definitions.ContainsKey(objectEntry.objID))
+            {
+                //TODO: properly detect Infinity files
+                var def = SetObjectDefinitions.definitions[objectEntry.objID];
+                if(def.metadataLengthAotI > objectEntry.metadata.Length)
+                {
+                    Array.Resize(ref objectEntry.metadata, def.metadataLengthAotI);
+                }
+            }
+            reloadMetadataEditor();
         }
 
         private void unkIntUD_ValueChanged(object sender, EventArgs e)
         {
             objectEntry.unkInt1 = (int)unkIntUD.Value;
-            assignToObject();
         }
 
         private void posXUD_ValueChanged(object sender, EventArgs e)
         {
             objectEntry.objX = (float)posXUD.Value;
-            assignToObject();
         }
 
         private void posYUD_ValueChanged(object sender, EventArgs e)
         {
             objectEntry.objY = (float)posYUD.Value;
-            assignToObject();
         }
 
         private void posZUD_ValueChanged(object sender, EventArgs e)
         {
             objectEntry.objZ = (float)posZUD.Value;
-            assignToObject();
         }
 
         private void rotXUD_ValueChanged(object sender, EventArgs e)
         {
             objectEntry.objRotX = (float)rotXUD.Value;
-            assignToObject();
         }
 
         private void rotYUD_ValueChanged(object sender, EventArgs e)
         {
             objectEntry.objRotY = (float)rotYUD.Value;
-            assignToObject();
         }
 
         private void rotZUD_ValueChanged(object sender, EventArgs e)
         {
             objectEntry.objRotZ = (float)rotZUD.Value;
-            assignToObject();
-        }
-
-        private void areaValueNUD_ValueChanged(object sender, EventArgs e)
-        {
-             internalFile.areaID = (short)areaValueNUD.Value;
         }
 
         private void mapListNumberUD_ValueChanged(object sender, EventArgs e)
@@ -423,9 +415,9 @@ namespace psu_generic_parser
             mapListCB.Items[mapListCB.SelectedIndex] = mapListNumberUD.Value;
         }
 
-        private void assignToObject()
+        private void areaIdComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].objects[setObjectListBox.SelectedIndex] = objectEntry;
+            internalFile.areaID = (short)areaIdComboBox.SelectedIndex;
         }
     }
 }

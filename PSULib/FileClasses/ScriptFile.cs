@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Collections.Generic;
+using PSULib;
 
 namespace psu_generic_parser
 {
@@ -356,7 +357,7 @@ namespace psu_generic_parser
             {
                 rebuildingFile.Seek(4, SeekOrigin.Current);
                 subroutine temp = (subroutine)subroutines[i];
-                rebuildingWriter.Write(ASCIIEncoding.UTF8.GetBytes(temp.name.PadRight(0x20, '\0')));
+                rebuildingWriter.Write(ContainerUtilities.encodePaddedSjisString(temp.name, 0x20));
                 int headerLoc = (int)rebuildingFile.Position;
                 rebuildingFile.Seek(0xC, SeekOrigin.Current);
                 //rebuildingFile.Write(temp.subType);       Fill this in with the rest!

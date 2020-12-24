@@ -87,11 +87,11 @@ namespace psu_generic_parser
         {
             MemoryStream imageStream = new MemoryStream(rawData);
             BinaryReader imageReader = new BinaryReader(imageStream);
-            superFormat = new string(ASCIIEncoding.ASCII.GetChars(imageReader.ReadBytes(4), 0, 4));
+            superFormat = new string(Encoding.ASCII.GetChars(imageReader.ReadBytes(4), 0, 4));
             globalIndex = imageReader.ReadInt32();
             unknown1 = imageReader.ReadInt32();
             imageReader.ReadInt32();
-            subFormat = new string(ASCIIEncoding.ASCII.GetChars(imageReader.ReadBytes(4), 0, 4));
+            subFormat = new string(Encoding.ASCII.GetChars(imageReader.ReadBytes(4), 0, 4));
             int fileSize = imageReader.ReadInt32();
             //ignoring "filesize" value; if it's not accurate, TOO BAD
             byte colorDepth = imageReader.ReadByte();

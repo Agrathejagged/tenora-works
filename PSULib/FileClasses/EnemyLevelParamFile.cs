@@ -49,7 +49,7 @@ namespace psu_generic_parser
         {
             MemoryStream outStream = new MemoryStream();
             BinaryWriter outWriter = new BinaryWriter(outStream);
-            outWriter.Write(ASCIIEncoding.ASCII.GetBytes("NXR\0"));
+            outWriter.Write(Encoding.ASCII.GetBytes("NXR\0"));
             //Go back and fill in pointers later!
             outWriter.Seek(0x10, SeekOrigin.Begin);
             int levelPointer = (int)outStream.Position;

@@ -310,7 +310,7 @@ namespace psu_generic_parser
         {
             MemoryStream outStream = new MemoryStream();
             BinaryWriter outWriter = new BinaryWriter(outStream);
-            outWriter.Write(ASCIIEncoding.ASCII.GetBytes("NXR\0"));
+            outWriter.Write(Encoding.ASCII.GetBytes("NXR\0"));
             outWriter.Write((int)0);    //Size to be.
             outWriter.Write((int)0);    //Header location.
             outWriter.Write((int)0);    //I don't even know if this stuff does anything...

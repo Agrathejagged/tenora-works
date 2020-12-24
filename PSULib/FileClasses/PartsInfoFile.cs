@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using PSULib;
 
 namespace psu_generic_parser
 {
@@ -43,7 +44,7 @@ namespace psu_generic_parser
             for (int i = 0; i < entryCount; i++)
             {
                 inStream.Seek(parts[i].stringPointer, SeekOrigin.Begin);
-                parts[i].fileName = ASCIIEncoding.ASCII.GetString(inReader.ReadBytes(32));
+                parts[i].fileName = Encoding.GetEncoding("shift-jis").GetString(inReader.ReadBytes(32));
                 parts[i].fileName = parts[i].fileName.Remove(parts[i].fileName.IndexOf('\0'));
             }
         }
@@ -59,8 +60,11 @@ namespace psu_generic_parser
             {
                 parts[i].stringPointer = (int)outStream.Position;
                 string temp = parts[i].fileName + "\0";
-                int paddedLength = (int)((temp.Length + 0x3) & 0xFFFFFFF4);
-                outWriter.Write(ASCIIEncoding.ASCII.GetBytes(temp.PadRight(paddedLength, '\0')));
+                byte[] encodedString = Encoding.GetEncoding("shift-jis").GetBytes(temp);
+                //this one has to be handled manually, because the padding length is variable
+                int paddingLength = (4 - encodedString.Length % 4) % 4;
+                outWriter.Write(encodedString);
+                outWriter.Write(new byte[paddingLength]);
             }
             int dataLoc = (int)outStream.Position;
             for (int i = 0; i < parts.Length; i++)
@@ -109,7 +113,7 @@ namespace psu_generic_parser
                 for (int i = 0; i < entryCount; i++)
                 {
                     toImport.Seek(tempParts[i].stringPointer, SeekOrigin.Begin);
-                    tempParts[i].fileName = ASCIIEncoding.ASCII.GetString(importReader.ReadBytes(32));
+                    tempParts[i].fileName = Encoding.GetEncoding("shift-jis").GetString(importReader.ReadBytes(32));
                     tempParts[i].fileName = tempParts[i].fileName.Remove(tempParts[i].fileName.IndexOf('\0'));
                 }
                 //if(
@@ -135,7 +139,7 @@ namespace psu_generic_parser
                 for (int i = 0; i < entryCount; i++)
                 {
                     toImport.Seek(tempParts[i].stringPointer, SeekOrigin.Begin);
-                    tempParts[i].fileName = ASCIIEncoding.ASCII.GetString(importReader.ReadBytes(32));
+                    tempParts[i].fileName = Encoding.GetEncoding("shift-jis").GetString(importReader.ReadBytes(32));
                     tempParts[i].fileName = tempParts[i].fileName.Remove(tempParts[i].fileName.IndexOf('\0'));
                 }
             }

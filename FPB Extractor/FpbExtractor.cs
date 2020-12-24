@@ -227,7 +227,7 @@ namespace FPB_Extractor
                         int fileSize = 0;
                         string outFilename = "file-" + fileNum;
                         byte[] identifierBytes = fileArchiveReader.ReadBytes(4);
-                        string identifierString = ASCIIEncoding.ASCII.GetString(identifierBytes);
+                        string identifierString = Encoding.ASCII.GetString(identifierBytes);
                         if (identifierString == "NMLL")
                         {
                             //For NBLs, the file length is:
@@ -323,7 +323,7 @@ namespace FPB_Extractor
             while(stream.Position < stream.Length - 4)
             {
                 byte[] identifierBytes = reader.ReadBytes(4);
-                string identifierString = ASCIIEncoding.ASCII.GetString(identifierBytes);
+                string identifierString = Encoding.ASCII.GetString(identifierBytes);
                 if ((BitConverter.ToInt16(identifierBytes, 0) == 0x50AF && ((stream.Position - 4) % 0x800 == 0)) || formatStrings.Contains(identifierString))
                 {
                     return (int)stream.Position - 4;
@@ -341,7 +341,7 @@ namespace FPB_Extractor
             }
             else
             {
-                switch(ASCIIEncoding.ASCII.GetString(identifierBytes))
+                switch(Encoding.ASCII.GetString(identifierBytes))
                 {
                     case "NMLL": return ".nbl"; 
                     case "AFS\0": return ".afs";

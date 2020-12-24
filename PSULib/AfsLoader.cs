@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using PSULib;
 
 namespace psu_generic_parser
 {
@@ -60,7 +61,7 @@ namespace psu_generic_parser
 
             for (int i = 0; i < fileCount; i++)
             {
-                afsList[i].fileName = new string(fileLoader.ReadChars(0x20)).TrimEnd('\0');
+                afsList[i].fileName = Encoding.GetEncoding("shift-jis").GetString(fileLoader.ReadBytes(0x20)).TrimEnd('\0');
                 afsList[i].year = fileLoader.ReadUInt16();
                 afsList[i].month = fileLoader.ReadUInt16();
                 afsList[i].day = fileLoader.ReadUInt16();
@@ -173,7 +174,7 @@ namespace psu_generic_parser
                     afsList[i].fileSize = (uint)afsData[i].Length;
                 }*/
             }
-            beta.Write(ASCIIEncoding.ASCII.GetBytes("AFS\0"));
+            beta.Write(Encoding.ASCII.GetBytes("AFS\0"));
             beta.Write(fileCount);
             uint[] fileLocs = new uint[fileCount + 1];
             fileLocs[0] = (uint)(((fileCount + 1) * 8 + 0x7FF) & 0xFFFF800);
@@ -186,7 +187,7 @@ namespace psu_generic_parser
             fileLocs[fileCount] = (uint)saveFile.Position;
             for (int i = 0; i < fileCount; i++)
             {
-                beta.Write(ASCIIEncoding.ASCII.GetBytes(afsList[i].fileName.PadRight(0x20, '\0')));
+                beta.Write(ContainerUtilities.encodePaddedSjisString(afsList[i].fileName, 0x20));
                 beta.Write(new byte[0x10]);
             }
             beta.Write(new byte[((fileCount * 0x30) + 0x7FF) & 0x800]);
@@ -260,7 +261,7 @@ namespace psu_generic_parser
             int fileCount = filenames.Length;
             FileStream outStream = new FileStream(outputName, FileMode.Create);
             BinaryWriter outWriter = new BinaryWriter(outStream);
-            outWriter.Write(ASCIIEncoding.ASCII.GetBytes("AFS\0"));
+            outWriter.Write(Encoding.ASCII.GetBytes("AFS\0"));
             outWriter.Write(fileCount);
             int[] fileLocs = new int[fileCount];
             int[] fileSizes = new int[fileCount];
@@ -278,7 +279,7 @@ namespace psu_generic_parser
             metadataLoc = (int)outStream.Position;
             for (int i = 0; i < fileCount; i++)
             {
-                outWriter.Write(ASCIIEncoding.ASCII.GetBytes(Path.GetFileName(filenames[i]).PadRight(0x20, '\0')));
+                outWriter.Write(ContainerUtilities.encodePaddedSjisString(Path.GetFileName(filenames[i]), 0x20));
                 outWriter.Write((int)0);
                 outWriter.Write((int)0);
                 outWriter.Write((int)0);

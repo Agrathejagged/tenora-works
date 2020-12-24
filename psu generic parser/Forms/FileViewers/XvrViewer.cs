@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using psu_generic_parser.FileClasses;
@@ -47,7 +42,6 @@ namespace psu_generic_parser
 
         private void replaceMipButton_Click(object sender, EventArgs e)
         {
-            //internalTexture.ReplaceMip(
             if (loadMipDialog.ShowDialog() == DialogResult.OK)
             {
                 internalTexture.ReplaceMip(new Bitmap(loadMipDialog.FileName), currentMip);
@@ -113,13 +107,10 @@ namespace psu_generic_parser
                         }
                     }
                 }
-                else if (importTextureDialog.FileName.EndsWith(".pvr") || importTextureDialog.FilterIndex == 3)
-                {
-                    //Don't have support for .pvr yet.
-                }
                 else
                 {
-                    Bitmap importedImage = new Bitmap(importTextureDialog.FileName);
+                    byte[] rawBitmap = File.ReadAllBytes(importTextureDialog.FileName);
+                    Bitmap importedImage = new Bitmap(new MemoryStream(rawBitmap));
                     if (!isPowerOfTwo(importedImage.Width) || !isPowerOfTwo(importedImage.Height))
                     {
                         MessageBox.Show("Texture width and height must be a power of 2. \nThe following sizes are permitted: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048.", "Image Size Error");

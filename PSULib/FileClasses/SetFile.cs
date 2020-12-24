@@ -12,16 +12,23 @@ namespace psu_generic_parser
     [DataContract]
     public class SetFile : PsuFile
     {
+
         [DataMember]
         public short areaID;
         [DataMember]
         public MapListing[] mapData;
 
         [DataContract]
-        public struct ObjectEntry
+        public class ObjectEntry
         {
             [DataMember]
-            public byte[] startBytes; //0x14 length
+            public int headerInt1;
+            [DataMember]
+            public int headerInt2;
+            [DataMember]
+            public int headerInt3;
+            [DataMember]
+            public short headerShort1;
             [DataMember]
             public short objID;
             [DataMember]
@@ -39,22 +46,20 @@ namespace psu_generic_parser
             [DataMember]
             public float objRotZ;
             [DataMember]
-            public int metadataLength;
-            [DataMember]
             public byte[] metadata;
         }
 
         [DataContract]
-        public struct ListHeader
+        public class ListHeader
         {
             [DataMember]
-            public byte[] headerBytes; //36 bytes
+            public byte[] headerBytes; //34 bytes
             [DataMember]
             public ObjectEntry[] objects;
         }
 
         [DataContract]
-        public struct MapListing
+        public class MapListing
         {
             [DataMember]
             public short mapNumber;
@@ -95,7 +100,10 @@ namespace psu_generic_parser
                     {
                         transFile.Seek(objectListLoc + k * 0x34, SeekOrigin.Begin);
                         ObjectEntry temp = new ObjectEntry();
-                        temp.startBytes = fileReader.ReadBytes(14);
+                        temp.headerInt1 = fileReader.ReadInt32();
+                        temp.headerInt2 = fileReader.ReadInt32();
+                        temp.headerInt3 = fileReader.ReadInt32();
+                        temp.headerShort1 = fileReader.ReadInt16();
                         temp.objID = fileReader.ReadInt16();
                         temp.unkInt1 = fileReader.ReadInt32();
                         temp.objX = fileReader.ReadSingle();
@@ -104,10 +112,10 @@ namespace psu_generic_parser
                         temp.objRotX = fileReader.ReadSingle();
                         temp.objRotY = fileReader.ReadSingle();
                         temp.objRotZ = fileReader.ReadSingle();
-                        temp.metadataLength = fileReader.ReadInt32();
+                        int metadataLength = fileReader.ReadInt32();
                         int metadataLoc = fileReader.ReadInt32() - baseAddr;
                         transFile.Seek(metadataLoc, SeekOrigin.Begin);
-                        temp.metadata = fileReader.ReadBytes(temp.metadataLength);
+                        temp.metadata = fileReader.ReadBytes(metadataLength);
                         mapData[i].headers[j].objects[k] = temp;
                     }
 
@@ -146,7 +154,10 @@ namespace psu_generic_parser
                     for (int k = 0; k < mapData[i].headers[j].objects.Length; k++)
                     {
                         ObjectEntry tempObj = mapData[i].headers[j].objects[k];
-                        outWriter.Write(tempObj.startBytes);
+                        outWriter.Write(tempObj.headerInt1);
+                        outWriter.Write(tempObj.headerInt2);
+                        outWriter.Write(tempObj.headerInt3);
+                        outWriter.Write(tempObj.headerShort1);
                         outWriter.Write(tempObj.objID);
                         outWriter.Write(tempObj.unkInt1);
                         outWriter.Write(tempObj.objX);

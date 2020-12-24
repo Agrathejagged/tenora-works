@@ -8,6 +8,7 @@ using psu_generic_parser.FileViewers;
 using psu_generic_parser.FileClasses;
 using System.Security.Cryptography;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using PSULib;
 
 namespace psu_generic_parser
 {
@@ -50,7 +51,7 @@ namespace psu_generic_parser
             Stream stream = File.Open(fileName, FileMode.Open);
             stream.Read(formatName, 0, 4);
 
-            string identifier = new string(Encoding.ASCII.GetChars(formatName, 0, 4));
+            string identifier = Encoding.ASCII.GetString(formatName, 0, 4);
             if (identifier == "NMLL" || identifier == "NMLB")
             {
                 setAFSEnabled(false);
@@ -145,7 +146,7 @@ namespace psu_generic_parser
             Stream stream = File.Open(fileName, FileMode.Open);
             stream.Read(formatName, 0, 4);
 
-            string identifier = new string(Encoding.ASCII.GetChars(formatName, 0, 4));
+            string identifier = Encoding.ASCII.GetString(formatName, 0, 4);
             if (identifier == "NMLL" || identifier == "NMLB")
             {
                 loadedAfs = null;
@@ -774,7 +775,7 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
                     toDecrypt = fish.decryptBlock(toDecrypt);
                     Array.Copy(toDecrypt, 0, fileContents, headerLoc, 0x30);
 
-                    sb.Append(ASCIIEncoding.ASCII.GetString(toDecrypt, 0, 0x20).Split('\0')[0] + "\t");
+                    sb.Append(Encoding.ASCII.GetString(toDecrypt, 0, 0x20).Split('\0')[0] + "\t");
                     //sb.Append(BitConverter.ToUInt16(fileContents, (int)(headerLoc + 0x4C)) + "\t");
                     //sb.Append(BitConverter.ToUInt16(fileContents, (int)(headerLoc + 0x4E)) + "\n");
                 }
@@ -850,7 +851,7 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
                     toDecrypt = fish.decryptBlock(toDecrypt);
                     Array.Copy(toDecrypt, 0, fileContents, headerLoc, 0x30);
 
-                    sb.Append(ASCIIEncoding.ASCII.GetString(toDecrypt, 0, 0x20).Split('\0')[0] + "\t");
+                    sb.Append(Encoding.ASCII.GetString(toDecrypt, 0, 0x20).Split('\0')[0] + "\t");
                     sb.Append(BitConverter.ToUInt16(fileContents, (int)(headerLoc + 0x4C)) + "\t");
                     sb.Append(BitConverter.ToUInt16(fileContents, (int)(headerLoc + 0x4E)) + "\n");
                 }
@@ -1057,6 +1058,10 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
 
         private void extractFile(PsuFile psuFile, string filename)
         {
+            RawFile file = psuFile.ToRawFile(0);
+            byte[] bytes = file.WriteToBytes(exportMetaData);
+            /*
+
             List<byte> output = new List<byte>();
             byte[] toSave = psuFile.ToRaw();
             byte[] subHeader = psuFile.header;
@@ -1067,16 +1072,16 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
             {
                 if (pointers == null)
                 {
-                    output.AddRange(ASCIIEncoding.ASCII.GetBytes("STD\0"));
+                    output.AddRange(Encoding.ASCII.GetBytes("STD\0"));
                 }
                 else
                 {
-                    output.AddRange(ASCIIEncoding.ASCII.GetBytes(fileNameSansPath.ToUpper().ToCharArray(fileNameSansPath.Length - 3, 3)));
+                    output.AddRange(Encoding.ASCII.GetBytes(fileNameSansPath.ToUpper().ToCharArray(fileNameSansPath.Length - 3, 3)));
                     output.Add(0);
                 }
 
                 output.AddRange(new byte[0xC]);
-                output.AddRange(ASCIIEncoding.ASCII.GetBytes(fileNameSansPath.PadRight(0x20, '\0')));
+                output.AddRange(ContainerUtilities.encodePaddedSjisString(fileNameSansPath, 0x20));
                 output.AddRange(new byte[0x4]);
                 output.AddRange(BitConverter.GetBytes(toSave.Length));
                 output.AddRange(new byte[0x4]);
@@ -1112,10 +1117,11 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
                         output.AddRange(BitConverter.GetBytes(pointers[i]));
                     }
                 }
-            }
+            }*/
             try
             {
-                File.WriteAllBytes(filename, output.ToArray());
+                //File.WriteAllBytes(filename, output.ToArray());
+                File.WriteAllBytes(filename, bytes);
             }
             catch
             {

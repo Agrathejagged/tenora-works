@@ -49,6 +49,7 @@
     <Compile Include="BigEndianBinaryReader.cs" />
     <Compile Include="BigEndianBinaryWriter.cs" />
     <Compile Include="BlewFish.cs" />
+    <Compile Include="ContainerUtilities.cs" />
     <Compile Include="FileClasses\CommonInfoFile.cs" />
     <Compile Include="FileClasses\ContainerFile.cs" />
     <Compile Include="FileClasses\EnemyDropFile.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="FileClasses\RmagBulletParamFile.cs" />
     <Compile Include="FileClasses\ScriptFile.cs" />
     <Compile Include="FileClasses\SetFile.cs" />
+    <Compile Include="FileClasses\Sets\SetObjectDefinitions.cs" />
     <Compile Include="FileClasses\TableFile.cs" />
     <Compile Include="FileClasses\TextFile.cs" />
     <Compile Include="FileClasses\TextureFile.cs" />

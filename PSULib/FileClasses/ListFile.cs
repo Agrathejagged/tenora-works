@@ -71,7 +71,7 @@ namespace psu_generic_parser
                 for(int j = 0; j < filenames[i].Count; j++)
                 {
                     stringLocs[i][j] = (int)outStream.Position;
-                    outWriter.Write(ASCIIEncoding.ASCII.GetBytes(filenames[i][j].Filename));
+                    outWriter.Write(Encoding.GetEncoding("shift-jis").GetBytes(filenames[i][j].Filename));
                     outStream.Seek(4 - (outStream.Position % 4), SeekOrigin.Current);
                 }
             }
