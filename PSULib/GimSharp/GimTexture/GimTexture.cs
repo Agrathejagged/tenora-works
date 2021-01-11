@@ -222,7 +222,9 @@ namespace GimSharp
 
                     // Some textures do not have a width that is a multiple or 16 or a height that is a multiple of 8.
                     // We'll just do it the lazy way and set their width/height to a multiple of 16/8.
-                    if (textureWidth % 16 != 0)
+
+                    //PSUlib change: On 8x8 textures, leave the width 8.
+                    if (textureWidth > 8 && textureWidth % 16 != 0)
                     {
                         textureWidth = (ushort)PTMethods.RoundUp(textureWidth, 16);
                     }
@@ -311,7 +313,8 @@ namespace GimSharp
 
             // If this is a palettized format, make sure we have a palette codec, a data codec,
             // and that the number of palette entires is less than or equal to what this data format supports
-            if (dataCodec != null && dataCodec.PaletteEntries != 0 && pixelCodec != null && paletteEntries <= dataCodec.PaletteEntries)
+            //PSULib change: paletteEntries check loosened (found an Index4 file with a 256 color palette)
+            if (dataCodec != null && dataCodec.PaletteEntries != 0 && pixelCodec != null && (paletteEntries <= dataCodec.PaletteEntries || paletteEntries == 256))
             {
                 // Set the data format's pixel codec
                 dataCodec.PixelCodec = pixelCodec;

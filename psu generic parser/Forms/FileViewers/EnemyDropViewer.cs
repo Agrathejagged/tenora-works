@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace psu_generic_parser
 {
@@ -28,26 +29,12 @@ namespace psu_generic_parser
                 dataGridView1.Columns[j].MinimumWidth = 32;
                 if (dataGridView1.Columns[j].Name.Contains("Drop") && !dataGridView1.Columns[j].Name.StartsWith("Drop"))
                     dataGridView1.Columns[j].DefaultCellStyle.Format = "X8";
+                if(internalFile.isV1File && Regex.IsMatch(dataGridView1.Columns[j].Name, "Tier[2-5]"))
+                {
+                    dataGridView1.Columns[j].Visible = false;
+                }
             }
             dataGridView1.Columns[0].DefaultCellStyle.Format = "X2";
-            /*
-            dataGridView1.Columns.Add("monst", "Monster Name");
-            dataGridView1.Columns.Add("spec", "Spec ID");
-            dataGridView1.Columns.Add("dnr", "Drop nothing");
-            dataGridView1.Columns.Add("mesr", "Meseta");
-            dataGridView1.Columns.Add("area", "Area rate");
-            dataGridView1.Columns.Add("dnr", "Drop nothing");
-            dataGridView1.Columns.Add("t1r", "Tier 1 rate");
-            dataGridView1.Columns.Add("t2r", "Tier 2 rate");
-            dataGridView1.Columns.Add("t3r", "Tier 3 rate");
-            dataGridView1.Columns.Add("t4r", "Tier 4 rate");
-            dataGridView1.Columns.Add("t5r", "Tier 5 rate");
-            dataGridView1.Columns.Add("t1d", "Tier 1 drop");
-            dataGridView1.Columns.Add("t2d", "Tier 2 drop");
-            dataGridView1.Columns.Add("t3d", "Tier 3 drop");
-            dataGridView1.Columns.Add("t4d", "Tier 4 drop");
-            dataGridView1.Columns.Add("t5d", "Tier 5 drop");
-             * */
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -73,14 +60,17 @@ namespace psu_generic_parser
                     outWriter.Write(internalFile.monsterDrops[i].SpecDrop3.ToString("X8") + "\t");
                     outWriter.Write(internalFile.monsterDrops[i].Tier1Drop.ToString("X8") + "\t");
                     outWriter.Write(internalFile.monsterDrops[i].Tier1Prob + "\t");
-                    outWriter.Write(internalFile.monsterDrops[i].Tier2Drop.ToString("X8") + "\t");
-                    outWriter.Write(internalFile.monsterDrops[i].Tier2Prob + "\t");
-                    outWriter.Write(internalFile.monsterDrops[i].Tier3Drop.ToString("X8") + "\t");
-                    outWriter.Write(internalFile.monsterDrops[i].Tier3Prob + "\t");
-                    outWriter.Write(internalFile.monsterDrops[i].Tier4Drop.ToString("X8") + "\t");
-                    outWriter.Write(internalFile.monsterDrops[i].Tier4Prob + "\t");
-                    outWriter.Write(internalFile.monsterDrops[i].Tier5Drop.ToString("X8") + "\t");
-                    outWriter.Write(internalFile.monsterDrops[i].Tier5Prob + "\t");
+                    if (!internalFile.isV1File)
+                    {
+                        outWriter.Write(internalFile.monsterDrops[i].Tier2Drop.ToString("X8") + "\t");
+                        outWriter.Write(internalFile.monsterDrops[i].Tier2Prob + "\t");
+                        outWriter.Write(internalFile.monsterDrops[i].Tier3Drop.ToString("X8") + "\t");
+                        outWriter.Write(internalFile.monsterDrops[i].Tier3Prob + "\t");
+                        outWriter.Write(internalFile.monsterDrops[i].Tier4Drop.ToString("X8") + "\t");
+                        outWriter.Write(internalFile.monsterDrops[i].Tier4Prob + "\t");
+                        outWriter.Write(internalFile.monsterDrops[i].Tier5Drop.ToString("X8") + "\t");
+                        outWriter.Write(internalFile.monsterDrops[i].Tier5Prob + "\t");
+                    }
                     outWriter.WriteLine();
                 }
                 outWriter.Close();

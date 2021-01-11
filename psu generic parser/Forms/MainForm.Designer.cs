@@ -50,7 +50,6 @@
             this.insertNMLLFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.decryptNMLBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.decryptNMLLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.enableNMLLLoggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textureCatalogueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -61,7 +60,7 @@
             this.addZoneButton = new System.Windows.Forms.Button();
             this.addFileButton = new System.Windows.Forms.Button();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.treeViewContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.arbitraryFileContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.replaceFileTreeContextItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extractSelectedTreeContextItem = new System.Windows.Forms.ToolStripMenuItem();
             this.actionProgressBar = new System.Windows.Forms.ProgressBar();
@@ -70,12 +69,16 @@
             this.zoneUD = new System.Windows.Forms.NumericUpDown();
             this.AFSQuestItemsLabel = new System.Windows.Forms.Label();
             this.zoneLabel = new System.Windows.Forms.Label();
+            this.afsNblFileContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.nblChunkContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.compressChunkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.treeViewContextMenu.SuspendLayout();
+            this.arbitraryFileContextMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.zoneUD)).BeginInit();
+            this.nblChunkContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -180,7 +183,6 @@
             this.insertNMLLFileToolStripMenuItem,
             this.decryptNMLBToolStripMenuItem,
             this.decryptNMLLToolStripMenuItem,
-            this.enableNMLLLoggingToolStripMenuItem,
             this.textureCatalogueToolStripMenuItem});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
@@ -189,71 +191,63 @@
             // exportBlobToolStripMenuItem
             // 
             this.exportBlobToolStripMenuItem.Name = "exportBlobToolStripMenuItem";
-            this.exportBlobToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.exportBlobToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.exportBlobToolStripMenuItem.Text = "Export blob";
             this.exportBlobToolStripMenuItem.Click += new System.EventHandler(this.exportBlob_Click);
             // 
             // createAFSToolStripMenuItem
             // 
             this.createAFSToolStripMenuItem.Name = "createAFSToolStripMenuItem";
-            this.createAFSToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.createAFSToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.createAFSToolStripMenuItem.Text = "Create AFS";
             this.createAFSToolStripMenuItem.Click += new System.EventHandler(this.createAFSToolStripMenuItem_Click);
             // 
             // disableScriptParsingToolStripMenuItem
             // 
             this.disableScriptParsingToolStripMenuItem.Name = "disableScriptParsingToolStripMenuItem";
-            this.disableScriptParsingToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.disableScriptParsingToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.disableScriptParsingToolStripMenuItem.Text = "Disable Script Parsing";
             this.disableScriptParsingToolStripMenuItem.Click += new System.EventHandler(this.disableScriptParsingToolStripMenuItem_Click);
             // 
             // exportAllWeaponsToolStripMenuItem
             // 
             this.exportAllWeaponsToolStripMenuItem.Name = "exportAllWeaponsToolStripMenuItem";
-            this.exportAllWeaponsToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.exportAllWeaponsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.exportAllWeaponsToolStripMenuItem.Text = "Export all weapons";
             this.exportAllWeaponsToolStripMenuItem.Click += new System.EventHandler(this.exportAllWeaponsToolStripMenuItem_Click);
             // 
             // importAllWeaponsToolStripMenuItem
             // 
             this.importAllWeaponsToolStripMenuItem.Name = "importAllWeaponsToolStripMenuItem";
-            this.importAllWeaponsToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.importAllWeaponsToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.importAllWeaponsToolStripMenuItem.Text = "Import all weapons";
             this.importAllWeaponsToolStripMenuItem.Click += new System.EventHandler(this.importAllWeaponsToolStripMenuItem_Click);
             // 
             // insertNMLLFileToolStripMenuItem
             // 
             this.insertNMLLFileToolStripMenuItem.Name = "insertNMLLFileToolStripMenuItem";
-            this.insertNMLLFileToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.insertNMLLFileToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.insertNMLLFileToolStripMenuItem.Text = "Insert NMLL file";
             this.insertNMLLFileToolStripMenuItem.Click += new System.EventHandler(this.insertNMLLFileToolStripMenuItem_Click);
             // 
             // decryptNMLBToolStripMenuItem
             // 
             this.decryptNMLBToolStripMenuItem.Name = "decryptNMLBToolStripMenuItem";
-            this.decryptNMLBToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.decryptNMLBToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.decryptNMLBToolStripMenuItem.Text = "Decrypt NMLB";
             this.decryptNMLBToolStripMenuItem.Click += new System.EventHandler(this.decryptNMLBToolStripMenuItem_Click);
             // 
             // decryptNMLLToolStripMenuItem
             // 
             this.decryptNMLLToolStripMenuItem.Name = "decryptNMLLToolStripMenuItem";
-            this.decryptNMLLToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.decryptNMLLToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.decryptNMLLToolStripMenuItem.Text = "Decrypt NMLL";
             this.decryptNMLLToolStripMenuItem.Click += new System.EventHandler(this.decryptNMLLToolStripMenuItem_Click);
-            // 
-            // enableNMLLLoggingToolStripMenuItem
-            // 
-            this.enableNMLLLoggingToolStripMenuItem.CheckOnClick = true;
-            this.enableNMLLLoggingToolStripMenuItem.Name = "enableNMLLLoggingToolStripMenuItem";
-            this.enableNMLLLoggingToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.enableNMLLLoggingToolStripMenuItem.Text = "Enable NMLL logging";
-            this.enableNMLLLoggingToolStripMenuItem.Click += new System.EventHandler(this.enableNMLLLoggingToolStripMenuItem_Click);
             // 
             // textureCatalogueToolStripMenuItem
             // 
             this.textureCatalogueToolStripMenuItem.Name = "textureCatalogueToolStripMenuItem";
-            this.textureCatalogueToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.textureCatalogueToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.textureCatalogueToolStripMenuItem.Text = "Texture catalogue";
             this.textureCatalogueToolStripMenuItem.Click += new System.EventHandler(this.textureCatalogueToolStripMenuItem_Click);
             // 
@@ -329,14 +323,14 @@
             this.addFileButton.UseVisualStyleBackColor = true;
             this.addFileButton.Click += new System.EventHandler(this.addFile_Click);
             // 
-            // treeViewContextMenu
+            // arbitraryFileContextMenuStrip
             // 
-            this.treeViewContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.arbitraryFileContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.replaceFileTreeContextItem,
             this.extractSelectedTreeContextItem});
-            this.treeViewContextMenu.Name = "treeViewContextMenu";
-            this.treeViewContextMenu.ShowImageMargin = false;
-            this.treeViewContextMenu.Size = new System.Drawing.Size(112, 48);
+            this.arbitraryFileContextMenuStrip.Name = "treeViewContextMenu";
+            this.arbitraryFileContextMenuStrip.ShowImageMargin = false;
+            this.arbitraryFileContextMenuStrip.Size = new System.Drawing.Size(112, 48);
             // 
             // replaceFileTreeContextItem
             // 
@@ -403,6 +397,27 @@
             this.zoneLabel.TabIndex = 26;
             this.zoneLabel.Text = "Zone:";
             // 
+            // afsNblFileContextMenuStrip
+            // 
+            this.afsNblFileContextMenuStrip.Name = "afsNblFileContextMenuStrip";
+            this.afsNblFileContextMenuStrip.Size = new System.Drawing.Size(61, 4);
+            // 
+            // nblChunkContextMenuStrip
+            // 
+            this.nblChunkContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.compressChunkToolStripMenuItem});
+            this.nblChunkContextMenuStrip.Name = "nblChunkContextMenuStrip";
+            this.nblChunkContextMenuStrip.Size = new System.Drawing.Size(181, 48);
+            this.nblChunkContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.nblChunkContextMenuStrip_Opening);
+            // 
+            // compressChunkToolStripMenuItem
+            // 
+            this.compressChunkToolStripMenuItem.CheckOnClick = true;
+            this.compressChunkToolStripMenuItem.Name = "compressChunkToolStripMenuItem";
+            this.compressChunkToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.compressChunkToolStripMenuItem.Text = "Compress Chunk";
+            this.compressChunkToolStripMenuItem.CheckedChanged += new System.EventHandler(this.compressChunkToolStripMenuItem_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -428,8 +443,9 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.treeViewContextMenu.ResumeLayout(false);
+            this.arbitraryFileContextMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.zoneUD)).EndInit();
+            this.nblChunkContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -453,7 +469,7 @@
         private System.Windows.Forms.Button addFileButton;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.ToolStripMenuItem createAFSToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip treeViewContextMenu;
+        private System.Windows.Forms.ContextMenuStrip arbitraryFileContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem replaceFileTreeContextItem;
         private System.Windows.Forms.ToolStripMenuItem extractSelectedTreeContextItem;
         private System.Windows.Forms.ToolStripMenuItem disableScriptParsingToolStripMenuItem;
@@ -463,7 +479,6 @@
         private System.Windows.Forms.ToolStripMenuItem insertNMLLFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem decryptNMLBToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem decryptNMLLToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem enableNMLLLoggingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem textureCatalogueToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportSelectedFileToolStripMenuItem;
@@ -477,6 +492,9 @@
         private System.Windows.Forms.NumericUpDown zoneUD;
         private System.Windows.Forms.Label AFSQuestItemsLabel;
         private System.Windows.Forms.Label zoneLabel;
+        private System.Windows.Forms.ContextMenuStrip afsNblFileContextMenuStrip;
+        private System.Windows.Forms.ContextMenuStrip nblChunkContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem compressChunkToolStripMenuItem;
     }
 }
 

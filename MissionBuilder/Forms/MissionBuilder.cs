@@ -105,7 +105,11 @@ namespace psu_generic_parser
                 saveFileDialog1.FileName = textBox2.Text;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    AfsLoader.CreateMissionAfs(questNbl, zones, checkBox1.Checked);
+                    AfsLoader mission = AfsLoader.CreateMissionAfs(questNbl, zones, checkBox1.Checked);
+                    using (var outStream = saveFileDialog1.OpenFile())
+                    {
+                        mission.saveFile(outStream);
+                    }
                 }
             }
         }

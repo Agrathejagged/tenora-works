@@ -116,15 +116,21 @@ namespace psu_generic_parser.FileClasses
 
         public override byte[] ToRaw()
         {
-            if(SaveTextureType != PsuTextureType.Raster)
+            if (SaveTextureType != PsuTextureType.Raster)
             {
-                throw new InvalidOperationException("Can't save DXT textures yet");
+                if (!Array.TrueForAll(mipDirty, val => false))
+                {
+                    throw new InvalidOperationException("Can't save DXT textures yet");
+                }
+                else
+                {
+                    return rawData;
+                }
             }
             int width = mips[0].Width;
             int height = mips[0].Height;
 
             XvrImageParameters parameters = new XvrImageParameters(width, height, SaveTextureType, mips.Length > 1, SavePixelFormat);
-            //Let's try just leaving the file start blank? I don't think this actually works...
             byte[] imageData = XvrRasterEncoders.GetEncoder(parameters).EncodeImage(mips, parameters);
 
             MemoryStream headerStream = new MemoryStream();
@@ -155,6 +161,7 @@ namespace psu_generic_parser.FileClasses
             byte heightPower = logTwo(height);
             dimensionsMips |= (short)(widthPower << 8);
             dimensionsMips |= (short)(heightPower << 4);
+            //I don't think those mip count values are ever used, outside the lowest 4 bits.
             outWriter.Write(dimensionsMips);
             outWriter.Write((int)0);
             outWriter.Write(1);

@@ -87,6 +87,7 @@
     <Compile Include="FileClasses\UvrTextureFile.cs" />
     <Compile Include="FileClasses\WeaponListFile.cs" />
     <Compile Include="FileClasses\WeaponParamFile.cs" />
+    <Compile Include="FileClasses\XnaFile.cs" />
     <Compile Include="FileClasses\XntFile.cs" />
     <Compile Include="FileClasses\XvrTextureFile.cs" />
     <Compile Include="FileClasses\XVR\Decoders\Dxt1Decoder.cs" />

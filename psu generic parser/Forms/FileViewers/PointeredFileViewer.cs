@@ -183,10 +183,6 @@ namespace psu_generic_parser
         {
             if (treeView1.SelectedNode != null)
             {
-                for (int i = 0; i < treeView1.SelectedNode.Nodes.Count; i++)
-                {
-                    populateSubPointersShallow(treeView1.SelectedNode.Nodes[i]);
-                }
                 int index = condensedPointers.IndexOf((int)treeView1.SelectedNode.Tag) + 1;
                 gotoLine(pointedLineRefs[index]);
             }
@@ -199,6 +195,17 @@ namespace psu_generic_parser
             int index = this.richTextBox1.GetFirstCharIndexFromLine(wantedLine_zero_based);
             this.richTextBox1.Select(index, 0);
             this.richTextBox1.ScrollToCaret();
+        }
+
+        private void treeView1_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            if(e.Node.Nodes.Count > 0)
+            {
+                foreach(TreeNode node in e.Node.Nodes)
+                {
+                    populateSubPointersShallow(node);
+                }
+            }
         }
     }
 }

@@ -9,14 +9,13 @@ using psu_generic_parser.FileClasses;
 using System.Security.Cryptography;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using PSULib;
+using System.Drawing;
 
 namespace psu_generic_parser
 {
     public partial class MainForm : Form
     {
-        NblLoader loadedNbl;
-        AfsLoader loadedAfs;
-        MiniAfsLoader loadedMiniAfs;
+        ContainerFile loadedContainer;
         PsuFile currentRight;
         MainSettings settings;
         private HexEditForm currentFileHexForm;
@@ -26,6 +25,12 @@ namespace psu_generic_parser
         public bool compressNMLL = false;
         public bool compressTMLL = false;
         public bool exportMetaData = false;
+
+        private class FileTreeNodeTag
+        {
+            public ContainerFile OwnerContainer { get; set; }
+            public string FileName { get; set; }
+        }
 
         public MainForm()
         {
@@ -56,34 +61,28 @@ namespace psu_generic_parser
             {
                 setAFSEnabled(false);
                 treeNodeCollection.Clear();
-                loadedAfs = null;
-                loadedMiniAfs = null;
-                loadedNbl = new NblLoader(stream);
+                loadedContainer = new NblLoader(stream);
                 splitContainer1.Panel2.Controls.Clear();
-                addChildFiles(treeNodeCollection, loadedNbl);
-                compressNMLL = loadedNbl.isCompressed;
-                compressTMLL = loadedNbl.chunks.Count > 1 && loadedNbl.chunks[1].compressed;
+                addChildFiles(treeNodeCollection, loadedContainer);
+                compressNMLL = loadedContainer.Compressed;
+                compressTMLL = loadedContainer.getFilenames().Count > 1 && ((NblChunk)loadedContainer.getFileParsed(1)).Compressed;
                 isValidArchive = true;
             } 
             else if (identifier == "AFS\0")
             {
                 setAFSEnabled(true);
                 treeNodeCollection.Clear();
-                loadedNbl = null;
-                loadedMiniAfs = null;
-                loadedAfs = new AfsLoader(stream);
+                loadedContainer = new AfsLoader(stream);
                 splitContainer1.Panel2.Controls.Clear();
-                addChildFiles(treeNodeCollection, loadedAfs);
+                addChildFiles(treeNodeCollection, loadedContainer);
                 isValidArchive = true;
             } else if (BitConverter.ToInt16(formatName, 0) == 0x50AF)
             {
                 setAFSEnabled(false);
                 treeNodeCollection.Clear();
-                loadedAfs = null;
-                loadedNbl = null;
-                loadedMiniAfs = new MiniAfsLoader(stream);
+                loadedContainer = new MiniAfsLoader(stream);
                 splitContainer1.Panel2.Controls.Clear();
-                addChildFiles(treeNodeCollection, loadedMiniAfs);
+                addChildFiles(treeNodeCollection, loadedContainer);
                 isValidArchive = true;
             }
             stream.Close();
@@ -116,7 +115,15 @@ namespace psu_generic_parser
             {
                 string filename = filenames[i];
                 TreeNode temp = new TreeNode(filename);
-                temp.ContextMenuStrip = treeViewContextMenu;
+                //Explicitly disallowing export/replace on raw NBL chunks--this would be very dangerous.
+                if(toRead is NblLoader)
+                {
+                    temp.ContextMenuStrip = nblChunkContextMenuStrip;
+                }
+                else
+                {
+                    temp.ContextMenuStrip = arbitraryFileContextMenuStrip;
+                }
 
                 if (toRead is AfsLoader || toRead is NblLoader || toRead is MiniAfsLoader) //AFS still doesn't lazy-load, meaning all my performance issues are STILL HERE.
                 {
@@ -124,17 +131,27 @@ namespace psu_generic_parser
                     if (child != null && child is ContainerFile)
                     {
                         addChildFiles(temp.Nodes, (ContainerFile)child);
+                        if(((ContainerFile)child).Compressed)
+                        {
+                            temp.ForeColor = Color.Green;
+                        }
                     }
                 }
                 else //NBL chunk as parent
                 {
+                    //For an NBL chunk, only read parsed children if they're containers.
+                    //This is sort of a mediocre variety of lazy loading...
                     RawFile raw = toRead.getFileRaw(i);
                     if (filename.EndsWith(".nbl") || raw.fileheader == "NMLL" || raw.fileheader == "TMLL")
                     {
                         addChildFiles(temp.Nodes, (ContainerFile)toRead.getFileParsed(i));
+                        if (((ContainerFile)toRead.getFileParsed(i)).Compressed)
+                        {
+                            temp.ForeColor = Color.Green;
+                        }
                     }
                 }
-                temp.Tag = new object[] { toRead, filename };
+                temp.Tag = new FileTreeNodeTag { OwnerContainer = toRead, FileName = filename };
                 currNode.Add(temp);
             }
         }
@@ -149,24 +166,18 @@ namespace psu_generic_parser
             string identifier = Encoding.ASCII.GetString(formatName, 0, 4);
             if (identifier == "NMLL" || identifier == "NMLB")
             {
-                loadedAfs = null;
-                loadedMiniAfs = null;
-                loadedNbl = new NblLoader(stream);
-                exportChildFiles(loadedNbl, finalDirectory);
+                loadedContainer = new NblLoader(stream);
+                exportChildFiles(loadedContainer, finalDirectory);
             }
             else if (identifier == "AFS\0")
             {
-                loadedNbl = null;
-                loadedMiniAfs = null;
-                loadedAfs = new AfsLoader(stream);
-                exportChildFiles(loadedAfs, finalDirectory);
+                loadedContainer = new AfsLoader(stream);
+                exportChildFiles(loadedContainer, finalDirectory);
             }
             else if (BitConverter.ToInt16(formatName, 0) == 0x50AF)
             {
-                loadedAfs = null;
-                loadedNbl = null;
-                loadedMiniAfs = new MiniAfsLoader(stream);
-                exportChildFiles(loadedMiniAfs, finalDirectory);
+                loadedContainer = new MiniAfsLoader(stream);
+                exportChildFiles(loadedContainer, finalDirectory);
             }
             stream.Close();
             stream.Dispose();
@@ -269,68 +280,6 @@ namespace psu_generic_parser
             return filename;
         }
 
-        /*
-private void addAfsFiles(TreeNodeCollection currNode, AfsLoader toRead)
-{
-   for (int i = 0; i < toRead.fileCount; i++)
-   {
-       TreeNode temp = new TreeNode(toRead.afsList[i].fileName);
-       if (toRead.subPaths[i] != null)
-       {
-           addAfsFiles(temp.Nodes, toRead.subPaths[i]);
-       }
-       else if (toRead.nblContents[i] != null)
-       {
-           temp.Tag = toRead.nblContents[i];
-           addNblFiles(temp.Nodes, toRead.nblContents[i]);
-       }
-       currNode.Add(temp);
-   }
-}
-
-private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
-{
-   foreach (NblChunk content in toRead.chunks)
-   {
-       currNode.Add(content.chunkID + " chunk");
-       foreach (RawFile currFile in content.fileContents)
-       {
-           TreeNode temp = new TreeNode(currFile.filename);
-           temp.Tag = new object[]{content, currFile.filename};//currFile.toRead.nmllFiles[i].actualFile;
-           temp.ContextMenuStrip = treeViewContextMenu;
-           if (temp.Text.Contains(".nbl") || currFile.fileheader == "NMLL")
-           {
-               addNblFiles(temp.Nodes, (NblLoader)content.getFileParsed(currFile.filename));
-           }
-           currNode[0].Nodes.Add(temp);
-       }
-   }
-   /*
-   currNode.Add("NMLL chunk");
-   for (int i = 0; i < toRead.nmllFiles.Length; i++)
-   {
-       TreeNode temp = new TreeNode(toRead.nmllFiles[i].fileName);
-       temp.Tag = toRead.nmllFiles[i].actualFile;
-       temp.ContextMenuStrip = treeViewContextMenu;
-       if (temp.Text.Contains(".nbl") || toRead.nmllFiles[i].actualFile.GetType() == typeof(NblLoader))
-       {
-           addNblFiles(temp.Nodes, (NblLoader)toRead.nmllFiles[i].actualFile);
-       }
-       currNode[0].Nodes.Add(temp);
-   }
-   if (toRead.tmllFiles != null && toRead.tmllFiles.Length > 0)
-   {
-       currNode.Add("TMLL chunk");
-       for (int i = 0; i < toRead.tmllFiles.Length; i++)
-       {
-           TreeNode temp = new TreeNode(toRead.tmllFiles[i].fileName);
-           temp.Tag = toRead.tmllFiles[i].actualFile;
-           currNode[1].Nodes.Add(temp);
-       }
-   }
-}*/
-
-
         private void setRightPanel(PsuFile toRead)
         {
             splitContainer1.Panel2.Controls.Clear();
@@ -353,6 +302,10 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
             else if (toRead is XntFile)
             {
                 toAdd = new XntFileViewer((XntFile)toRead);
+            }
+            else if (toRead is XnaFile)
+            {
+                toAdd = new XnaFileViewer((XnaFile)toRead);
             }
             else if (toRead is NomFile)
             {
@@ -446,84 +399,15 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
             toAdd.Dock = DockStyle.Fill;
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            /*
-            if (loadedNbl != null && listBox1.SelectedIndex > -1)
-            {
-                splitContainer1.Panel2.Controls.Clear();
-                if (listBox1.SelectedIndex < loadedNbl.nmllFiles.Length)
-                {
-                    string fileIdentifier = new string(Encoding.ASCII.GetChars(loadedNbl.splitFiles[listBox1.SelectedIndex], 0, 4));
-                    if (fileIdentifier == "RIPC") // THIS SECTION NEEDS FIXED
-                    {
-                        loadedTex = new TextureViewer(loadedNbl.nmllFiles[listBox1.SelectedIndex].subHeader, loadedNbl.splitFiles[listBox1.SelectedIndex], (string)listBox1.SelectedItem);
-                        splitContainer1.Panel2.Controls.Add(loadedTex);
-                        //loadedTex.Location = new Point(0, 0);
-                        //loadedTex.Size = new Size(300, 300);
-                        //loadedTex.Show();
-                    }
-                    else if (loadedNbl.filenames[listBox1.SelectedIndex].Contains("filelist"))
-                    {
-                        loadedList = new ListViewer(loadedNbl.splitFiles[listBox1.SelectedIndex], (int)loadedNbl.nmllFiles[listBox1.SelectedIndex].filePosition, loadedNbl.splitPointers[listBox1.SelectedIndex], listTypes.filelist);
-                        splitContainer1.Panel2.Controls.Add(loadedList);
-                    }
-                    else if (loadedNbl.filenames[listBox1.SelectedIndex].Contains(".xna"))
-                    {
-                        loadedList = new ListViewer(loadedNbl.splitFiles[listBox1.SelectedIndex], (int)loadedNbl.nmllFiles[listBox1.SelectedIndex].filePosition, loadedNbl.splitPointers[listBox1.SelectedIndex], listTypes.XNA);
-                        splitContainer1.Panel2.Controls.Add(loadedList);
-                    }
-                    else if (loadedNbl.filenames[listBox1.SelectedIndex].Contains(".xnt"))    //Ugh, should probably do SOMETHING else here, not sure what.
-                    {
-                        loadedList = new ListViewer(loadedNbl.splitFiles[listBox1.SelectedIndex], (int)loadedNbl.nmllFiles[listBox1.SelectedIndex].filePosition, loadedNbl.splitPointers[listBox1.SelectedIndex], listTypes.XNT);
-                        splitContainer1.Panel2.Controls.Add(loadedList);
-                    }
-                    else if (loadedNbl.filenames[listBox1.SelectedIndex].Contains("particle_info"))
-                    {
-                        loadedList = new ListViewer(loadedNbl.splitFiles[listBox1.SelectedIndex], (int)loadedNbl.nmllFiles[listBox1.SelectedIndex].filePosition, loadedNbl.splitPointers[listBox1.SelectedIndex], listTypes.particle);
-                        splitContainer1.Panel2.Controls.Add(loadedList);
-                    }
-                    else
-                    {
-                        if (loadedNbl.filenames[listBox1.SelectedIndex].Contains(".bin"))
-                        {
-                            PsuFile.FromRaw(loadedNbl.filenames[listBox1.SelectedIndex], loadedNbl.splitFiles[listBox1.SelectedIndex], loadedNbl.nmllFiles[listBox1.SelectedIndex].subHeader).ToRaw();
-
-                        }
-                        if (loadedNbl.splitFiles[listBox1.SelectedIndex][0] < 0x30 || listBox1.SelectedIndex >= loadedNbl.splitPointers.Length)
-                            loadedBin = new BinaryViewer(loadedNbl.splitFiles[listBox1.SelectedIndex]);
-                        else
-                        {
-                            //PsuFile.FromRaw(loadedNbl.filenames[listBox1.SelectedIndex], loadedNbl.splitFiles[listBox1.SelectedIndex], loadedNbl.nmllFiles[listBox1.SelectedIndex].subHeader, loadedNbl.splitPointers[listBox1.SelectedIndex], (int)loadedNbl.nmllFiles[listBox1.SelectedIndex].filePosition);
-                            loadedBin = new BinaryViewer(loadedNbl.splitFiles[listBox1.SelectedIndex], (int)loadedNbl.nmllFiles[listBox1.SelectedIndex].filePosition, loadedNbl.splitPointers[listBox1.SelectedIndex]);
-                        }
-                        //panel1.Controls.Clear();
-                        //if(!panel1.Controls.Contains(loadedBin))
-                        splitContainer1.Panel2.Controls.Add(loadedBin);
-                        //loadedBin.Location = new Point(0, 0);
-                        //loadedBin.Dock = DockStyle.Fill;
-                    }
-                }
-                else
-                {
-                    loadedTex = new TextureViewer(loadedNbl.tmllFiles[listBox1.SelectedIndex - loadedNbl.nmllFiles.Length].subHeader, loadedNbl.splitTmll[listBox1.SelectedIndex - loadedNbl.nmllFiles.Length], (string)listBox1.SelectedItem);
-                    //.Controls.Clear();
-                    splitContainer1.Panel2.Controls.Add(loadedTex);
-                    //loadedTex.Location = new Point(0, 0);
-                    //loadedTex.Dock = DockStyle.Fill;
-                }
-            }*/
-        }
-
         private void exportBlob_Click(object sender, EventArgs e)
         {
-            if (loadedNbl != null)
+            if (loadedContainer is NblLoader)
             {
                 CommonOpenFileDialog goodOpenFileDialog = new CommonOpenFileDialog();
                 goodOpenFileDialog.IsFolderPicker = true;
                 if (goodOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    loadedNbl.exportDataBlob(goodOpenFileDialog.FileName);
+                    ((NblLoader)loadedContainer).exportDataBlob(goodOpenFileDialog.FileName);
                 }
             }
                 
@@ -531,55 +415,47 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (loadedNbl != null)
+            if (loadedContainer != null)
             {
                 saveFileDialog1.FileName = fileDialog.FileName;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    loadedNbl.saveFile(saveFileDialog1.OpenFile(), compressNMLL, compressTMLL, false);
+                    loadedContainer.saveFile(saveFileDialog1.OpenFile());
                     this.Text = "PSU Generic Parser " + Path.GetFileName(saveFileDialog1.FileName);
-                }
-            }
-            else if (loadedAfs != null)
-            {
-                saveFileDialog1.FileName = fileDialog.FileName;
-                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    loadedAfs.saveFile(saveFileDialog1.OpenFile());
-                    this.Text = "PSU Generic Parser " + Path.GetFileName(saveFileDialog1.FileName);
+                    fileDialog.FileName = saveFileDialog1.FileName;
                 }
             }
         }
 
         private void setQuest_Click(object sender, EventArgs e)
         {
-            if (loadedAfs != null)
+            if (loadedContainer is AfsLoader)
             {
                 if (importDialog.ShowDialog() == DialogResult.OK)
                 {
-                    loadedAfs.setQuest(importDialog.OpenFile());
+                    ((AfsLoader)loadedContainer).setQuest(importDialog.OpenFile());
                 }
             }
         }
 
         private void setZone_Click_1(object sender, EventArgs e)
         {
-            if (loadedAfs != null)
+            if (loadedContainer is AfsLoader)
             {
                 if (importDialog.ShowDialog() == DialogResult.OK)
                 {
-                    loadedAfs.setZone((int)zoneUD.Value, importDialog.OpenFile());
+                    ((AfsLoader)loadedContainer).setZone((int)zoneUD.Value, importDialog.OpenFile());
                 }
             }
         }
 
         private void addZone_Click_1(object sender, EventArgs e)
         {
-            if (loadedAfs != null)
+            if (loadedContainer is AfsLoader)
             {
                 if (importDialog.ShowDialog() == DialogResult.OK)
                 {
-                    loadedAfs.addZone((int)zoneUD.Value, importDialog.OpenFile());
+                    ((AfsLoader)loadedContainer).addZone((int)zoneUD.Value, importDialog.OpenFile());
                 }
             }
         }
@@ -587,24 +463,20 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             splitContainer1.Panel2.Controls.Clear();
-            if (e.Node.Text != "NMLL chunk" && e.Node.Text != "TMLL chunk")
+            if (e.Node.Tag is FileTreeNodeTag && !(((FileTreeNodeTag)e.Node.Tag).OwnerContainer is NblLoader))
             {
-                if (e.Node.Tag != null && e.Node.Tag is object[])
-                {
-                    ContainerFile parent = (ContainerFile)((object[])e.Node.Tag)[0];
-                    string filename = (string)((object[])e.Node.Tag)[1];
-                    setRightPanel((PsuFile)parent.getFileParsed(filename));
-                }
+                ContainerFile parent = ((FileTreeNodeTag)e.Node.Tag).OwnerContainer;
+                setRightPanel(parent.getFileParsed(e.Node.Index));
             }
         }
 
         private void addFile_Click(object sender, EventArgs e)
         {
-            if (loadedAfs != null)
+            if (loadedContainer is AfsLoader)
             {
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    loadedAfs.addFile(fileDialog.SafeFileName, fileDialog.OpenFile());
+                    ((AfsLoader)loadedContainer).addFile(fileDialog.SafeFileName, fileDialog.OpenFile());
                 }
             }
         }
@@ -621,26 +493,21 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
 
         private void replaceFileTreeContextItem_Click(object sender, EventArgs e)
         {
-            ContextMenuStrip temp = (ContextMenuStrip)((ToolStripMenuItem)sender).Owner;
-            TreeView tempTree = (TreeView)temp.SourceControl;
-            TreeNode selectedNode = tempTree.SelectedNode;// = (TreeNode)((MenuItem)sender).GetContextMenu().SourceControl;
-            ContainerFile owningFile;
-            owningFile = (ContainerFile)((object[])selectedNode.Tag)[0];
-            OpenFileDialog replaceDialog = new OpenFileDialog();
-            replaceDialog.FileName = selectedNode.Text;
-            if (replaceDialog.ShowDialog() == DialogResult.OK)
+            TreeNode node = treeView1.SelectedNode;
+            if (node != null && node.Tag is FileTreeNodeTag)
             {
-                RawFile file = new RawFile(replaceDialog.OpenFile());
-                owningFile.replaceFile(selectedNode.Text, file);
-                selectedNode.Text = file.filename;
-                ((object[])selectedNode.Tag)[1] = file.filename;
-                /*
-                owningFile.replaceFile(selectedNode.Text, replaceDialog.OpenFile());
-                if(selectedNode.Parent.Index == 0)
-                    selectedNode.Tag = owningFile.nmllFiles[selectedNode.Index].actualFile;
-                else
-                    selectedNode.Tag = owningFile.tmllFiles[selectedNode.Index].actualFile;*/
-                setRightPanel(owningFile.getFileParsed(selectedNode.Text));
+                var tag = ((FileTreeNodeTag)node.Tag);
+                ContainerFile owningFile = tag.OwnerContainer;
+                OpenFileDialog replaceDialog = new OpenFileDialog();
+                replaceDialog.FileName = tag.FileName;
+                if (replaceDialog.ShowDialog() == DialogResult.OK)
+                {
+                    RawFile file = new RawFile(replaceDialog.OpenFile());
+                    owningFile.replaceFile(tag.FileName, file);
+                    node.Text = file.filename;
+                    tag.FileName = file.filename;
+                    setRightPanel(owningFile.getFileParsed(node.Index));
+                }
             }
         }
 
@@ -657,37 +524,65 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
 
         private void exportAllWeaponsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            /*
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK && loadedNbl != null)
+            if (loadedContainer is NblLoader && loadedContainer.getFilenames().Count > 0)
             {
-                foreach (NblLoader.FileHeader currFile in loadedNbl.nmllFiles)
+                if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    if (currFile.actualFile.GetType() == typeof(WeaponParamFile))
+                    //getFilenames is relatively expensive.
+                    var nmllFilenames = ((NblChunk)loadedContainer.getFileParsed(0)).getFilenames();
+                    foreach (string filename in nmllFilenames)
                     {
-                        FileStream outStream = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + currFile.fileName + ".txt", FileMode.Create);
-                        ((WeaponParamFile)currFile.actualFile).saveTextFile(outStream);
-                        outStream.Close();
+                        if (filename.Contains("itemWeaponParam") && ((NblChunk)loadedContainer.getFileParsed(0)).getFileParsed(filename) is WeaponParamFile)
+                        {
+                            MemoryStream memStream = new MemoryStream();
+                            ((WeaponParamFile)((NblChunk)loadedContainer.getFileParsed(0)).getFileParsed(filename)).saveTextFile(memStream);
+                            File.WriteAllBytes(folderBrowserDialog1.SelectedPath + "\\" + filename + ".txt", memStream.ToArray());
+                        }
                     }
                 }
-            }*/
+            }
         }
 
         private void importAllWeaponsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            /*
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK && loadedNbl != null)
+            if (loadedContainer is NblLoader && loadedContainer.getFilenames().Count > 0)
             {
-                foreach (NblLoader.FileHeader currFile in loadedNbl.nmllFiles)
+                if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    if (currFile.actualFile.GetType() == typeof(WeaponParamFile) && File.Exists(folderBrowserDialog1.SelectedPath + "\\" + currFile.fileName + ".txt"))
+                    var files = Directory.GetFiles(folderBrowserDialog1.SelectedPath);
+                    //getFilenames is relatively expensive.
+                    var nmllFilenames = ((NblChunk)loadedContainer.getFileParsed(0)).getFilenames();
+                    foreach (string filename in files)
                     {
-                        FileStream inStream = new FileStream(folderBrowserDialog1.SelectedPath + "\\" + currFile.fileName + ".txt", FileMode.Open);
-                        ((WeaponParamFile)currFile.actualFile).loadTextFile(inStream);
-                        inStream.Close();
+                        if (filename.Contains("itemWeaponParam"))
+                        {
+                            //try replacing .txt with nothing (e.g itemWeaponParam_01DKSword.xnr.txt)
+                            if (!tryImportWeaponTextFile((NblLoader)loadedContainer, nmllFilenames, filename, Path.GetFileName(filename).Replace(".txt", "")))
+                            {
+                                //try replacing .txt with .xnr (e.g itemWeaponParam_01DKSword.txt) -- parser doesn't do this, but other people may.
+                                if (!tryImportWeaponTextFile((NblLoader)loadedContainer, nmllFilenames, filename, Path.GetFileName(filename).Replace(".txt", ".xnr")))
+                                {
+
+                                }
+                            }
+                        }
                     }
                 }
             }
-             */
+        }
+
+        private bool tryImportWeaponTextFile(NblLoader nbl, List<string> nmllFilenames, string filepath, string attemptFilename)
+        {
+            if(nmllFilenames.Contains(attemptFilename) && (nbl.chunks[0].getFileParsed(attemptFilename) is WeaponParamFile))
+            {
+                WeaponParamFile paramFile = (WeaponParamFile)nbl.chunks[0].getFileParsed(attemptFilename);
+                using (FileStream inStream = new FileStream(filepath, FileMode.Open))
+                {
+                    paramFile.loadTextFile(inStream);
+                }
+                return true;
+            }
+            return false;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -697,16 +592,15 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
 
         private void insertNMLLFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (loadedNbl != null && treeView1.SelectedNode != null && treeView1.SelectedNode.Level == 1)
+            if (loadedContainer is NblLoader && treeView1.SelectedNode != null && treeView1.SelectedNode.Level == 1)
             {
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
                     Stream inStream = fileDialog.OpenFile();
-                    loadedNbl.chunks[0].addFile(treeView1.SelectedNode.Index, new RawFile(inStream));
+                    ((ContainerFile)loadedContainer.getFileParsed(0)).addFile(treeView1.SelectedNode.Index, new RawFile(inStream));
                     inStream.Close();
                     treeView1.Nodes.Clear();
-
-                    addChildFiles(treeView1.Nodes, loadedNbl);
+                    addChildFiles(treeView1.Nodes, loadedContainer);
                 }
             }
         }
@@ -776,8 +670,6 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
                     Array.Copy(toDecrypt, 0, fileContents, headerLoc, 0x30);
 
                     sb.Append(Encoding.ASCII.GetString(toDecrypt, 0, 0x20).Split('\0')[0] + "\t");
-                    //sb.Append(BitConverter.ToUInt16(fileContents, (int)(headerLoc + 0x4C)) + "\t");
-                    //sb.Append(BitConverter.ToUInt16(fileContents, (int)(headerLoc + 0x4E)) + "\n");
                 }
 
                 fileStream.Seek(nmllDataLoc, SeekOrigin.Begin);
@@ -791,12 +683,6 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
                 File.WriteAllBytes(fileDialog.FileName + ".decryptNmll", decryptedNmll);
                 File.WriteAllBytes(fileDialog.FileName + ".decompressNmll", decompressedNmll);
             }
-        }
-
-        public static UInt32 ReverseBytes(UInt32 value)
-        {
-            return (value & 0x000000FFU) << 24 | (value & 0x0000FF00U) << 8 |
-                (value & 0x00FF0000U) >> 8 | (value & 0xFF000000U) >> 24;
         }
 
         private void decryptNMLLToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1012,115 +898,70 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
 
         private void exportNode(TreeNode node, string fileDirectory)
         {
-            string extension = Path.GetExtension(node.Text);
-            if (node.Text != "NMLL chunk" && node.Text != "TMLL chunk" && node.Text != "NMLB chunk" && node.Text != "TMLB chunk")
+            if (node.Tag is FileTreeNodeTag)
             {
-                if (node.Tag != null && node.Tag is object[])
+                var tag = (FileTreeNodeTag)node.Tag;
+                ContainerFile parent = tag.OwnerContainer;
+                string originalFilename = tag.FileName;
+                int fileIndex = node.Index;
+                List<string> parentFilenames = parent.getFilenames();
+                PsuFile file = parent.getFileParsed(fileIndex);
+                //NBLs only have "NML(B/L)" or "TML(B/L)" chunks as children.
+                if (!(parent is NblLoader))
                 {
-                    ContainerFile parent = (ContainerFile)((object[])node.Tag)[0];
-                    string filename = (string)((object[])node.Tag)[1];
-                    PsuFile file = parent.getFileParsed(filename);
-                    filename = Path.Combine(fileDirectory, filename);
 
                     if (file is TextureFile && batchPngExport)
                     {
-                        filename = filename.Replace(".xvr", ".png");
+                        string filename = Path.Combine(fileDirectory, Path.GetFileName(originalFilename + ".png"));
                         ((TextureFile)file).mipMaps[0].Save(filename);
                     }
                     else
                     {
-                        if (extension != ".nbl" || extension != ".afs")
+                        if (batchExportSubArchiveFiles || !(file is ContainerFile))
                         {
-                            extractFile(file, filename);
-                        }
-                        else if (batchExportSubArchiveFiles)
-                        {
+                            string filename = Path.Combine(fileDirectory, getUniqueFilename(originalFilename, fileIndex, parentFilenames));
                             extractFile(file, filename);
                         }
                     }
                 }
-            }
 
-            //Handle it as a new archive within the current one
-            if(extension == ".nbl" || extension == ".afs")
-            {
-                string newFolder = fileDirectory + @"\" + node.Text + "_ext";
-                exportAll(node.Nodes, newFolder);
-            } else
-            {
-                foreach (TreeNode nodeChild in node.Nodes)
+                //Handle it as a new archive within the current one
+                if (file is ContainerFile)
                 {
-                    exportNode(nodeChild, fileDirectory);
+                    string newFolder = fileDirectory + @"\" + getUniqueFilename(originalFilename, fileIndex, parentFilenames) + "_ext";
+                    exportAll(node.Nodes, newFolder);
+                }
+                else
+                {
+                    foreach (TreeNode nodeChild in node.Nodes)
+                    {
+                        exportNode(nodeChild, fileDirectory);
+                    }
                 }
             }
-            
+        }
+
+        private string getUniqueFilename(string originalFilename, int fileIndex, List<string> parentFilenames)
+        {
+            string usedFilename;
+            //If the same file exists multiple times, append the index to it.
+            if (parentFilenames.Count(filename => filename == originalFilename) > 1)
+            {
+                usedFilename = Path.GetFileName(originalFilename) + "_" + (fileIndex - parentFilenames.FindIndex(name => name == originalFilename)) + Path.GetExtension(originalFilename);
+            }
+            else
+            {
+                usedFilename = originalFilename;
+            }
+            return usedFilename;
         }
 
         private void extractFile(PsuFile psuFile, string filename)
         {
             RawFile file = psuFile.ToRawFile(0);
             byte[] bytes = file.WriteToBytes(exportMetaData);
-            /*
-
-            List<byte> output = new List<byte>();
-            byte[] toSave = psuFile.ToRaw();
-            byte[] subHeader = psuFile.header;
-            int[] pointers = psuFile.calculatedPointers;
-            string fileNameSansPath = Path.GetFileName(filename);
-
-            if (exportMetaData == true)
-            {
-                if (pointers == null)
-                {
-                    output.AddRange(Encoding.ASCII.GetBytes("STD\0"));
-                }
-                else
-                {
-                    output.AddRange(Encoding.ASCII.GetBytes(fileNameSansPath.ToUpper().ToCharArray(fileNameSansPath.Length - 3, 3)));
-                    output.Add(0);
-                }
-
-                output.AddRange(new byte[0xC]);
-                output.AddRange(ContainerUtilities.encodePaddedSjisString(fileNameSansPath, 0x20));
-                output.AddRange(new byte[0x4]);
-                output.AddRange(BitConverter.GetBytes(toSave.Length));
-                output.AddRange(new byte[0x4]);
-
-                if (pointers != null)
-                {
-                    output.AddRange(BitConverter.GetBytes(pointers.Length));
-                }
-                else
-                {
-                    output.AddRange(new byte[0x4]);
-                }
-                if (subHeader != null)
-                {
-                    output.AddRange(subHeader);
-                }
-                else
-                {
-                    output.AddRange(new byte[0x20]);
-                }
-            }
-            output.AddRange(toSave);
-
-            if (exportMetaData == true)
-            {
-                if (pointers != null)
-                {
-                    //Calc padding to get to pointer start
-                    long pointerPadding = ((output.Count + 0x7F) & 0xFFFFFF80) - output.Count;
-                    output.AddRange(new byte[pointerPadding]);
-                    for (int i = 0; i < pointers.Length; i++)
-                    {
-                        output.AddRange(BitConverter.GetBytes(pointers[i]));
-                    }
-                }
-            }*/
             try
             {
-                //File.WriteAllBytes(filename, output.ToArray());
                 File.WriteAllBytes(filename, bytes);
             }
             catch
@@ -1212,20 +1053,57 @@ private void addNblFiles(TreeNodeCollection currNode, NblLoader toRead)
                 }
 
                 currentFileHexForm.Show();
-
             }
-            //currentFileHexForm.setBytesDelegate = new SetBytesDelegate(this.setFileBytes);
         }
 
-        /*
-        private void setFileBytes(byte[] fileBytes)
+        private void compressChunkToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
+            var node = treeView1.SelectedNode;
+            FileTreeNodeTag tag = node.Tag as FileTreeNodeTag;
+            if (tag != null && tag.OwnerContainer is NblLoader)
+            {
+                ContainerFile parent = tag.OwnerContainer;
+                ((NblChunk)parent.getFileParsed(treeView1.SelectedNode.Index)).Compressed = compressChunkToolStripMenuItem.Checked;
+                if(compressChunkToolStripMenuItem.Checked)
+                {
+                    treeView1.SelectedNode.ForeColor = Color.Green;
+                }
+                else
+                {
+                    treeView1.SelectedNode.ForeColor = Color.Black;
+                }
+                if (node.Parent != null)
+                {
+                    if(parent.Compressed)
+                    {
+                        node.Parent.ForeColor = Color.Green;
+                    }
+                    else
+                    {
+                        node.Parent.ForeColor = Color.Black;
+                    }
+                }
+            }
+        }
 
-        }*/
-
-        private void enableNMLLLoggingToolStripMenuItem_Click(object sender, EventArgs e)
+        public void setNmllCompressOverride(NblLoader.CompressionOverride settings)
         {
+            NblLoader.NmllCompressionOverride = settings;
+        }
 
+        public void setTmllCompressOverride(NblLoader.CompressionOverride settings)
+        {
+            NblLoader.TmllCompressionOverride = settings;
+        }
+
+        private void nblChunkContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            FileTreeNodeTag tag = treeView1.SelectedNode.Tag as FileTreeNodeTag;
+            if (tag != null && tag.OwnerContainer is NblLoader)
+            {
+                ContainerFile parent = tag.OwnerContainer;
+                compressChunkToolStripMenuItem.Checked = ((NblChunk)parent.getFileParsed(treeView1.SelectedNode.Index)).Compressed;
+            }
         }
     }
 }

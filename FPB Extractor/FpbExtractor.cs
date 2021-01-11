@@ -28,13 +28,19 @@ namespace FPB_Extractor
 
             buttonMap[psp2FileNaRadioButton] = new FileMapping { listFilename = "list-psp2-na.bin", baseAddress = 0 };
             buttonMap[psp2MediaNaRadioButton] = new FileMapping { listFilename = "list-psp2-na.bin", baseAddress = 0x80000000 };
-            buttonMap[psp2FileEurRadioButton] = new FileMapping { listFilename = "list-psp2-eur.bin", baseAddress = 0 };
-            buttonMap[psp2MediaEurRadioButton] = new FileMapping { listFilename = "list-psp2-eur.bin", baseAddress = 0x80000000 };
+            buttonMap[psp2DemoFileRadioButton] = new FileMapping { listFilename = "list-psp2-na-demo.bin", baseAddress = 0 };
+            buttonMap[psp2DemoMediaRadioButton] = new FileMapping { listFilename = "list-psp2-na-demo.bin", baseAddress = 0x80000000 };
+            buttonMap[psp2FileEurRadioButton] = new FileMapping { listFilename = "list-psp2-eur-aug4-2010.bin", baseAddress = 0 };
+            buttonMap[psp2MediaEurRadioButton] = new FileMapping { listFilename = "list-psp2-eur-aug4-2010.bin", baseAddress = 0x80000000 };
             buttonMap[psp2FileJRadioButton] = new FileMapping { listFilename = "list-psp2-j.bin", baseAddress = 0 };
             buttonMap[psp2MediaJRadioButton] = new FileMapping { listFilename = "list-psp2-j.bin", baseAddress = 0x80000000 };
+            buttonMap[psp2ProtoFileRadioButton] = new FileMapping { listFilename = "list-psp2-na.bin", baseAddress = 0 };
+            buttonMap[psp2ProtoMediaRadioButton] = new FileMapping { listFilename = "list-psp2-na.bin", baseAddress = 0x80000000 };
 
             buttonMap[infinityFileRadioButton] = new FileMapping { listFilename = "list-psp2i-j.bin", baseAddress = 0 };
             buttonMap[infinityMediaRadioButton] = new FileMapping { listFilename = "list-psp2i-j.bin", baseAddress = 0x80000000 };
+            buttonMap[infinityDemoFileRadioButton] = new FileMapping { listFilename = "list-psp2i-j-demo.bin", baseAddress = 0 };
+            buttonMap[infinityDemoMediaRadioButton] = new FileMapping { listFilename = "list-psp2i-j-demo.bin", baseAddress = 0x80000000 };
             buttonMap[customFpbRadioButton] = customFileMapping;
 
             checkListFiles();
@@ -127,6 +133,8 @@ namespace FPB_Extractor
             progressBar1.Step = 1;
             int fileNum = 0;
 
+            Array.Sort(fileLocs, crcs);
+
             using (Stream fileArchiveStream = new FileStream(fpbFile, FileMode.Open))
             {
                 using (BinaryReader fileArchiveReader = new BinaryReader(fileArchiveStream))
@@ -149,7 +157,6 @@ namespace FPB_Extractor
                             uint nextFileOffset;
                             if(i < fileCount - 1 && fileLocs[i + 1] >= baseOffset)
                             {
-                                //dangerous assumption: no bitmask changes (e.g if file 0 is above base offset, file 1 should not be below)
                                 nextFileOffset = Math.Min((uint)fileArchiveStream.Length, (uint)(fileLocs[i + 1] - baseOffset));
                             }
                             else

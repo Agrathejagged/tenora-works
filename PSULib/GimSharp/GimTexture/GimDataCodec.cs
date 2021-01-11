@@ -54,8 +54,10 @@ namespace GimSharp
                     for (int x = 0; x < width; x++)
                     {
                         PixelCodec.DecodePixel(source, sourceIndex, destination, destinationIndex);
-                        sourceIndex++;
-                        destinationIndex++;
+                        //PSULib change: increment by bpp >> 3 rather than 1
+                        //How did this ever work?
+                        sourceIndex+=Bpp >> 3;
+                        destinationIndex += Bpp >> 3;
                     }
                 }
 
@@ -301,7 +303,8 @@ namespace GimSharp
 
             byte[] destination = new byte[width * height];
 
-            int rowblocks = (width / 16);
+            //PSULib change: blocks must be at least 1
+            int rowblocks = Math.Max((width / 16), 1);
 
             for (int y = 0; y < height; y++)
             {
@@ -331,6 +334,7 @@ namespace GimSharp
 
             byte[] destination = new byte[width * height];
 
+            //PSULib change: blocks must be at least 1
             int rowblocks = Math.Max((width / 16), 1);
 
             for (int y = 0; y < height; y++)

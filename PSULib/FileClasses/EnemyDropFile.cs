@@ -8,162 +8,31 @@ namespace psu_generic_parser
 {
     public class EnemyDropFile : PsuFile
     {
+        public bool isV1File = false;
         public class MonsterDrop
         {
-            private ushort enemyNum;
-
-            public ushort EnemyNum
-            {
-                get { return enemyNum; }
-                set { enemyNum = value; }
-            }
-            private ushort specialNum;
-
-            public ushort SpecialNum
-            {
-                get { return specialNum; }
-                set { specialNum = value; }
-            }
-            private ushort dropNothing;
-
-            public ushort DropNothing
-            {
-                get { return dropNothing; }
-                set { dropNothing = value; }
-            }
-            private ushort areaProb;
-
-            public ushort AreaProb
-            {
-                get { return areaProb; }
-                set { areaProb = value; }
-            }
-            private ushort mesetaProb;
-
-            public ushort MesetaProb
-            {
-                get { return mesetaProb; }
-                set { mesetaProb = value; }
-            }
-            private ushort tier1Prob;
-
-            public ushort Tier1Prob
-            {
-                get { return tier1Prob; }
-                set { tier1Prob = value; }
-            }
-            private ushort tier2Prob;
-
-            public ushort Tier2Prob
-            {
-                get { return tier2Prob; }
-                set { tier2Prob = value; }
-            }
-            private ushort tier3Prob;
-
-            public ushort Tier3Prob
-            {
-                get { return tier3Prob; }
-                set { tier3Prob = value; }
-            }
-            private ushort tier4Prob;
-
-            public ushort Tier4Prob
-            {
-                get { return tier4Prob; }
-                set { tier4Prob = value; }
-            }
-            private ushort tier5Prob;
-
-            public ushort Tier5Prob
-            {
-                get { return tier5Prob; }
-                set { tier5Prob = value; }
-            }
-            private ushort mesetaMin;
-
-            public ushort MesetaMin
-            {
-                get { return mesetaMin; }
-                set { mesetaMin = value; }
-            }
-            private ushort mesetaMax;
-
-            public ushort MesetaMax
-            {
-                get { return mesetaMax; }
-                set { mesetaMax = value; }
-            }
-            private int tier1Drop;
-
-            public int Tier1Drop
-            {
-                get { return tier1Drop; }
-                set { tier1Drop = value; }
-            }
-            private int tier2Drop;
-
-            public int Tier2Drop
-            {
-                get { return tier2Drop; }
-                set { tier2Drop = value; }
-            }
-            private int tier3Drop;
-
-            public int Tier3Drop
-            {
-                get { return tier3Drop; }
-                set { tier3Drop = value; }
-            }
-            private int tier4Drop;
-
-            public int Tier4Drop
-            {
-                get { return tier4Drop; }
-                set { tier4Drop = value; }
-            }
-            private int tier5Drop;
-
-            public int Tier5Drop
-            {
-                get { return tier5Drop; }
-                set { tier5Drop = value; }
-            }
-            private int specDrop1;
-
-            public int SpecDrop1
-            {
-                get { return specDrop1; }
-                set { specDrop1 = value; }
-            }
-            private int specDrop2;
-
-            public int SpecDrop2
-            {
-                get { return specDrop2; }
-                set { specDrop2 = value; }
-            }
-            private int specDrop3;
-
-            public int SpecDrop3
-            {
-                get { return specDrop3; }
-                set { specDrop3 = value; }
-            }
-            private ushort specProb1;
-
-            public ushort SpecProb1
-            {
-                get { return specProb1; }
-                set { specProb1 = value; }
-            }
-            private ushort specProb2;
-
-            public ushort SpecProb2
-            {
-                get { return specProb2; }
-                set { specProb2 = value; }
-            }
+            public ushort EnemyNum { get; set; }
+            public ushort SpecialNum { get; set; }
+            public ushort DropNothing { get; set; }
+            public ushort AreaProb { get; set; }
+            public ushort MesetaProb { get; set; }
+            public ushort Tier1Prob { get; set; }
+            public ushort Tier2Prob { get; set; }
+            public ushort Tier3Prob { get; set; }
+            public ushort Tier4Prob { get; set; }
+            public ushort Tier5Prob { get; set; }
+            public uint MesetaMin { get; set; }
+            public uint MesetaMax { get; set; }
+            public int Tier1Drop { get; set; }
+            public int Tier2Drop { get; set; }
+            public int Tier3Drop { get; set; }
+            public int Tier4Drop { get; set; }
+            public int Tier5Drop { get; set; }
+            public int SpecDrop1 { get; set; }
+            public int SpecDrop2 { get; set; }
+            public int SpecDrop3 { get; set; }
+            public ushort SpecProb1 { get; set; }
+            public ushort SpecProb2 { get; set; }
         }
 
         
@@ -193,6 +62,13 @@ namespace psu_generic_parser
             int levelDropCount = inReader.ReadInt16();
             int specialDropLoc = inReader.ReadInt32();
             int levelDropLoc = inReader.ReadInt32();
+            //Try to figure out whether this is a v1 or AotI file.
+            //We can worry about PSP1 (and expanded drop tables) later...
+
+            //So v1 enemy entries are 24 bytes long (1 level drop). AotI ones are 44 bytes long (5 level drops).
+            //There are guaranteed to be lots of monsters, so if the size is doubled, it should be way too big if it's a v1 file.
+            //v1 has 0x5e monsters, AotI has 0x88; not every monster is guaranteed to have an entry, but if there's too many, we aren't in v1.
+            isV1File = (levelDropCount <= 0x5e && (levelDropCount * 0x44 + levelDropLoc > rawData.Length));
             inStream.Seek(specialDropLoc, SeekOrigin.Begin);
             byte[] specialDrops = inReader.ReadBytes(specialDropCount * 16);
             inStream.Seek(levelDropLoc, SeekOrigin.Begin);
@@ -206,17 +82,28 @@ namespace psu_generic_parser
                 temp.MesetaProb = inReader.ReadUInt16();
                 temp.AreaProb = inReader.ReadUInt16();
                 temp.Tier1Prob = inReader.ReadUInt16();
-                temp.Tier2Prob = inReader.ReadUInt16();
-                temp.Tier3Prob = inReader.ReadUInt16();
-                temp.Tier4Prob = inReader.ReadUInt16();
-                temp.Tier5Prob = inReader.ReadUInt16();
-                temp.MesetaMin = inReader.ReadUInt16();
-                temp.MesetaMax = inReader.ReadUInt16();
+                if(isV1File)
+                {
+                    temp.MesetaMin = inReader.ReadUInt32();
+                    temp.MesetaMax = inReader.ReadUInt32();
+                }
+                if (!isV1File)
+                {
+                    temp.Tier2Prob = inReader.ReadUInt16();
+                    temp.Tier3Prob = inReader.ReadUInt16();
+                    temp.Tier4Prob = inReader.ReadUInt16();
+                    temp.Tier5Prob = inReader.ReadUInt16();
+                    temp.MesetaMin = inReader.ReadUInt16();
+                    temp.MesetaMax = inReader.ReadUInt16();
+                }
                 temp.Tier1Drop = inReader.ReadByte() << 24 | inReader.ReadByte() << 16 | inReader.ReadByte() << 8 | inReader.ReadByte();
-                temp.Tier2Drop = inReader.ReadByte() << 24 | inReader.ReadByte() << 16 | inReader.ReadByte() << 8 | inReader.ReadByte();
-                temp.Tier3Drop = inReader.ReadByte() << 24 | inReader.ReadByte() << 16 | inReader.ReadByte() << 8 | inReader.ReadByte();
-                temp.Tier4Drop = inReader.ReadByte() << 24 | inReader.ReadByte() << 16 | inReader.ReadByte() << 8 | inReader.ReadByte();
-                temp.Tier5Drop = inReader.ReadByte() << 24 | inReader.ReadByte() << 16 | inReader.ReadByte() << 8 | inReader.ReadByte();
+                if (!isV1File)
+                {
+                    temp.Tier2Drop = inReader.ReadByte() << 24 | inReader.ReadByte() << 16 | inReader.ReadByte() << 8 | inReader.ReadByte();
+                    temp.Tier3Drop = inReader.ReadByte() << 24 | inReader.ReadByte() << 16 | inReader.ReadByte() << 8 | inReader.ReadByte();
+                    temp.Tier4Drop = inReader.ReadByte() << 24 | inReader.ReadByte() << 16 | inReader.ReadByte() << 8 | inReader.ReadByte();
+                    temp.Tier5Drop = inReader.ReadByte() << 24 | inReader.ReadByte() << 16 | inReader.ReadByte() << 8 | inReader.ReadByte();
+                }
                 temp.SpecDrop1 = specialDrops[temp.SpecialNum * 16 + 0] << 24 | specialDrops[temp.SpecialNum * 16 + 1] << 16 | specialDrops[temp.SpecialNum * 16 + 2] << 8 | specialDrops[temp.SpecialNum * 16 + 3];
                 temp.SpecDrop2 = specialDrops[temp.SpecialNum * 16 + 4] << 24 | specialDrops[temp.SpecialNum * 16 + 5] << 16 | specialDrops[temp.SpecialNum * 16 + 6] << 8 | specialDrops[temp.SpecialNum * 16 + 7];
                 temp.SpecDrop3 = specialDrops[temp.SpecialNum * 16 + 8] << 24 | specialDrops[temp.SpecialNum * 16 + 9] << 16 | specialDrops[temp.SpecialNum * 16 + 10] << 8 | specialDrops[temp.SpecialNum * 16 + 11];
@@ -266,17 +153,28 @@ namespace psu_generic_parser
                 outWriter.Write(monsterDrops[i].AreaProb);
                 outWriter.Write(monsterDrops[i].MesetaProb);
                 outWriter.Write(monsterDrops[i].Tier1Prob);
-                outWriter.Write(monsterDrops[i].Tier2Prob);
-                outWriter.Write(monsterDrops[i].Tier3Prob);
-                outWriter.Write(monsterDrops[i].Tier4Prob);
-                outWriter.Write(monsterDrops[i].Tier5Prob);
-                outWriter.Write(monsterDrops[i].MesetaMin);
-                outWriter.Write(monsterDrops[i].MesetaMax);
+                if(isV1File)
+                {
+                    outWriter.Write(monsterDrops[i].MesetaMin);
+                    outWriter.Write(monsterDrops[i].MesetaMax);
+                }
+                if (!isV1File)
+                {
+                    outWriter.Write(monsterDrops[i].Tier2Prob);
+                    outWriter.Write(monsterDrops[i].Tier3Prob);
+                    outWriter.Write(monsterDrops[i].Tier4Prob);
+                    outWriter.Write(monsterDrops[i].Tier5Prob);
+                    outWriter.Write((ushort)monsterDrops[i].MesetaMin);
+                    outWriter.Write((ushort)monsterDrops[i].MesetaMax);
+                }
                 outWriter.Write(BitConverter.GetBytes(monsterDrops[i].Tier1Drop).Reverse().ToArray());
-                outWriter.Write(BitConverter.GetBytes(monsterDrops[i].Tier2Drop).Reverse().ToArray());
-                outWriter.Write(BitConverter.GetBytes(monsterDrops[i].Tier3Drop).Reverse().ToArray());
-                outWriter.Write(BitConverter.GetBytes(monsterDrops[i].Tier4Drop).Reverse().ToArray());
-                outWriter.Write(BitConverter.GetBytes(monsterDrops[i].Tier5Drop).Reverse().ToArray());
+                if (!isV1File)
+                {
+                    outWriter.Write(BitConverter.GetBytes(monsterDrops[i].Tier2Drop).Reverse().ToArray());
+                    outWriter.Write(BitConverter.GetBytes(monsterDrops[i].Tier3Drop).Reverse().ToArray());
+                    outWriter.Write(BitConverter.GetBytes(monsterDrops[i].Tier4Drop).Reverse().ToArray());
+                    outWriter.Write(BitConverter.GetBytes(monsterDrops[i].Tier5Drop).Reverse().ToArray());
+                }
             }
             int headerLoc = (int)outStream.Position;
             outWriter.Write((short)specDrops.Count);

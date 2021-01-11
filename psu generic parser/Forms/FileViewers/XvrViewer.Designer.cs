@@ -190,7 +190,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(348, 4);
+            this.label3.Location = new System.Drawing.Point(357, 4);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 13);
             this.label3.TabIndex = 12;
@@ -201,14 +201,14 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(275, 24);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(67, 13);
+            this.label4.Size = new System.Drawing.Size(81, 13);
             this.label4.TabIndex = 13;
-            this.label4.Text = "Raw format: ";
+            this.label4.Text = "Texture format: ";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(348, 25);
+            this.label5.Location = new System.Drawing.Point(357, 24);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(34, 13);
             this.label5.TabIndex = 14;
@@ -216,7 +216,7 @@
             // 
             // pixelFormatDropDown
             // 
-            this.pixelFormatDropDown.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.pixelFormatDropDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pixelFormatDropDown.FormattingEnabled = true;
             this.pixelFormatDropDown.Location = new System.Drawing.Point(400, 204);
             this.pixelFormatDropDown.Name = "pixelFormatDropDown";
@@ -226,12 +226,13 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(400, 188);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(109, 13);
+            this.label6.Size = new System.Drawing.Size(95, 13);
             this.label6.TabIndex = 16;
-            this.label6.Text = "Save Texture Format:";
+            this.label6.Text = "Save Pixel Format:";
             // 
             // XvrViewer
             // 

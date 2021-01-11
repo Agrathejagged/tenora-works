@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Collections;
 
@@ -11,118 +8,37 @@ namespace psu_generic_parser
     {
         public class outfit
         {
-            ushort appearance;
-            byte category;
-            byte manufacturer;
-            byte overlap;
-            byte restrict;
-            byte color0;
-            byte color1;
-            byte color2;
-            byte color3;
-            byte color4;
-            byte color5;
-            byte color6;
-            byte color7;
-            byte color8;
-            byte color9;
-            byte orString;
+            public ushort Appearance { get; set; }
 
-            public ushort Appearance
-            {
-                get { return appearance; }
-                set { appearance = value; }
-            }
+            public byte Category { get; set; }
 
-            public byte Category
-            {
-                get { return category; }
-                set { category = value; }
-            }
+            public byte Manufacturer { get; set; }
 
-            public byte Manufacturer
-            {
-                get { return manufacturer; }
-                set { manufacturer = value; }
-            }
+            public byte Overlap { get; set; }
 
-            public byte Overlap
-            {
-                get { return overlap; }
-                set { overlap = value; }
-            }
+            public byte Restrict { get; set; }
 
-            public byte Restrict
-            {
-                get { return restrict; }
-                set { restrict = value; }
-            }
+            public byte OrString { get; set; }
 
-            public byte OrString
-            {
-                get { return orString; }
-                set { orString = value; }
-            }
+            public byte Color0 { get; set; }
 
-            public byte Color0
-            {
-                get { return color0; }
-                set { color0 = value; }
-            }
+            public byte Color1 { get; set; }
 
-            public byte Color1
-            {
-                get { return color1; }
-                set { color1 = value; }
-            }
+            public byte Color2 { get; set; }
 
-            public byte Color2
-            {
-                get { return color2; }
-                set { color2 = value; }
-            }
+            public byte Color3 { get; set; }
 
-            public byte Color3
-            {
-                get { return color3; }
-                set { color3 = value; }
-            }
+            public byte Color4 { get; set; }
 
-            public byte Color4
-            {
-                get { return color4; }
-                set { color4 = value; }
-            }
+            public byte Color5 { get; set; }
 
-            public byte Color5
-            {
-                get { return color5; }
-                set { color5 = value; }
-            }
+            public byte Color6 { get; set; }
 
-            public byte Color6
-            {
-                get { return color6; }
-                set { color6 = value; }
-            }
+            public byte Color7 { get; set; }
 
-            public byte Color7
-            {
-                get { return color7; }
-                set { color7 = value; }
-            }
+            public byte Color8 { get; set; }
 
-            public byte Color8
-            {
-                get { return color8; }
-                set { color8 = value; }
-            }
-
-            public byte Color9
-            {
-                get { return color9; }
-                set { color9 = value; }
-            }
+            public byte Color9 { get; set; }
         }
 
         public ArrayList[] clothes = new ArrayList[6];

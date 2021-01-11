@@ -9,6 +9,13 @@ namespace psu_generic_parser
 {
     public class BigEndianBinaryWriter : BinaryWriter
     {
+        public static BinaryWriter GetEndianSpecificBinaryWriter(Stream stream, bool bigEndian)
+        {
+            if (bigEndian)
+                return new BigEndianBinaryWriter(stream);
+            return new BinaryWriter(stream);
+        }
+
         public BigEndianBinaryWriter(Stream output) : base(output)
         {
         }

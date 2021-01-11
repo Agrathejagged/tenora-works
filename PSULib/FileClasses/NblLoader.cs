@@ -25,21 +25,41 @@ namespace psu_generic_parser
             public uint pointerSize;   //0 if none used
             // END ENCRYPTED SECTION
             public byte[] subHeader;
-            /*
-            public string nxifHeader;  //Only there if calculated pointers exist
-            public uint unknown3;  // Always 0x18
-            public uint unknown4;  // Always 01
-            public uint unknown5;  // Always 0x20
-            public uint nxifFilesize;  // Matches above 
-            public uint nxifFilepad;   // Filesize + 0x20
-            public uint nxifPointpad;  // (Pointer length + 0x1F) & 0xFFFFFFF0
-            public uint unknown9;  //Gaaaaaah this stuff is file dependent~
-             */
         }
 
+        public enum CompressionOverride
+        {
+            ForceCompress,
+            ForceDecompress,
+            UseFileSetting
+        }
+
+        public static CompressionOverride NmllCompressionOverride { get; set; } = CompressionOverride.UseFileSetting;
+        public static CompressionOverride TmllCompressionOverride { get; set; } = CompressionOverride.UseFileSetting;
+
         public List<NblChunk> chunks = new List<NblChunk>();
-        public bool isCompressed { get { return chunks.Count > 0 && chunks[0].compressed; } }
-                
+
+        public bool Encrypted { get => chunks.Count > 0 && chunks[0].encrypted; 
+            set
+            {
+                if (chunks.Count > 0)
+                {
+                    chunks[0].encrypted = value;
+                }
+            }
+        }
+        public bool Compressed
+        {
+            get => chunks.Count > 0 && chunks[0].compressed;
+            set
+            {
+                if (chunks.Count > 0)
+                {
+                    chunks[0].compressed = value;
+                }
+            }
+        }
+
         public bool isBigEndian = false;
 
         //Calculated data.
@@ -258,14 +278,9 @@ namespace psu_generic_parser
             File.WriteAllBytes(fullPath, decompressedFiles);
         }
 
-        //TODO: Allow saving files in PSP2i format (using partial encrypt and deflate instead of PRS)
-        public void saveFile(Stream fileToWrite, bool compressNmll, bool compressTmll, bool saveUnmodified)
+        public void saveFile(Stream fileToWrite, bool saveUnmodified)
         {
-            BinaryWriter beta;
-            if (isBigEndian)
-                beta = new BigEndianBinaryWriter(fileToWrite);
-            else
-                beta = new BinaryWriter(fileToWrite);
+            BinaryWriter beta = BigEndianBinaryWriter.GetEndianSpecificBinaryWriter(fileToWrite, isBigEndian);
             //A bit of logic just in case we're loading naked TMLL chunks for some reason.
             bool startsWithNmll = (chunks[0].chunkID.StartsWith("NML"));
             uint tmllHeaderLength = 0;
@@ -275,10 +290,22 @@ namespace psu_generic_parser
             for (int i = 0; i < chunks.Count; i++)
             {
                 if (chunks[i].chunkID.StartsWith("NML"))
-                    chunks[i].compressed = compressNmll;
-                if (chunks[i].chunkID.StartsWith("TML"))
                 {
-                    chunks[i].compressed = compressTmll;
+                    switch(NmllCompressionOverride)
+                    {
+                        case CompressionOverride.ForceCompress: chunks[i].Compressed = true; break;
+                        case CompressionOverride.ForceDecompress: chunks[i].Compressed = false; break;
+                        default: break;
+                    }
+                }
+                else if (chunks[i].chunkID.StartsWith("TML"))
+                {
+                    switch (TmllCompressionOverride)
+                    {
+                        case CompressionOverride.ForceCompress: chunks[i].Compressed = true; break;
+                        case CompressionOverride.ForceDecompress: chunks[i].Compressed = false; break;
+                        default: break;
+                    }
                 }
                 byte[] currentChunkData = chunks[i].SaveFile(saveUnmodified);
                 //Fill in TMLL info for NMLL header (yep)
@@ -373,7 +400,7 @@ namespace psu_generic_parser
         public override byte[] ToRaw()
         {
             MemoryStream toOutput = new MemoryStream();
-            saveFile(toOutput, false, false, false);
+            saveFile(toOutput);
             return toOutput.ToArray();
         }
 
@@ -419,13 +446,26 @@ namespace psu_generic_parser
         {
             throw new NotImplementedException();
         }
-        /*
-public override bool MatchesFile(string filename, byte[] fileContents, int[] pointers)
-{
-   if (filename.EndsWith(".nbl") || Encoding.ASCII.GetString(fileContents, 0, 4) == "NMLL")
-       return true;
-   return false;
-}*/
+
+        public void saveFile(Stream outStream)
+        {
+            saveFile(outStream, false);
+        }
+
+        public bool doesFileExist(string filename)
+        {
+            return chunks.Any(chunk => chunk.chunkID + " chunk" == filename);
+        }
+
+        public bool isParsedFileCached(string filename)
+        {
+            return chunks.Any(chunk => chunk.chunkID + " chunk" == filename);
+        }
+
+        public bool isParsedFileCached(int fileIndex)
+        {
+            return chunks.Count > fileIndex;
+        }
 
         #endregion
     }
@@ -441,16 +481,15 @@ public override bool MatchesFile(string filename, byte[] fileContents, int[] poi
         public List<RawFile> fileContents = new List<RawFile>();
         Dictionary<string, PsuFile> loadedFileCache = new Dictionary<string, PsuFile>();
 
+        public bool Encrypted { get => encrypted; set => encrypted = value; }
+        public bool Compressed { get => compressed; set => compressed = value; }
+
         public byte[] SaveFile(bool discardChanges)
         {
             //First, combine all the files.
             MemoryStream groupFileStream = new MemoryStream();
             MemoryStream groupHeaderStream = new MemoryStream();
-            BinaryWriter groupHeaderWriter;
-            if (bigEndian)
-                groupHeaderWriter = new BigEndianBinaryWriter(groupHeaderStream);
-            else
-                groupHeaderWriter = new BinaryWriter(groupHeaderStream);
+            BinaryWriter groupHeaderWriter = BigEndianBinaryWriter.GetEndianSpecificBinaryWriter(groupHeaderStream, bigEndian);
             int paddingAmount = versionNumber == 0x1002 ? 0x3F : 0x7FF;
             uint mask = versionNumber == 0x1002 ? 0xFFFFFFC0 : 0xFFFFF800;
 
@@ -469,8 +508,15 @@ public override bool MatchesFile(string filename, byte[] fileContents, int[] poi
                 //Figure out whether to take the cached copy or the original
                 if (this.loadedFileCache.ContainsKey(fileContents[i].filename) && !discardChanges)
                 {
-                    savedFiles[i] = loadedFileCache[fileContents[i].filename].ToRawFile((uint)groupFileStream.Position);
-                    savedFiles[i].chunkSize = fileContents[i].chunkSize;
+                    try
+                    {
+                        savedFiles[i] = loadedFileCache[fileContents[i].filename].ToRawFile((uint)groupFileStream.Position);
+                        savedFiles[i].chunkSize = fileContents[i].chunkSize;
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        savedFiles[i].RebaseFile((uint)groupFileStream.Position);
+                    }
                 }
                 else if (savedFiles[i].fileOffset != (uint)groupFileStream.Position)
                 {
@@ -640,6 +686,27 @@ public override bool MatchesFile(string filename, byte[] fileContents, int[] poi
         public void addFile(RawFile toAdd)
         {
             fileContents.Add(toAdd);
+        }
+
+        public void saveFile(Stream outStream)
+        {
+            byte[] rawBytes = SaveFile(false);
+            outStream.Write(rawBytes, 0, rawBytes.Length);
+        }
+
+        public bool doesFileExist(string filename)
+        {
+            return fileContents.Any(file => file.filename == filename);
+        }
+
+        public bool isParsedFileCached(string filename)
+        {
+            return loadedFileCache.ContainsKey(filename);
+        }
+
+        public bool isParsedFileCached(int fileIndex)
+        {
+            return fileContents.Count > fileIndex && loadedFileCache.ContainsKey(fileContents[fileIndex].filename);
         }
 
         #endregion

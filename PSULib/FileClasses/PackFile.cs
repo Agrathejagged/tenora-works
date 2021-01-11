@@ -54,9 +54,17 @@ namespace psu_generic_parser
             }
         }
 
+        public bool Encrypted { get => false; set { } }
+        public bool Compressed { get => false; set { } }
+
         public void addFile(int index, RawFile toAdd)
         {
             throw new NotImplementedException();
+        }
+
+        public bool doesFileExist(string filename)
+        {
+            return filenames.Contains(filename);
         }
 
         public List<string> getFilenames()
@@ -92,6 +100,16 @@ namespace psu_generic_parser
             return null;
         }
 
+        public bool isParsedFileCached(string filename)
+        {
+            return containedFiles.ContainsKey(filenames.IndexOf(filename));
+        }
+
+        public bool isParsedFileCached(int fileIndex)
+        {
+            return containedFiles.ContainsKey(fileIndex);
+        }
+
         public void replaceFile(string filename, RawFile toReplace)
         {
             if (filenames.Contains(filename))
@@ -100,6 +118,11 @@ namespace psu_generic_parser
                 containedRawFiles[filenames.IndexOf(filename)] = toReplace;
             }
             throw new NotImplementedException();
+        }
+
+        public void saveFile(Stream outStream)
+        {
+            this.ToRawFile(0).WriteToStream(outStream);
         }
 
         public override byte[] ToRaw()

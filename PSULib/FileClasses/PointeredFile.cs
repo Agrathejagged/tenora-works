@@ -40,9 +40,18 @@ namespace psu_generic_parser
             if (ptrs == null)
                 ptrs = new int[0];
 
+            MemoryStream initialStream = new MemoryStream(rawData);
+            BinaryReader initialReader = BigEndianBinaryReader.GetEndianSpecificBinaryReader(initialStream, useAsBigEndian);
+
+
             //Check if the file pointers make sense, update the raw data to be relative to 0 rather than relative to baseAddr
             byte[] modifiedData = (byte[])rawData.Clone();
             int[] rebasedPointers = new int[ptrs.Length];
+
+            MemoryStream memStream = new MemoryStream(modifiedData);
+            var fileReader = BigEndianBinaryReader.GetEndianSpecificBinaryReader(memStream, useAsBigEndian);
+            BinaryWriter modifiedWriter = BigEndianBinaryWriter.GetEndianSpecificBinaryWriter(memStream, useAsBigEndian);
+
             for (int i = 0; i < rebasedPointers.Length; i++)
             {
                 rebasedPointers[i] = ptrs[i] - baseAddr;
@@ -50,16 +59,15 @@ namespace psu_generic_parser
                 {
                     markFileBroken(rawData, ptrs, baseAddr);
                 }
-                int pointerDestination = BitConverter.ToInt32(rawData, rebasedPointers[i]) - baseAddr;
+                memStream.Seek(rebasedPointers[i], SeekOrigin.Begin);
+                int pointerDestination = fileReader.ReadInt32() - baseAddr;
                 if(pointerDestination < 0 || pointerDestination >= rawData.Length)
                 {
                     markFileBroken(rawData, ptrs, baseAddr);
                 }
-                Array.Copy(BitConverter.GetBytes(pointerDestination), 0, modifiedData, rebasedPointers[i], 4);
+                memStream.Seek(rebasedPointers[i], SeekOrigin.Begin);
+                modifiedWriter.Write(pointerDestination);
             }
-
-            var memStream = new MemoryStream(modifiedData);
-            var fileReader = BigEndianBinaryReader.GetEndianSpecificBinaryReader(memStream, useAsBigEndian);
 
             //+1 because the base pointer in the file isn't a calculated value
             List<int> pointerDestinations = new List<int>(rebasedPointers.Length + 1);

@@ -28,6 +28,9 @@ namespace psu_generic_parser.FileClasses
 
         public List<MiniAfsFileEntry> afsList;
 
+        public bool Encrypted { get => false; set { } }
+        public bool Compressed { get => false; set { } }
+
         //Initialize empty file.
         public MiniAfsLoader()
         {
@@ -256,6 +259,21 @@ namespace psu_generic_parser.FileClasses
         #endregion
 
         public void addFile(int index, RawFile toAdd)
+        {
+            
+        }
+
+        public bool doesFileExist(string filename)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool isParsedFileCached(string filename)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool isParsedFileCached(int fileIndex)
         {
             throw new NotImplementedException();
         }

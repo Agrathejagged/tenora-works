@@ -209,6 +209,12 @@
     <Compile Include="Forms\FileViewers\UnpointeredFileViewer.Designer.cs">
       <DependentUpon>UnpointeredFileViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FileViewers\XnaFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\XnaFileViewer.Designer.cs">
+      <DependentUpon>XnaFileViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FileViewers\XntFileViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -318,6 +324,9 @@
     <EmbeddedResource Include="Forms\FileViewers\UnpointeredFileViewer.resx">
       <DependentUpon>UnpointeredFileViewer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\XnaFileViewer.resx">
+      <DependentUpon>XnaFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\XntFileViewer.resx">
       <DependentUpon>XntFileViewer.cs</DependentUpon>
     </EmbeddedResource>
@@ -342,10 +351,6 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FileViewers\TextureViewer.resx">
-      <DependentUpon>TextureViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\TextViewer.resx">
@@ -379,12 +384,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Forms\FileViewers\TextureViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\FileViewers\TextureViewer.Designer.cs">
-      <DependentUpon>TextureViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FileViewers\TextViewer.cs">
       <SubType>UserControl</SubType>

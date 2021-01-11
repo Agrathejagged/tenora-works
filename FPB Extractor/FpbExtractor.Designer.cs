@@ -63,6 +63,12 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.bruteRipButton = new System.Windows.Forms.Button();
+            this.infinityDemoFileRadioButton = new System.Windows.Forms.RadioButton();
+            this.infinityDemoMediaRadioButton = new System.Windows.Forms.RadioButton();
+            this.psp2DemoMediaRadioButton = new System.Windows.Forms.RadioButton();
+            this.psp2DemoFileRadioButton = new System.Windows.Forms.RadioButton();
+            this.psp2ProtoMediaRadioButton = new System.Windows.Forms.RadioButton();
+            this.psp2ProtoFileRadioButton = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.baseOffsetUpDown)).BeginInit();
             this.SuspendLayout();
@@ -84,25 +90,26 @@
             this.infinityFileRadioButton.AutoSize = true;
             this.infinityFileRadioButton.Location = new System.Drawing.Point(19, 157);
             this.infinityFileRadioButton.Name = "infinityFileRadioButton";
-            this.infinityFileRadioButton.Size = new System.Drawing.Size(56, 17);
+            this.infinityFileRadioButton.Size = new System.Drawing.Size(84, 17);
             this.infinityFileRadioButton.TabIndex = 1;
-            this.infinityFileRadioButton.Text = "file.fpb";
+            this.infinityFileRadioButton.Text = "file.fpb (final)";
             this.infinityFileRadioButton.UseVisualStyleBackColor = true;
             // 
             // infinityMediaRadioButton
             // 
             this.infinityMediaRadioButton.AutoSize = true;
-            this.infinityMediaRadioButton.Location = new System.Drawing.Point(120, 157);
+            this.infinityMediaRadioButton.Location = new System.Drawing.Point(19, 180);
             this.infinityMediaRadioButton.Name = "infinityMediaRadioButton";
-            this.infinityMediaRadioButton.Size = new System.Drawing.Size(71, 17);
+            this.infinityMediaRadioButton.Size = new System.Drawing.Size(99, 17);
             this.infinityMediaRadioButton.TabIndex = 2;
-            this.infinityMediaRadioButton.Text = "media.fpb";
+            this.infinityMediaRadioButton.Text = "media.fpb (final)";
             this.infinityMediaRadioButton.UseVisualStyleBackColor = true;
             // 
             // customFpbRadioButton
             // 
+            this.customFpbRadioButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.customFpbRadioButton.AutoSize = true;
-            this.customFpbRadioButton.Location = new System.Drawing.Point(19, 211);
+            this.customFpbRadioButton.Location = new System.Drawing.Point(19, 229);
             this.customFpbRadioButton.Name = "customFpbRadioButton";
             this.customFpbRadioButton.Size = new System.Drawing.Size(94, 17);
             this.customFpbRadioButton.TabIndex = 3;
@@ -122,6 +129,15 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.psp2ProtoMediaRadioButton);
+            this.groupBox1.Controls.Add(this.psp2ProtoFileRadioButton);
+            this.groupBox1.Controls.Add(this.psp2DemoMediaRadioButton);
+            this.groupBox1.Controls.Add(this.psp2DemoFileRadioButton);
+            this.groupBox1.Controls.Add(this.infinityDemoMediaRadioButton);
+            this.groupBox1.Controls.Add(this.infinityDemoFileRadioButton);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.psp1FileJRadioButton);
             this.groupBox1.Controls.Add(this.psp1FileEurRadioButton);
@@ -145,16 +161,18 @@
             this.groupBox1.Controls.Add(this.customFpbRadioButton);
             this.groupBox1.Controls.Add(this.infinityFileRadioButton);
             this.groupBox1.Location = new System.Drawing.Point(13, 113);
+            this.groupBox1.MinimumSize = new System.Drawing.Size(572, 302);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(555, 293);
+            this.groupBox1.Size = new System.Drawing.Size(579, 305);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "List File Settings";
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(19, 192);
+            this.label6.Location = new System.Drawing.Point(16, 213);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(45, 13);
             this.label6.TabIndex = 21;
@@ -185,9 +203,9 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(16, 141);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(61, 13);
+            this.label5.Size = new System.Drawing.Size(39, 13);
             this.label5.TabIndex = 18;
-            this.label5.Text = "PSP2i final:";
+            this.label5.Text = "PSP2i:";
             // 
             // psp2MediaJRadioButton
             // 
@@ -275,8 +293,9 @@
             // 
             // offsetExplanation
             // 
+            this.offsetExplanation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.offsetExplanation.AutoSize = true;
-            this.offsetExplanation.Location = new System.Drawing.Point(224, 236);
+            this.offsetExplanation.Location = new System.Drawing.Point(227, 254);
             this.offsetExplanation.Name = "offsetExplanation";
             this.offsetExplanation.Size = new System.Drawing.Size(304, 13);
             this.offsetExplanation.TabIndex = 9;
@@ -285,8 +304,9 @@
             // 
             // browseListFileButton
             // 
+            this.browseListFileButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.browseListFileButton.Enabled = false;
-            this.browseListFileButton.Location = new System.Drawing.Point(477, 258);
+            this.browseListFileButton.Location = new System.Drawing.Point(487, 276);
             this.browseListFileButton.Name = "browseListFileButton";
             this.browseListFileButton.Size = new System.Drawing.Size(75, 23);
             this.browseListFileButton.TabIndex = 8;
@@ -296,9 +316,10 @@
             // 
             // listFileLabel
             // 
+            this.listFileLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.listFileLabel.AutoSize = true;
             this.listFileLabel.Enabled = false;
-            this.listFileLabel.Location = new System.Drawing.Point(29, 263);
+            this.listFileLabel.Location = new System.Drawing.Point(32, 281);
             this.listFileLabel.Name = "listFileLabel";
             this.listFileLabel.Size = new System.Drawing.Size(45, 13);
             this.listFileLabel.TabIndex = 7;
@@ -306,9 +327,10 @@
             // 
             // baseOffsetLabel
             // 
+            this.baseOffsetLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.baseOffsetLabel.AutoSize = true;
             this.baseOffsetLabel.Enabled = false;
-            this.baseOffsetLabel.Location = new System.Drawing.Point(29, 236);
+            this.baseOffsetLabel.Location = new System.Drawing.Point(32, 254);
             this.baseOffsetLabel.Name = "baseOffsetLabel";
             this.baseOffsetLabel.Size = new System.Drawing.Size(63, 13);
             this.baseOffsetLabel.TabIndex = 6;
@@ -316,17 +338,20 @@
             // 
             // listFileBox
             // 
+            this.listFileBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listFileBox.Enabled = false;
-            this.listFileBox.Location = new System.Drawing.Point(98, 260);
+            this.listFileBox.Location = new System.Drawing.Point(101, 278);
             this.listFileBox.Name = "listFileBox";
-            this.listFileBox.Size = new System.Drawing.Size(373, 20);
+            this.listFileBox.Size = new System.Drawing.Size(380, 20);
             this.listFileBox.TabIndex = 5;
             // 
             // baseOffsetUpDown
             // 
+            this.baseOffsetUpDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.baseOffsetUpDown.Enabled = false;
             this.baseOffsetUpDown.Hexadecimal = true;
-            this.baseOffsetUpDown.Location = new System.Drawing.Point(98, 234);
+            this.baseOffsetUpDown.Location = new System.Drawing.Point(101, 252);
             this.baseOffsetUpDown.Maximum = new decimal(new int[] {
             -1,
             0,
@@ -349,7 +374,7 @@
             // 
             this.destinationTextBox.Location = new System.Drawing.Point(85, 40);
             this.destinationTextBox.Name = "destinationTextBox";
-            this.destinationTextBox.Size = new System.Drawing.Size(396, 20);
+            this.destinationTextBox.Size = new System.Drawing.Size(419, 20);
             this.destinationTextBox.TabIndex = 8;
             this.destinationTextBox.Text = "extracted";
             // 
@@ -367,7 +392,7 @@
             // 
             // browseDestinationButton
             // 
-            this.browseDestinationButton.Location = new System.Drawing.Point(487, 38);
+            this.browseDestinationButton.Location = new System.Drawing.Point(510, 38);
             this.browseDestinationButton.Name = "browseDestinationButton";
             this.browseDestinationButton.Size = new System.Drawing.Size(75, 23);
             this.browseDestinationButton.TabIndex = 10;
@@ -398,15 +423,17 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(105, 412);
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.progressBar1.Location = new System.Drawing.Point(105, 424);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(454, 23);
             this.progressBar1.TabIndex = 12;
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 417);
+            this.label1.Location = new System.Drawing.Point(10, 429);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(84, 13);
             this.label1.TabIndex = 13;
@@ -422,11 +449,76 @@
             this.bruteRipButton.UseVisualStyleBackColor = true;
             this.bruteRipButton.Click += new System.EventHandler(this.ripFpbButton_Click);
             // 
+            // infinityDemoFileRadioButton
+            // 
+            this.infinityDemoFileRadioButton.AutoSize = true;
+            this.infinityDemoFileRadioButton.Location = new System.Drawing.Point(120, 157);
+            this.infinityDemoFileRadioButton.Name = "infinityDemoFileRadioButton";
+            this.infinityDemoFileRadioButton.Size = new System.Drawing.Size(91, 17);
+            this.infinityDemoFileRadioButton.TabIndex = 22;
+            this.infinityDemoFileRadioButton.TabStop = true;
+            this.infinityDemoFileRadioButton.Text = "file.fpb (demo)";
+            this.infinityDemoFileRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // infinityDemoMediaRadioButton
+            // 
+            this.infinityDemoMediaRadioButton.AutoSize = true;
+            this.infinityDemoMediaRadioButton.Location = new System.Drawing.Point(120, 180);
+            this.infinityDemoMediaRadioButton.Name = "infinityDemoMediaRadioButton";
+            this.infinityDemoMediaRadioButton.Size = new System.Drawing.Size(106, 17);
+            this.infinityDemoMediaRadioButton.TabIndex = 23;
+            this.infinityDemoMediaRadioButton.Text = "media.fpb (demo)";
+            this.infinityDemoMediaRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // psp2DemoMediaRadioButton
+            // 
+            this.psp2DemoMediaRadioButton.AutoSize = true;
+            this.psp2DemoMediaRadioButton.Location = new System.Drawing.Point(320, 108);
+            this.psp2DemoMediaRadioButton.Name = "psp2DemoMediaRadioButton";
+            this.psp2DemoMediaRadioButton.Size = new System.Drawing.Size(124, 17);
+            this.psp2DemoMediaRadioButton.TabIndex = 25;
+            this.psp2DemoMediaRadioButton.Text = "media.fpb (NA demo)";
+            this.psp2DemoMediaRadioButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.psp2DemoMediaRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // psp2DemoFileRadioButton
+            // 
+            this.psp2DemoFileRadioButton.AutoSize = true;
+            this.psp2DemoFileRadioButton.Location = new System.Drawing.Point(320, 85);
+            this.psp2DemoFileRadioButton.Name = "psp2DemoFileRadioButton";
+            this.psp2DemoFileRadioButton.Size = new System.Drawing.Size(109, 17);
+            this.psp2DemoFileRadioButton.TabIndex = 24;
+            this.psp2DemoFileRadioButton.Text = "file.fpb (NA demo)";
+            this.psp2DemoFileRadioButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.psp2DemoFileRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // psp2ProtoMediaRadioButton
+            // 
+            this.psp2ProtoMediaRadioButton.AutoSize = true;
+            this.psp2ProtoMediaRadioButton.Location = new System.Drawing.Point(440, 108);
+            this.psp2ProtoMediaRadioButton.Name = "psp2ProtoMediaRadioButton";
+            this.psp2ProtoMediaRadioButton.Size = new System.Drawing.Size(130, 17);
+            this.psp2ProtoMediaRadioButton.TabIndex = 27;
+            this.psp2ProtoMediaRadioButton.Text = "media.fpb (EUR proto)";
+            this.psp2ProtoMediaRadioButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.psp2ProtoMediaRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // psp2ProtoFileRadioButton
+            // 
+            this.psp2ProtoFileRadioButton.AutoSize = true;
+            this.psp2ProtoFileRadioButton.Location = new System.Drawing.Point(440, 85);
+            this.psp2ProtoFileRadioButton.Name = "psp2ProtoFileRadioButton";
+            this.psp2ProtoFileRadioButton.Size = new System.Drawing.Size(115, 17);
+            this.psp2ProtoFileRadioButton.TabIndex = 26;
+            this.psp2ProtoFileRadioButton.Text = "file.fpb (EUR proto)";
+            this.psp2ProtoFileRadioButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.psp2ProtoFileRadioButton.UseVisualStyleBackColor = true;
+            // 
             // FpbExtractForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(593, 439);
+            this.ClientSize = new System.Drawing.Size(604, 451);
             this.Controls.Add(this.bruteRipButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.progressBar1);
@@ -437,6 +529,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.extractFpbButton);
+            this.MinimumSize = new System.Drawing.Size(620, 490);
             this.Name = "FpbExtractForm";
             this.Text = "FPB Extractor";
             this.groupBox1.ResumeLayout(false);
@@ -484,6 +577,12 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.RadioButton psp1FileJRadioButton;
         private System.Windows.Forms.RadioButton psp1FileEurRadioButton;
+        private System.Windows.Forms.RadioButton infinityDemoMediaRadioButton;
+        private System.Windows.Forms.RadioButton infinityDemoFileRadioButton;
+        private System.Windows.Forms.RadioButton psp2ProtoMediaRadioButton;
+        private System.Windows.Forms.RadioButton psp2ProtoFileRadioButton;
+        private System.Windows.Forms.RadioButton psp2DemoMediaRadioButton;
+        private System.Windows.Forms.RadioButton psp2DemoFileRadioButton;
     }
 }
 

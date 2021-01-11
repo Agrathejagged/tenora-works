@@ -31,8 +31,18 @@ namespace psu_generic_parser
             {
                 label3.Text = (toLoad as XvrTextureFile).OriginalPixelFormat.ToString();
                 label5.Text = (toLoad as XvrTextureFile).OriginalTextureType.ToString();
+                label5.Text = (toLoad as XvrTextureFile).SaveTextureType.ToString();
+                if((toLoad as XvrTextureFile).SaveTextureType != (toLoad as XvrTextureFile).OriginalTextureType)
+                {
+                    label5.ForeColor = Color.Green;
+                }
                 pixelFormatDropDown.DataSource = permittedFormats;
                 pixelFormatDropDown.SelectedItem = (toLoad as XvrTextureFile).SavePixelFormat;
+            }
+            else if (toLoad is GimTextureFile)
+            {
+                label3.Text = (toLoad as GimTextureFile).palFormat.ToString();
+                label5.Text = (toLoad as GimTextureFile).dataFormat.ToString();
             }
             internalTexture = toLoad;
             currentMip = 0;
@@ -44,6 +54,10 @@ namespace psu_generic_parser
         {
             if (loadMipDialog.ShowDialog() == DialogResult.OK)
             {
+                if (internalTexture is XvrTextureFile)
+                {
+                    (internalTexture as XvrTextureFile).SaveTextureType = PsuTextureType.Raster;
+                }
                 internalTexture.ReplaceMip(new Bitmap(loadMipDialog.FileName), currentMip);
             }
             refreshMip();
@@ -64,6 +78,11 @@ namespace psu_generic_parser
             pictureBox1.Image = internalTexture.getPreviewMip(currentMip);
             pictureBox1.Size = pictureBox1.Image.Size;
             mipCount = internalTexture.mipMaps.Length;
+            if (internalTexture is XvrTextureFile && (internalTexture as XvrTextureFile).SaveTextureType != (internalTexture as XvrTextureFile).OriginalTextureType)
+            {
+                label5.Text = (internalTexture as XvrTextureFile).SaveTextureType.ToString();
+                label5.ForeColor = Color.Green;
+            }
             if (mipCount > currentMip + 1)
                 buttonUpMip.Enabled = true;
             else
@@ -113,13 +132,19 @@ namespace psu_generic_parser
                     Bitmap importedImage = new Bitmap(new MemoryStream(rawBitmap));
                     if (!isPowerOfTwo(importedImage.Width) || !isPowerOfTwo(importedImage.Height))
                     {
-                        MessageBox.Show("Texture width and height must be a power of 2. \nThe following sizes are permitted: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048.", "Image Size Error");
+                        MessageBox.Show("Texture width and height must be a power of 2. \nThe following sizes are permitted: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024.", "Image Size Error");
                         return;
                     }
-                    if (importedImage.Width > 4096 || importedImage.Height > 4096)
+                    if (importedImage.Width > 1024 || importedImage.Height > 1024)
                     {
-                        MessageBox.Show("Texture cannot be larger than 4096x4096.", "Image Size Error");
-                        return;
+                        if (MessageBox.Show("Textures larger than 1024x1024 generally don't render correctly. \nTextures above 2048x2048 frequently crash the game. \nAre you sure you wish to continue?", "Image Size Warning", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        {
+                            return;
+                        }
+                    }
+                    if(internalTexture is XvrTextureFile)
+                    {
+                        (internalTexture as XvrTextureFile).SaveTextureType = PsuTextureType.Raster;
                     }
                     internalTexture.loadImage(importedImage, rebuildMipsCheckbox.Checked);
                     currentMip = 0;
@@ -161,6 +186,7 @@ namespace psu_generic_parser
         {
             if(internalTexture is XvrTextureFile)
             {
+                ((XvrTextureFile)internalTexture).SaveTextureType = PsuTextureType.Raster;
                 PsuTexturePixelFormat fmt;
                 Enum.TryParse<PsuTexturePixelFormat>(pixelFormatDropDown.SelectedValue.ToString(), out fmt);
                 ((XvrTextureFile)internalTexture).SavePixelFormat = fmt;

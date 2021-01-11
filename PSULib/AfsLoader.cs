@@ -29,7 +29,10 @@ namespace psu_generic_parser
         };
 
         public List<AfsFileEntry> afsList;
-        
+
+        public bool Encrypted { get => false; set { } }
+        public bool Compressed { get => false; set { }  }
+
         //Initialize empty file.
         public AfsLoader() 
         {
@@ -80,35 +83,40 @@ namespace psu_generic_parser
             //nblContents = new NblLoader[fileCount];
             for (int i = 0; i < fileCount; i++)
             {
-                if (afsList[i].rawContents.Length > 3)
-                {
-                    string headerName = ASCIIEncoding.GetEncoding("ASCII").GetString(afsList[i].rawContents, 0, 4);
-                    if (headerName.StartsWith("AFS"))
-                    {
-                        afsList[i].fileContents = new AfsLoader(new MemoryStream(afsList[i].rawContents));
-                    }
-                    else if (headerName == "NMLL" || headerName == "NMLB")
-                    {
-                        afsList[i].fileContents = new NblLoader(new MemoryStream(afsList[i].rawContents));
-                    }
-                }
-
-                //Handle AFS archive file entries that aren't nbl or are null
-                if(afsList[i].fileContents == null)
-                {
-                    if (afsList[i].rawContents.Length > 0)
-                    {
-                        afsList[i].fileContents = new UnpointeredFile(afsList[i].fileName, afsList[i].rawContents, null);
-                    }
-                    else
-                    {
-                        afsList[i].fileContents = new UnpointeredFile(afsList[i].fileName, new byte[0], null);
-                    }
-                }
+                populateFile(afsList[i]);
             }
             fileLoader.Close();
             fileLoader.Dispose();
             return;
+        }
+
+        private void populateFile(AfsFileEntry afsFileEntry)
+        {
+            if (afsFileEntry.rawContents.Length > 3)
+            {
+                string headerName = ASCIIEncoding.GetEncoding("ASCII").GetString(afsFileEntry.rawContents, 0, 4);
+                if (headerName.StartsWith("AFS"))
+                {
+                    afsFileEntry.fileContents = new AfsLoader(new MemoryStream(afsFileEntry.rawContents));
+                }
+                else if (headerName == "NMLL" || headerName == "NMLB")
+                {
+                    afsFileEntry.fileContents = new NblLoader(new MemoryStream(afsFileEntry.rawContents));
+                }
+            }
+
+            //Handle AFS archive file entries that aren't nbl or are null
+            if (afsFileEntry.fileContents == null)
+            {
+                if (afsFileEntry.rawContents.Length > 0)
+                {
+                    afsFileEntry.fileContents = new UnpointeredFile(afsFileEntry.fileName, afsFileEntry.rawContents, null);
+                }
+                else
+                {
+                    afsFileEntry.fileContents = new UnpointeredFile(afsFileEntry.fileName, new byte[0], null);
+                }
+            }
         }
 
         public AfsLoader(string inFilename, Stream toLoad) : this(toLoad)
@@ -157,22 +165,10 @@ namespace psu_generic_parser
             int fileCount = afsList.Count;
             for (int i = 0; i < fileCount; i++)
             {
-                if(afsList[i].fileContents != null)
+                if (afsList[i].fileContents != null)
+                {
                     afsList[i].rawContents = afsList[i].fileContents.ToRaw();
-                /*if (nblContents[i] != null)
-                {
-                    MemoryStream toStore = new MemoryStream();
-                    nblContents[i].saveFile(toStore, false, false);
-                    afsData[i] = toStore.ToArray();
-                    afsList[i].fileSize = (uint)afsData[i].Length;
                 }
-                else if (subPaths[i] != null)
-                {
-                    MemoryStream toStore = new MemoryStream();
-                    subPaths[i].saveFile(toStore);
-                    afsData[i] = toStore.ToArray();
-                    afsList[i].fileSize = (uint)afsData[i].Length;
-                }*/
             }
             beta.Write(Encoding.ASCII.GetBytes("AFS\0"));
             beta.Write(fileCount);
@@ -369,7 +365,22 @@ namespace psu_generic_parser
 
         public void addFile(int index, RawFile toAdd)
         {
-            throw new NotImplementedException();
+            afsList.Insert(index, new AfsFileEntry { rawContents = toAdd.fileContents, fileName = toAdd.filename });
+        }
+
+        public bool doesFileExist(string filename)
+        {
+            return afsList.Any(afsFile => afsFile.fileName == filename);
+        }
+
+        public bool isParsedFileCached(string filename)
+        {
+            return afsList.Any(afsFile => afsFile.fileName == filename && afsFile.fileContents != null);
+        }
+
+        public bool isParsedFileCached(int fileIndex)
+        {
+            return afsList.Count > fileIndex && afsList[fileIndex].fileContents != null;
         }
     }
 }
