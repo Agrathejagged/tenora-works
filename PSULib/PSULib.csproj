@@ -64,9 +64,12 @@
     <Compile Include="FileClasses\ItemUnitParamFile.cs" />
     <Compile Include="FileClasses\ListFile.cs" />
     <Compile Include="FileClasses\MiniAfsLoader.cs" />
+    <Compile Include="FileClasses\Models\TextureFilterEnums.cs" />
     <Compile Include="FileClasses\NblLoader.cs" />
     <Compile Include="FileClasses\NomFile.cs" />
     <Compile Include="FileClasses\ObjectDropFile.cs" />
+    <Compile Include="FileClasses\ObjectParamFile.cs" />
+    <Compile Include="FileClasses\ObjectParticleInfoFile.cs" />
     <Compile Include="FileClasses\PackFile.cs" />
     <Compile Include="FileClasses\PartsInfoFile.cs" />
     <Compile Include="FileClasses\PointeredFile.cs" />

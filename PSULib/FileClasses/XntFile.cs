@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSULib.FileClasses.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,12 +12,15 @@ namespace psu_generic_parser
     {
         public class XntTextureEntry
         {
-            public int mysteryIndex { get; set; }
+            /// <summary>
+            /// If this value is set to 0x200 (512), it forces the minify/mipmap filter to 0 (minify point, mip nearest neighbor) and magnify filter to 0 (point).
+            /// </summary>
+            public int disableFlag { get; set; }
             public string filename { get; set; }
-            public short firstValue { get; set; }
-            public short secondValue { get; set; }
-            public int thirdValue { get; set; }
-            public int fourthValue { get; set; }
+            public MinifyMipFilter minifyMipmapFilter { get; set; }
+            public MagnifyFilter magnifyFilter { get; set; }
+            public int unused1 { get; set; }
+            public int unused2 { get; set; }
         }
 
         public List<XntTextureEntry> fileEntries = new List<XntTextureEntry>();
@@ -27,10 +31,10 @@ namespace psu_generic_parser
             for(int i = 0; i < names.Count; i++)
             {
                 XntTextureEntry entry = new XntTextureEntry();
-                entry.mysteryIndex = 0;
+                entry.disableFlag = 0;
                 entry.filename = names[i];
-                entry.firstValue = 4;
-                entry.secondValue = 1;
+                entry.minifyMipmapFilter = MinifyMipFilter.MIN_LINEAR_MIPMAP_POINT;
+                entry.magnifyFilter = MagnifyFilter.LINEAR;
                 fileEntries.Add(entry);
             }
         }
@@ -52,12 +56,12 @@ namespace psu_generic_parser
             for (int i = 0; i < stringCount; i++)
             {
                 XntTextureEntry entry = new XntTextureEntry();
-                entry.mysteryIndex = inReader.ReadInt32();
+                entry.disableFlag = inReader.ReadInt32();
                 stringLocs[i] = inReader.ReadInt32() - baseAddr;
-                entry.firstValue = inReader.ReadInt16();
-                entry.secondValue = inReader.ReadInt16();
-                entry.thirdValue = inReader.ReadInt32();
-                entry.fourthValue = inReader.ReadInt32();
+                entry.minifyMipmapFilter = (MinifyMipFilter)inReader.ReadInt16();
+                entry.magnifyFilter = (MagnifyFilter)inReader.ReadInt16();
+                entry.unused1 = inReader.ReadInt32();
+                entry.unused2 = inReader.ReadInt32();
                 fileEntries.Add(entry);
             }
 
@@ -96,13 +100,13 @@ namespace psu_generic_parser
             outStream.Seek(listLoc, SeekOrigin.Begin);
             for (int i = 0; i < textOffsets.Length; i++)
             {
-                outWriter.Write(fileEntries[i].mysteryIndex);
+                outWriter.Write(fileEntries[i].disableFlag);
                 ptrList.Add((int)outStream.Position);
                 outWriter.Write(textOffsets[i]);
-                outWriter.Write(fileEntries[i].firstValue);
-                outWriter.Write(fileEntries[i].secondValue);
-                outWriter.Write(fileEntries[i].thirdValue);
-                outWriter.Write(fileEntries[i].fourthValue);
+                outWriter.Write((short)fileEntries[i].minifyMipmapFilter);
+                outWriter.Write((short)fileEntries[i].magnifyFilter);
+                outWriter.Write(fileEntries[i].unused1);
+                outWriter.Write(fileEntries[i].unused2);
             }
 
             int headerLoc = (int)outStream.Position;

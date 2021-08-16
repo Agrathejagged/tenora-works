@@ -47,6 +47,7 @@ namespace psu_generic_parser.Forms.FileViewers.SetEditorSupportClasses
             //For some reason, setting the stream from the constructor marks the stream unwritable, so it has to be set here.
             //If it's already been set, this won't do anything.
             metadataHexEditor.Stream = metadataStream;
+            metadataHexEditor.ClearAllChange();
             metadataHexEditor.RefreshView();
         }
 

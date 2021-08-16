@@ -12,14 +12,14 @@ namespace PSULib
         {
             byte[] unpaddedString = Encoding.GetEncoding("shift-jis").GetBytes(toEncode);
             byte[] paddedString;
-            if (unpaddedString.Length == 0x20)
+            if (unpaddedString.Length == encodedLength)
             {
                 paddedString = unpaddedString;
             }
             else
             {
-                paddedString = new byte[0x20];
-                Array.Copy(unpaddedString, paddedString, Math.Min(0x20, unpaddedString.Length));
+                paddedString = new byte[encodedLength];
+                Array.Copy(unpaddedString, paddedString, Math.Min(encodedLength, unpaddedString.Length));
             }
             return paddedString;
         }

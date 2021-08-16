@@ -117,7 +117,12 @@ namespace psu_generic_parser
                 containedFiles[filenames.IndexOf(filename)] = new NblLoader(new MemoryStream(toReplace.fileContents));
                 containedRawFiles[filenames.IndexOf(filename)] = toReplace;
             }
-            throw new NotImplementedException();
+        }
+
+        public void replaceFile(int index, RawFile toReplace)
+        {
+            containedFiles[index] = new NblLoader(new MemoryStream(toReplace.fileContents));
+            containedRawFiles[index] = toReplace;
         }
 
         public void saveFile(Stream outStream)

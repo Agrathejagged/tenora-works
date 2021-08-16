@@ -10,6 +10,8 @@ using System.Security.Cryptography;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using PSULib;
 using System.Drawing;
+using PSULib.FileClasses;
+using psu_generic_parser.Forms.FileViewers;
 
 namespace psu_generic_parser
 {
@@ -24,7 +26,7 @@ namespace psu_generic_parser
         public bool batchExportSubArchiveFiles = false;
         public bool compressNMLL = false;
         public bool compressTMLL = false;
-        public bool exportMetaData = false;
+        public bool exportMetaData = true;
 
         private class FileTreeNodeTag
         {
@@ -391,6 +393,14 @@ namespace psu_generic_parser
             {
                 toAdd = new QuestListViewer((QuestListFile)toRead);
             }
+            else if (toRead is ObjectParticleInfoFile)
+            {
+                toAdd = new ObjectParticleInfoFileViewer((ObjectParticleInfoFile)toRead);
+            }
+            else if (toRead is ObjectParamFile)
+            {
+                toAdd = new ObjParamViewer((ObjectParamFile)toRead);
+            }
             else if (toRead is UnpointeredFile)
             {
                 toAdd = new UnpointeredFileViewer((UnpointeredFile)toRead);
@@ -502,11 +512,18 @@ namespace psu_generic_parser
                 replaceDialog.FileName = tag.FileName;
                 if (replaceDialog.ShowDialog() == DialogResult.OK)
                 {
-                    RawFile file = new RawFile(replaceDialog.OpenFile());
-                    owningFile.replaceFile(tag.FileName, file);
+                    RawFile file = new RawFile(replaceDialog.OpenFile(), Path.GetFileName(replaceDialog.FileName));
+                    owningFile.replaceFile(node.Index, file);
                     node.Text = file.filename;
                     tag.FileName = file.filename;
-                    setRightPanel(owningFile.getFileParsed(node.Index));
+                    PsuFile parsedFile = owningFile.getFileParsed(node.Index);
+                    if(parsedFile is ContainerFile)
+                    {
+                        node.Nodes.Clear();
+                        addChildFiles(node.Nodes, (ContainerFile)parsedFile);
+
+                    }
+                    setRightPanel(parsedFile);
                 }
             }
         }
@@ -596,9 +613,10 @@ namespace psu_generic_parser
             {
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    Stream inStream = fileDialog.OpenFile();
-                    ((ContainerFile)loadedContainer.getFileParsed(0)).addFile(treeView1.SelectedNode.Index, new RawFile(inStream));
-                    inStream.Close();
+                    using (Stream inStream = fileDialog.OpenFile())
+                    {
+                        ((ContainerFile)loadedContainer.getFileParsed(0)).addFile(treeView1.SelectedNode.Index, new RawFile(inStream, Path.GetFileName(fileDialog.FileName)));
+                    }
                     treeView1.Nodes.Clear();
                     addChildFiles(treeView1.Nodes, loadedContainer);
                 }
@@ -1103,6 +1121,160 @@ namespace psu_generic_parser
             {
                 ContainerFile parent = tag.OwnerContainer;
                 compressChunkToolStripMenuItem.Checked = ((NblChunk)parent.getFileParsed(treeView1.SelectedNode.Index)).Compressed;
+            }
+        }
+
+        private void listAllObjparamsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CommonOpenFileDialog goodOpenFileDialog = new CommonOpenFileDialog();
+            goodOpenFileDialog.IsFolderPicker = true;
+
+            if (goodOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                string[] fileNames = Directory.GetFiles(goodOpenFileDialog.FileName);
+                actionProgressBar.Maximum = fileNames.Length;
+                progressStatusLabel.Text = $"Progress: {actionProgressBar.Value}/{actionProgressBar.Maximum} Files. Please wait, this can take time.";
+                progressStatusLabel.Refresh();
+                Dictionary<int, Tuple<string, ObjectParamFile.ObjectEntry>> objects = new Dictionary<int, Tuple<string, ObjectParamFile.ObjectEntry>>();
+
+                foreach (string fileName in fileNames)
+                {
+                    Console.WriteLine(fileName);
+                    string newFolder = Path.GetDirectoryName(fileName);
+                    byte[] formatName = new byte[4];
+                    try
+                    {
+                        using (Stream stream = File.Open(fileName, FileMode.Open))
+                        {
+                            stream.Read(formatName, 0, 4);
+
+                            string identifier = Encoding.ASCII.GetString(formatName, 0, 4);
+                            if (identifier == "NMLL")
+                            {
+                                NblLoader nbl = new NblLoader(stream);
+                                if (((NblChunk)nbl.getFileParsed(0)).doesFileExist("obj_param.xnr"))
+                                {
+                                    ObjectParamFile paramFile = (ObjectParamFile)((NblChunk)nbl.getFileParsed(0)).getFileParsed("obj_param.xnr");
+                                    foreach (int objectId in paramFile.ObjectDefinitions.Keys)
+                                    {
+                                        if (objects.ContainsKey(objectId) && !objects[objectId].Item2.group2Entry.Equals(paramFile.ObjectDefinitions[objectId].group2Entry))
+                                        {
+                                            Console.WriteLine("Mismatched object, ID = " + objectId + " compared to " + objects[objectId].Item1);
+                                        }
+                                        else
+                                        {
+                                            objects[objectId] = new Tuple<string, ObjectParamFile.ObjectEntry>(fileName, paramFile.ObjectDefinitions[objectId]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } catch (Exception exception)
+                    {
+                        Console.WriteLine("Error reading file");
+                        //just ignore
+                    }
+
+                    actionProgressBar.Value++;
+                    progressStatusLabel.Text = $"Progress: {actionProgressBar.Value}/{actionProgressBar.Maximum} Files. Please wait, this can take time.";
+                    progressStatusLabel.Refresh();
+                }
+
+                foreach(int i in objects.Keys.OrderBy(a=>a))
+                {
+                    var hitbox = objects[i].Item2.group2Entry;
+                    Console.WriteLine("Object " + i + ", first found in " + objects[i].Item1 + ": group 0 = " + hitbox.hitboxShape + "; {" + hitbox.unknownFloat2 + ", " + hitbox.unknownFloat3 + ", " + hitbox.unknownFloat3 + "}; id 1 = " + hitbox.unknownInt5 + "; isolated float = " + hitbox.unknownFloat6 + "; last value = " + hitbox.unknownInt9);
+                }
+            }
+        }
+
+        private void listAllMonsterLayoutsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CommonOpenFileDialog goodOpenFileDialog = new CommonOpenFileDialog();
+            goodOpenFileDialog.IsFolderPicker = true;
+
+            if (goodOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                string outputFileName = Path.Combine(goodOpenFileDialog.FileName, "report2.txt");
+                StreamWriter writer = new StreamWriter(outputFileName);
+                string[] fileNames = Directory.GetFiles(goodOpenFileDialog.FileName);
+                actionProgressBar.Maximum = fileNames.Length;
+                progressStatusLabel.Text = $"Progress: {actionProgressBar.Value}/{actionProgressBar.Maximum} Files. Please wait, this can take time.";
+                progressStatusLabel.Refresh();
+                Dictionary<int, Tuple<string, ObjectParamFile.ObjectEntry>> objects = new Dictionary<int, Tuple<string, ObjectParamFile.ObjectEntry>>();
+
+                foreach (string fileName in fileNames)
+                {
+                    string newFolder = Path.GetDirectoryName(fileName);
+                    byte[] formatName = new byte[4];
+                    try
+                    {
+                        using (Stream stream = File.Open(fileName, FileMode.Open))
+                        {
+                            stream.Read(formatName, 0, 4);
+
+                            string identifier = Encoding.ASCII.GetString(formatName, 0, 3);
+                            if (identifier == "AFS")
+                            {
+                                writer.WriteLine(fileName);
+                                AfsLoader afs = new AfsLoader(stream);
+                                foreach(var file in afs.afsList)
+                                {
+                                    if(file.fileName.StartsWith("zone") && file.fileName.EndsWith("_ae.nbl"))
+                                    {
+                                        NblLoader nbl = (NblLoader)file.fileContents;
+                                        foreach(var nblFile in ((ContainerFile)nbl.getFileParsed(0)).getFilenames())
+                                        {
+                                            if(nblFile.StartsWith("enemy") && nblFile.EndsWith(".xnr"))
+                                            {
+                                                EnemyLayoutFile layoutFile = (EnemyLayoutFile)((ContainerFile)nbl.getFileParsed(0)).getFileParsed(nblFile);
+                                                writer.WriteLine("\t" + nblFile + ":");
+                                                for (int i = 0; i < layoutFile.spawns.Length; i++)
+                                                {
+                                                        writer.WriteLine($"\t\tSpawn {i}:");
+                                                        writer.WriteLine($"\t\tMonsters:");
+                                                        for (int j = 0; j < layoutFile.spawns[i].monsters.Length; j++)
+                                                        {
+                                                            writer.WriteLine($"\t\t\tGroup {j}:");
+                                                            for (int k = 0; k < layoutFile.spawns[i].monsters[j].Length; k++)
+                                                            {
+                                                                writer.WriteLine("\t\t\t\t" + layoutFile.spawns[i].monsters[j][k].ToString());
+                                                            }
+                                                        }
+                                                        writer.WriteLine($"\t\tArrangements:");
+                                                        for (int j = 0; j < layoutFile.spawns[i].arrangements.Length; j++)
+                                                        {
+                                                            writer.WriteLine("\t\t\t" + layoutFile.spawns[i].arrangements[j].ToString());
+                                                        }
+                                                        writer.WriteLine($"\t\tSpawn Data:");
+                                                        for (int j = 0; j < layoutFile.spawns[i].spawnData.Length; j++)
+                                                        {
+                                                            writer.WriteLine("\t\t\t" + layoutFile.spawns[i].spawnData[j].ToString());
+                                                        }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine("Error reading file");
+                        //just ignore
+                    }
+
+                    actionProgressBar.Value++;
+                    progressStatusLabel.Text = $"Progress: {actionProgressBar.Value}/{actionProgressBar.Maximum} Files. Please wait, this can take time.";
+                    progressStatusLabel.Refresh();
+                }
+                /*
+                foreach (int i in objects.Keys.OrderBy(a => a))
+                {
+                    var hitbox = objects[i].Item2.group2Entry;
+                    Console.WriteLine("Object " + i + ", first found in " + objects[i].Item1 + ": group 0 = " + hitbox.hitboxShape + "; {" + hitbox.unknownFloat2 + ", " + hitbox.unknownFloat3 + ", " + hitbox.unknownFloat3 + "}; id 1 = " + hitbox.unknownInt5 + "; isolated float = " + hitbox.unknownFloat6 + "; last value = " + hitbox.unknownInt9);
+                }*/
             }
         }
     }

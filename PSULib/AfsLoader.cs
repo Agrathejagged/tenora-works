@@ -98,10 +98,12 @@ namespace psu_generic_parser
                 if (headerName.StartsWith("AFS"))
                 {
                     afsFileEntry.fileContents = new AfsLoader(new MemoryStream(afsFileEntry.rawContents));
+                    afsFileEntry.fileContents.filename = afsFileEntry.fileName;
                 }
                 else if (headerName == "NMLL" || headerName == "NMLB")
                 {
                     afsFileEntry.fileContents = new NblLoader(new MemoryStream(afsFileEntry.rawContents));
+                    afsFileEntry.fileContents.filename = afsFileEntry.fileName;
                 }
             }
 
@@ -111,10 +113,12 @@ namespace psu_generic_parser
                 if (afsFileEntry.rawContents.Length > 0)
                 {
                     afsFileEntry.fileContents = new UnpointeredFile(afsFileEntry.fileName, afsFileEntry.rawContents, null);
+                    afsFileEntry.fileContents.filename = afsFileEntry.fileName;
                 }
                 else
                 {
                     afsFileEntry.fileContents = new UnpointeredFile(afsFileEntry.fileName, new byte[0], null);
+                    afsFileEntry.fileContents.filename = afsFileEntry.fileName;
                 }
             }
         }
@@ -124,11 +128,12 @@ namespace psu_generic_parser
             filename = inFilename;
         }
 
-        public void replaceFile(int index, Stream toImport)
+        public void replaceFile(int index, Stream toImport, string filename)
         {
             BinaryReader beta = new BinaryReader(toImport);
             toImport.Seek(0, SeekOrigin.Begin);
             afsList[index].rawContents = beta.ReadBytes((int)toImport.Length);
+            afsList[index].fileName = filename;
             if (ASCIIEncoding.GetEncoding("ASCII").GetString(afsList[index].rawContents, 0, 3) == "AFS")
             {
                 afsList[index].fileContents = new AfsLoader(new MemoryStream(afsList[index].rawContents));
@@ -216,6 +221,7 @@ namespace psu_generic_parser
                 temp.fileName = "zone" + zoneNum.ToString("D2") + languages[i] + ".nbl";
                 temp.fileSize = (uint)loadedZone.Length;
                 temp.fileContents = new NblLoader(new MemoryStream(temp.rawContents));
+                temp.fileContents.filename = temp.fileName;
                 afsList.Add(temp);
             }
         }
@@ -231,6 +237,7 @@ namespace psu_generic_parser
                     afsList[i].fileSize = (uint)loadedQuest.Length;
                     afsList[i].rawContents = loadedQuest;
                     afsList[i].fileContents = new NblLoader(new MemoryStream(loadedQuest));
+                    afsList[i].fileContents.filename = afsList[i].fileName;
                 }
             }
         }
@@ -246,6 +253,7 @@ namespace psu_generic_parser
                     afsList[i].fileSize = (uint)loadedZone.Length;
                     afsList[i].rawContents = loadedZone;
                     afsList[i].fileContents = new NblLoader(new MemoryStream(loadedZone));
+                    afsList[i].fileContents.filename = afsList[i].fileName;
                 }
             }
         }
@@ -323,7 +331,12 @@ namespace psu_generic_parser
         public void replaceFile(string filename, RawFile toReplace)
         {
             int index = afsList.FindIndex(file => file.fileName == filename);
-            replaceFile(index, new MemoryStream(toReplace.fileContents));
+            replaceFile(index, new MemoryStream(toReplace.fileContents), toReplace.filename);
+        }
+
+        public void replaceFile(int index, RawFile toReplace)
+        {
+            replaceFile(index, new MemoryStream(toReplace.fileContents), toReplace.filename);
         }
 
         #endregion

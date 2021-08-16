@@ -31,17 +31,17 @@ namespace psu_generic_parser
                 {
                     node.Nodes.Add(new TreeNode("Rotation Frames"));
                 }
-                if (internalFile.positionFrameList[i] != null)
+                if (internalFile.xPositionFrameList[i] != null)
                 {
-                    node.Nodes.Add(new TreeNode("Position Frames"));
+                    node.Nodes.Add(new TreeNode("X Position Frames"));
                 }
-                if (internalFile.list3FrameList[i] != null)
+                if (internalFile.yPositionFrameList[i] != null)
                 {
-                    node.Nodes.Add(new TreeNode("Unknown 0 Frames"));
+                    node.Nodes.Add(new TreeNode("Y Position Frames"));
                 }
-                if (internalFile.list4FrameList[i] != null)
+                if (internalFile.zPositionFrameList[i] != null)
                 {
-                    node.Nodes.Add(new TreeNode("Unknown 1 Frames"));
+                    node.Nodes.Add(new TreeNode("Z Position Frames"));
                 }
 
                 treeView1.Nodes.Add(node);
@@ -53,31 +53,33 @@ namespace psu_generic_parser
         {
             List<List<NomFile.NomFrame>> nomFrames = null;
             //frameDataListBox.BeginUpdate();
-            frameDataListBox.Items.Clear();
+            frameDataTextBox.Clear();
             //Only handle if on a valid node
             switch(e.Node.Text)
             {
                 case "Rotation Frames":
                     nomFrames = internalFile.rotationFrameList;
                     break;
-                case "Position Frames":
-                    nomFrames = internalFile.positionFrameList;
+                case "X Position Frames":
+                    nomFrames = internalFile.xPositionFrameList;
                     break;
-                case "Unknown 0 Frames":
-                    nomFrames = internalFile.list3FrameList;
+                case "Y Position Frames":
+                    nomFrames = internalFile.yPositionFrameList;
                     break;
-                case "Unknown 1 Frames":
-                    nomFrames = internalFile.list4FrameList;
+                case "Z Position Frames":
+                    nomFrames = internalFile.zPositionFrameList;
                     break;
                 default:
                     return; //Leave if it's not a frame set
             }
             //Format
-            for(int i = 0; i < nomFrames[(int)e.Node.Parent.Tag].Count; i++)
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < nomFrames[(int)e.Node.Parent.Tag].Count; i++)
             {
                 NomFile.NomFrame nomFrame = nomFrames[(int)e.Node.Parent.Tag][i];
-                frameDataListBox.Items.Add(nomFrame.ToString());
+                sb.AppendLine(nomFrame.ToString());
             }
+            frameDataTextBox.Text = sb.ToString();
             //frameDataListBox.EndUpdate();
         }
     }

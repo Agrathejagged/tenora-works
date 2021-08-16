@@ -160,7 +160,7 @@ namespace psu_generic_parser
             {
                 var chunk = internalFile.splitData[i];
                 int chunkStart = chunk.chunkLocation; //just for ease of writing/reading
-                if (chunkStart < pointerOrigin && chunkStart + chunk.contents.Length >= pointerOrigin)
+                if (chunkStart <= pointerOrigin && chunkStart + chunk.contents.Length > pointerOrigin)
                 {
                     return i;
                 }

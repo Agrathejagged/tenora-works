@@ -30,7 +30,7 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.frameDataListBox = new System.Windows.Forms.ListBox();
+            this.frameDataTextBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -49,7 +49,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.frameDataListBox);
+            this.splitContainer1.Panel2.Controls.Add(this.frameDataTextBox);
             this.splitContainer1.Size = new System.Drawing.Size(422, 334);
             this.splitContainer1.SplitterDistance = 140;
             this.splitContainer1.TabIndex = 1;
@@ -63,14 +63,14 @@
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
-            // frameDataListBox
+            // frameDataTextBox
             // 
-            this.frameDataListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.frameDataListBox.FormattingEnabled = true;
-            this.frameDataListBox.Location = new System.Drawing.Point(0, 0);
-            this.frameDataListBox.Name = "frameDataListBox";
-            this.frameDataListBox.Size = new System.Drawing.Size(278, 334);
-            this.frameDataListBox.TabIndex = 0;
+            this.frameDataTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.frameDataTextBox.Location = new System.Drawing.Point(0, 0);
+            this.frameDataTextBox.Name = "frameDataTextBox";
+            this.frameDataTextBox.Size = new System.Drawing.Size(278, 334);
+            this.frameDataTextBox.TabIndex = 0;
+            this.frameDataTextBox.Text = "";
             // 
             // NomFileViewer
             // 
@@ -91,6 +91,6 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView treeView1;
-        private System.Windows.Forms.ListBox frameDataListBox;
+        private System.Windows.Forms.RichTextBox frameDataTextBox;
     }
 }

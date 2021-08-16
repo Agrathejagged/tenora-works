@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 using psu_generic_parser.FileClasses;
+using PSULib.FileClasses;
 
 namespace psu_generic_parser
 {
@@ -56,11 +57,19 @@ namespace psu_generic_parser
                     return new PointeredFile(filename, rawData, inHeader, ptrs, baseAddr, bigEndian);
                 }
             }
+            else if(filename.StartsWith("obj_particle_info"))
+            {
+                return new ObjectParticleInfoFile(filename, rawData, inHeader, ptrs, baseAddr);
+            }
+            else if (filename.StartsWith("obj_param") || filename.StartsWith("npc_param"))
+            {
+                return new ObjectParamFile(filename, rawData, inHeader, ptrs, baseAddr);
+            }
             else if (filename.StartsWith("set_r") && fileExtension.Equals(".rel"))
                 return new SetFile(filename, rawData, inHeader, ptrs, baseAddr, bigEndian);
-            else if (Regex.IsMatch(filename, "[uxs]nt"))
+            else if (Regex.IsMatch(filename, "\\.[uxs]nt"))
                 return new XntFile(filename, rawData, inHeader, ptrs, baseAddr);
-            else if (Regex.IsMatch(filename, "[uxs]na"))
+            else if (Regex.IsMatch(filename, "\\.[uxs]na"))
                 return new XnaFile(filename, rawData, inHeader, ptrs, baseAddr);
             else if (parseScripts && (filename.Contains("script.bin") || filename.Contains("Tutor.bin")))
                 return new ScriptFile(filename, rawData, bigEndian);

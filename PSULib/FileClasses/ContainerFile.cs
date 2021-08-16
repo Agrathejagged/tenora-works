@@ -24,6 +24,7 @@ namespace psu_generic_parser
         RawFile getFileRaw(int fileIndex);
         //Replaces a file based on filename.
         void replaceFile(string filename, RawFile toReplace);
+        void replaceFile(int index, RawFile toReplace);
         void addFile(int index, RawFile toAdd);
         void saveFile(Stream outStream);
         bool Encrypted {get; set;}

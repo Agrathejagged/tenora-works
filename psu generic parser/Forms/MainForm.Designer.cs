@@ -41,6 +41,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.batchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extractAllInFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listAllObjparamsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportBlobToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createAFSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,6 +73,7 @@
             this.afsNblFileContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.nblChunkContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.compressChunkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listAllMonsterLayoutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -160,7 +162,9 @@
             // batchToolStripMenuItem
             // 
             this.batchToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.extractAllInFolderToolStripMenuItem});
+            this.extractAllInFolderToolStripMenuItem,
+            this.listAllObjparamsToolStripMenuItem,
+            this.listAllMonsterLayoutsToolStripMenuItem});
             this.batchToolStripMenuItem.Name = "batchToolStripMenuItem";
             this.batchToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
             this.batchToolStripMenuItem.Text = "Batch";
@@ -168,9 +172,16 @@
             // extractAllInFolderToolStripMenuItem
             // 
             this.extractAllInFolderToolStripMenuItem.Name = "extractAllInFolderToolStripMenuItem";
-            this.extractAllInFolderToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.extractAllInFolderToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.extractAllInFolderToolStripMenuItem.Text = "Extract All In Folder";
             this.extractAllInFolderToolStripMenuItem.Click += new System.EventHandler(this.extractAllInFolderToolStripMenuItem_Click);
+            // 
+            // listAllObjparamsToolStripMenuItem
+            // 
+            this.listAllObjparamsToolStripMenuItem.Name = "listAllObjparamsToolStripMenuItem";
+            this.listAllObjparamsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.listAllObjparamsToolStripMenuItem.Text = "List all objparams";
+            this.listAllObjparamsToolStripMenuItem.Click += new System.EventHandler(this.listAllObjparamsToolStripMenuItem_Click);
             // 
             // debugToolStripMenuItem
             // 
@@ -407,16 +418,23 @@
             this.nblChunkContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.compressChunkToolStripMenuItem});
             this.nblChunkContextMenuStrip.Name = "nblChunkContextMenuStrip";
-            this.nblChunkContextMenuStrip.Size = new System.Drawing.Size(181, 48);
+            this.nblChunkContextMenuStrip.Size = new System.Drawing.Size(166, 26);
             this.nblChunkContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.nblChunkContextMenuStrip_Opening);
             // 
             // compressChunkToolStripMenuItem
             // 
             this.compressChunkToolStripMenuItem.CheckOnClick = true;
             this.compressChunkToolStripMenuItem.Name = "compressChunkToolStripMenuItem";
-            this.compressChunkToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.compressChunkToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.compressChunkToolStripMenuItem.Text = "Compress Chunk";
             this.compressChunkToolStripMenuItem.CheckedChanged += new System.EventHandler(this.compressChunkToolStripMenuItem_CheckedChanged);
+            // 
+            // listAllMonsterLayoutsToolStripMenuItem
+            // 
+            this.listAllMonsterLayoutsToolStripMenuItem.Name = "listAllMonsterLayoutsToolStripMenuItem";
+            this.listAllMonsterLayoutsToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.listAllMonsterLayoutsToolStripMenuItem.Text = "List all monster layouts";
+            this.listAllMonsterLayoutsToolStripMenuItem.Click += new System.EventHandler(this.listAllMonsterLayoutsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -495,6 +513,8 @@
         private System.Windows.Forms.ContextMenuStrip afsNblFileContextMenuStrip;
         private System.Windows.Forms.ContextMenuStrip nblChunkContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem compressChunkToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem listAllObjparamsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem listAllMonsterLayoutsToolStripMenuItem;
     }
 }
 

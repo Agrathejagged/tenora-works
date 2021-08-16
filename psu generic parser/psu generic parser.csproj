@@ -209,6 +209,18 @@
     <Compile Include="Forms\FileViewers\UnpointeredFileViewer.Designer.cs">
       <DependentUpon>UnpointeredFileViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FileViewers\ObjectParticleInfoFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ObjectParticleInfoFileViewer.Designer.cs">
+      <DependentUpon>ObjectParticleInfoFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ObjParamViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ObjParamViewer.Designer.cs">
+      <DependentUpon>ObjParamViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FileViewers\XnaFileViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -296,6 +308,9 @@
       <DependentUpon>NomFileViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\ObjParamViewer.resx">
+      <DependentUpon>ObjParamViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\QuestListViewer.resx">
       <DependentUpon>QuestListViewer.cs</DependentUpon>
     </EmbeddedResource>
@@ -323,6 +338,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\UnpointeredFileViewer.resx">
       <DependentUpon>UnpointeredFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\ObjectParticleInfoFileViewer.resx">
+      <DependentUpon>ObjectParticleInfoFileViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\XnaFileViewer.resx">
       <DependentUpon>XnaFileViewer.cs</DependentUpon>

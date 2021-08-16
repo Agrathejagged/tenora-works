@@ -12,10 +12,12 @@ namespace psu_generic_parser
             public byte type;
             public byte type2;
             public List<float> data = new List<float>();
+            public List<short> rawData = new List<short>();
+            public int filePosition;
 
             public override string ToString()
             {
-                string item = $"Frame {frame.ToString("D3")} ({type}{type2}):";
+                string item = $"Frame {frame.ToString("D3")} ({type} {type2}):";
                 //Add the float values to the string
                 for (int j = 0; j < data.Count; j++)
                 {
@@ -27,6 +29,19 @@ namespace psu_generic_parser
                         item += ",";
                     }
                 }
+                item += " / Raw: ";
+                for(int j = 0; j < rawData.Count; j++)
+                {
+                    string temp = rawData[j].ToString("X4");
+                    item += " " + temp;
+
+                    if (j != rawData.Count - 1)
+                    {
+                        item += ",";
+                    }
+                }
+                item += " at offset ";
+                item += filePosition.ToString("X");
                 return item;
             }
         }
@@ -34,9 +49,9 @@ namespace psu_generic_parser
         private byte[] fileContents;
 
         public List<List<NomFrame>> rotationFrameList = new List<List<NomFrame>>();
-        public List<List<NomFrame>> positionFrameList = new List<List<NomFrame>>();
-        public List<List<NomFrame>> list3FrameList = new List<List<NomFrame>>();
-        public List<List<NomFrame>> list4FrameList = new List<List<NomFrame>>();
+        public List<List<NomFrame>> xPositionFrameList = new List<List<NomFrame>>();
+        public List<List<NomFrame>> yPositionFrameList = new List<List<NomFrame>>();
+        public List<List<NomFrame>> zPositionFrameList = new List<List<NomFrame>>();
         public ushort frameCount;
         public float frameRate;
 
@@ -105,9 +120,9 @@ namespace psu_generic_parser
 
             //Read Rotation frame list
             ReadNomList(rotationOffsets, rotationFrameList, inReader, true);
-            ReadNomList(positionOffsets, positionFrameList, inReader, false);
-            ReadNomList(list3Offsets, list3FrameList, inReader, false);
-            ReadNomList(list4Offsets, list4FrameList, inReader, false);
+            ReadNomList(positionOffsets, xPositionFrameList, inReader, false);
+            ReadNomList(list3Offsets, yPositionFrameList, inReader, false);
+            ReadNomList(list4Offsets, zPositionFrameList, inReader, false);
         }
 
         private void ReadNomList(List<int> frameOffsets, List<List<NomFrame>> frameList, BinaryReader inReader, bool isRotList = false)
@@ -125,6 +140,7 @@ namespace psu_generic_parser
                     while (continueLoop)
                     {
                         NomFrame nomFrame = new NomFrame();
+                        nomFrame.filePosition = (int)inReader.BaseStream.Position;
                         nomFrame.frame = inReader.ReadByte();
                         nomFrame.type = inReader.ReadByte();
                         nomFrame.type2 = (byte)(nomFrame.type % 0x10);
@@ -146,40 +162,52 @@ namespace psu_generic_parser
 
                         //Handle different key types. Rotations and other data types handle this differently.
                         int typeCount = 0;
-                        switch (examinedType)
+                        if(isRotList)
                         {
-                            case 0x0:
-                            case 0x1:
-                            case 0x2:
-                                if (isRotList)
-                                {
+                            switch (examinedType)
+                            {
+                                case 0x0: //quats?
                                     typeCount = 0x4;
-                                } else
-                                {
+                                    break;
+                                case 0x5: // interpolate X
+                                case 0x6: // interpolate Y
+                                case 0x7: // interpolate Z
+                                    typeCount = 0x2;
+                                    break;
+                                case 0x8: // reset all
+                                case 0x9: // reset X
+                                case 0xA: // reset Y
+                                case 0xB: // reset Z
+                                    break;
+                                default:
+                                    Console.WriteLine("Unknown type " + examinedType + " detected at " + inReader.BaseStream.Position.ToString("X") + " in iteration " + i);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch (examinedType)
+                            {
+                                case 0x0: // value
                                     typeCount = 0x1;
-                                }
-                                break;
-                            case 0x4:
-                                typeCount = 0x3;
-                                break;
-                            case 0x5:
-                            case 0x6:
-                            case 0x7:
-                                typeCount = 0x2;
-                                break;
-                            case 0x8:
-                            case 0x9:
-                            case 0xA:
-                                break;
-                            default:
-                                Console.WriteLine("Unknown type " + examinedType + " detected at " + inReader.BaseStream.Position.ToString("X") + " in iteration " + i);
-                                break;
+                                    break;
+                                case 0x4: // interpolate
+                                    typeCount = 0x3;
+                                    break;
+                                case 0x8: // reset
+                                    break;
+                                default:
+                                    Console.WriteLine("Unknown type " + examinedType + " detected at " + inReader.BaseStream.Position.ToString("X") + " in iteration " + i);
+                                    break;
+                            }
                         }
 
                         //Read and store data
                         for (int j = 0; j < typeCount; j++)
                         {
-                            nomFrame.data.Add(convertValue(inReader.ReadInt16(), isRotList));
+                            short rawValue = inReader.ReadInt16();
+                            nomFrame.rawData.Add(rawValue);
+                            nomFrame.data.Add(convertValue(rawValue, isRotList));
                         }
                         frameValues.Add(nomFrame);
 
@@ -216,7 +244,7 @@ namespace psu_generic_parser
             }    
 
             int signum = Math.Sign(initialValue);
-            int shifted = initialValue << 13;
+            int shifted = (initialValue & 0xFFFF) << 13;
             int initialValue1 = shifted & 0x0F800000;
             
             //Exit early if 0
@@ -225,10 +253,10 @@ namespace psu_generic_parser
                 return 0.0f;
             }
 
-            int value2 = shifted & 0x0069C000;
+            int value2 = shifted & 0x007FE000;
             int finalValue1 = initialValue1 + finalAddition;
-            int finalFloat = signum * (finalValue1 | value2);
-            float result = BitConverter.ToSingle(BitConverter.GetBytes(finalFloat), 0);
+            int finalFloat = finalValue1 | value2;
+            float result = signum * BitConverter.ToSingle(BitConverter.GetBytes(finalFloat), 0);
 
             return result;
         }

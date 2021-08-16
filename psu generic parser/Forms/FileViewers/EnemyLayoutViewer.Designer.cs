@@ -35,8 +35,6 @@
             this.spawnEntryCB = new System.Windows.Forms.ComboBox();
             this.spawnEntryLabel = new System.Windows.Forms.Label();
             this.spawnEntryGroupBox = new System.Windows.Forms.GroupBox();
-            this.spawnDataCB = new System.Windows.Forms.ComboBox();
-            this.spawnDataLabel = new System.Windows.Forms.Label();
             this.arrangementCB = new System.Windows.Forms.ComboBox();
             this.Arrangement = new System.Windows.Forms.Label();
             this.monstersCB = new System.Windows.Forms.ComboBox();
@@ -55,11 +53,11 @@
             this.monUnkShort8UD = new System.Windows.Forms.NumericUpDown();
             this.monUnkShort7UD = new System.Windows.Forms.NumericUpDown();
             this.monUnkShort6Label = new System.Windows.Forms.Label();
-            this.monUnkShort6UD = new System.Windows.Forms.NumericUpDown();
-            this.monUnkShort5label = new System.Windows.Forms.Label();
-            this.monUnkShort5UD = new System.Windows.Forms.NumericUpDown();
-            this.monLevelModLabel = new System.Windows.Forms.Label();
-            this.monLevelModUD = new System.Windows.Forms.NumericUpDown();
+            this.monLevelCapUnusedUD = new System.Windows.Forms.NumericUpDown();
+            this.monLevelModifierlabel = new System.Windows.Forms.Label();
+            this.monLevelModifierUD = new System.Windows.Forms.NumericUpDown();
+            this.monUnknownShort5Label = new System.Windows.Forms.Label();
+            this.unkShort5UD = new System.Windows.Forms.NumericUpDown();
             this.monUnkShort4Label = new System.Windows.Forms.Label();
             this.monUnkShort4UD = new System.Windows.Forms.NumericUpDown();
             this.monUnkShort3Label = new System.Windows.Forms.Label();
@@ -80,6 +78,8 @@
             this.monNumLabel = new System.Windows.Forms.Label();
             this.monNumUD = new System.Windows.Forms.NumericUpDown();
             this.arrangementGB = new System.Windows.Forms.GroupBox();
+            this.arrSpawnDelayLabel = new System.Windows.Forms.Label();
+            this.arrSpawnDelayUD = new System.Windows.Forms.NumericUpDown();
             this.arrUnkShort3Label = new System.Windows.Forms.Label();
             this.arrUnkShort2Label = new System.Windows.Forms.Label();
             this.arrUnkShort1Label = new System.Windows.Forms.Label();
@@ -93,7 +93,7 @@
             this.arrInitialCountUD = new System.Windows.Forms.NumericUpDown();
             this.arrFormationUD = new System.Windows.Forms.NumericUpDown();
             this.arrUnkInt1Label = new System.Windows.Forms.Label();
-            this.arrUnkInt1UD = new System.Windows.Forms.NumericUpDown();
+            this.arrIdUD = new System.Windows.Forms.NumericUpDown();
             this.spawnDataGroupBox = new System.Windows.Forms.GroupBox();
             this.SDUnkShort5Label = new System.Windows.Forms.Label();
             this.SDUnkShort4Label = new System.Windows.Forms.Label();
@@ -112,9 +112,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.monUnkInt1UD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monUnkShort8UD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monUnkShort7UD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.monUnkShort6UD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.monUnkShort5UD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.monLevelModUD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.monLevelCapUnusedUD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.monLevelModifierUD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.unkShort5UD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monUnkShort4UD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monUnkShort3UD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monCountUD)).BeginInit();
@@ -125,13 +125,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.monElementUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monNumUD)).BeginInit();
             this.arrangementGB.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.arrSpawnDelayUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrUnkShort3UD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrUnkShort2UD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrUnkShort1UD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrRespawnTriggerUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrInitialCountUD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrFormationUD)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.arrUnkInt1UD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arrIdUD)).BeginInit();
             this.spawnDataGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SDUnkShort5UD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SDUnkShort4UD)).BeginInit();
@@ -185,8 +186,6 @@
             // 
             // spawnEntryGroupBox
             // 
-            this.spawnEntryGroupBox.Controls.Add(this.spawnDataCB);
-            this.spawnEntryGroupBox.Controls.Add(this.spawnDataLabel);
             this.spawnEntryGroupBox.Controls.Add(this.arrangementCB);
             this.spawnEntryGroupBox.Controls.Add(this.Arrangement);
             this.spawnEntryGroupBox.Controls.Add(this.monstersCB);
@@ -195,28 +194,10 @@
             this.spawnEntryGroupBox.Controls.Add(this.monsterListLabel);
             this.spawnEntryGroupBox.Location = new System.Drawing.Point(0, 47);
             this.spawnEntryGroupBox.Name = "spawnEntryGroupBox";
-            this.spawnEntryGroupBox.Size = new System.Drawing.Size(84, 198);
+            this.spawnEntryGroupBox.Size = new System.Drawing.Size(84, 147);
             this.spawnEntryGroupBox.TabIndex = 4;
             this.spawnEntryGroupBox.TabStop = false;
             this.spawnEntryGroupBox.Text = "Spawn Lists";
-            // 
-            // spawnDataCB
-            // 
-            this.spawnDataCB.FormattingEnabled = true;
-            this.spawnDataCB.Location = new System.Drawing.Point(7, 164);
-            this.spawnDataCB.Name = "spawnDataCB";
-            this.spawnDataCB.Size = new System.Drawing.Size(71, 21);
-            this.spawnDataCB.TabIndex = 7;
-            this.spawnDataCB.SelectedIndexChanged += new System.EventHandler(this.spawnDataCB_SelectedIndexChanged);
-            // 
-            // spawnDataLabel
-            // 
-            this.spawnDataLabel.AutoSize = true;
-            this.spawnDataLabel.Location = new System.Drawing.Point(11, 147);
-            this.spawnDataLabel.Name = "spawnDataLabel";
-            this.spawnDataLabel.Size = new System.Drawing.Size(66, 13);
-            this.spawnDataLabel.TabIndex = 6;
-            this.spawnDataLabel.Text = "Spawn Data";
             // 
             // arrangementCB
             // 
@@ -274,6 +255,8 @@
             // 
             // monsterGB
             // 
+            this.monsterGB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.monsterGB.Controls.Add(this.monStaffBuffCheck);
             this.monsterGB.Controls.Add(this.monBootBuffCheck);
             this.monsterGB.Controls.Add(this.monShieldBuffCheck);
@@ -285,11 +268,11 @@
             this.monsterGB.Controls.Add(this.monUnkShort8UD);
             this.monsterGB.Controls.Add(this.monUnkShort7UD);
             this.monsterGB.Controls.Add(this.monUnkShort6Label);
-            this.monsterGB.Controls.Add(this.monUnkShort6UD);
-            this.monsterGB.Controls.Add(this.monUnkShort5label);
-            this.monsterGB.Controls.Add(this.monUnkShort5UD);
-            this.monsterGB.Controls.Add(this.monLevelModLabel);
-            this.monsterGB.Controls.Add(this.monLevelModUD);
+            this.monsterGB.Controls.Add(this.monLevelCapUnusedUD);
+            this.monsterGB.Controls.Add(this.monLevelModifierlabel);
+            this.monsterGB.Controls.Add(this.monLevelModifierUD);
+            this.monsterGB.Controls.Add(this.monUnknownShort5Label);
+            this.monsterGB.Controls.Add(this.unkShort5UD);
             this.monsterGB.Controls.Add(this.monUnkShort4Label);
             this.monsterGB.Controls.Add(this.monUnkShort4UD);
             this.monsterGB.Controls.Add(this.monUnkShort3Label);
@@ -311,7 +294,7 @@
             this.monsterGB.Controls.Add(this.monNumUD);
             this.monsterGB.Location = new System.Drawing.Point(86, 0);
             this.monsterGB.Name = "monsterGB";
-            this.monsterGB.Size = new System.Drawing.Size(253, 324);
+            this.monsterGB.Size = new System.Drawing.Size(253, 344);
             this.monsterGB.TabIndex = 5;
             this.monsterGB.TabStop = false;
             this.monsterGB.Text = "Monster";
@@ -364,7 +347,7 @@
             // monUnkInt1Label
             // 
             this.monUnkInt1Label.AutoSize = true;
-            this.monUnkInt1Label.Location = new System.Drawing.Point(201, 56);
+            this.monUnkInt1Label.Location = new System.Drawing.Point(200, 59);
             this.monUnkInt1Label.Name = "monUnkInt1Label";
             this.monUnkInt1Label.Size = new System.Drawing.Size(51, 13);
             this.monUnkInt1Label.TabIndex = 33;
@@ -373,7 +356,7 @@
             // monUnkShort8Label
             // 
             this.monUnkShort8Label.AutoSize = true;
-            this.monUnkShort8Label.Location = new System.Drawing.Point(187, 36);
+            this.monUnkShort8Label.Location = new System.Drawing.Point(187, 39);
             this.monUnkShort8Label.Name = "monUnkShort8Label";
             this.monUnkShort8Label.Size = new System.Drawing.Size(64, 13);
             this.monUnkShort8Label.TabIndex = 32;
@@ -445,88 +428,88 @@
             // monUnkShort6Label
             // 
             this.monUnkShort6Label.AutoSize = true;
-            this.monUnkShort6Label.Location = new System.Drawing.Point(69, 301);
+            this.monUnkShort6Label.Location = new System.Drawing.Point(72, 323);
             this.monUnkShort6Label.Name = "monUnkShort6Label";
-            this.monUnkShort6Label.Size = new System.Drawing.Size(64, 13);
+            this.monUnkShort6Label.Size = new System.Drawing.Size(101, 13);
             this.monUnkShort6Label.TabIndex = 27;
-            this.monUnkShort6Label.Text = "Unk Short 6";
+            this.monUnkShort6Label.Text = "Level Cap (Unused)";
             // 
-            // monUnkShort6UD
+            // monLevelCapUnusedUD
             // 
-            this.monUnkShort6UD.Location = new System.Drawing.Point(7, 299);
-            this.monUnkShort6UD.Maximum = new decimal(new int[] {
+            this.monLevelCapUnusedUD.Location = new System.Drawing.Point(6, 321);
+            this.monLevelCapUnusedUD.Maximum = new decimal(new int[] {
             32767,
             0,
             0,
             0});
-            this.monUnkShort6UD.Minimum = new decimal(new int[] {
+            this.monLevelCapUnusedUD.Minimum = new decimal(new int[] {
             32768,
             0,
             0,
             -2147483648});
-            this.monUnkShort6UD.Name = "monUnkShort6UD";
-            this.monUnkShort6UD.Size = new System.Drawing.Size(60, 20);
-            this.monUnkShort6UD.TabIndex = 26;
-            this.monUnkShort6UD.ValueChanged += new System.EventHandler(this.monUnkShort6UD_ValueChanged);
+            this.monLevelCapUnusedUD.Name = "monLevelCapUnusedUD";
+            this.monLevelCapUnusedUD.Size = new System.Drawing.Size(60, 20);
+            this.monLevelCapUnusedUD.TabIndex = 26;
+            this.monLevelCapUnusedUD.ValueChanged += new System.EventHandler(this.monLevelCapUnusedUD_ValueChanged);
             // 
-            // monUnkShort5label
+            // monLevelModifierlabel
             // 
-            this.monUnkShort5label.AutoSize = true;
-            this.monUnkShort5label.Location = new System.Drawing.Point(69, 281);
-            this.monUnkShort5label.Name = "monUnkShort5label";
-            this.monUnkShort5label.Size = new System.Drawing.Size(64, 13);
-            this.monUnkShort5label.TabIndex = 25;
-            this.monUnkShort5label.Text = "Unk Short 5";
+            this.monLevelModifierlabel.AutoSize = true;
+            this.monLevelModifierlabel.Location = new System.Drawing.Point(72, 302);
+            this.monLevelModifierlabel.Name = "monLevelModifierlabel";
+            this.monLevelModifierlabel.Size = new System.Drawing.Size(73, 13);
+            this.monLevelModifierlabel.TabIndex = 25;
+            this.monLevelModifierlabel.Text = "Level Modifier";
             // 
-            // monUnkShort5UD
+            // monLevelModifierUD
             // 
-            this.monUnkShort5UD.Location = new System.Drawing.Point(7, 278);
-            this.monUnkShort5UD.Maximum = new decimal(new int[] {
+            this.monLevelModifierUD.Location = new System.Drawing.Point(6, 300);
+            this.monLevelModifierUD.Maximum = new decimal(new int[] {
             32767,
             0,
             0,
             0});
-            this.monUnkShort5UD.Minimum = new decimal(new int[] {
+            this.monLevelModifierUD.Minimum = new decimal(new int[] {
             32768,
             0,
             0,
             -2147483648});
-            this.monUnkShort5UD.Name = "monUnkShort5UD";
-            this.monUnkShort5UD.Size = new System.Drawing.Size(60, 20);
-            this.monUnkShort5UD.TabIndex = 24;
-            this.monUnkShort5UD.ValueChanged += new System.EventHandler(this.monUnkShort5UD_ValueChanged);
+            this.monLevelModifierUD.Name = "monLevelModifierUD";
+            this.monLevelModifierUD.Size = new System.Drawing.Size(60, 20);
+            this.monLevelModifierUD.TabIndex = 24;
+            this.monLevelModifierUD.ValueChanged += new System.EventHandler(this.monLevelModifierUD_ValueChanged);
             // 
-            // monLevelModLabel
+            // monUnknownShort5Label
             // 
-            this.monLevelModLabel.AutoSize = true;
-            this.monLevelModLabel.Location = new System.Drawing.Point(70, 260);
-            this.monLevelModLabel.Name = "monLevelModLabel";
-            this.monLevelModLabel.Size = new System.Drawing.Size(57, 13);
-            this.monLevelModLabel.TabIndex = 23;
-            this.monLevelModLabel.Text = "Level Mod";
+            this.monUnknownShort5Label.AutoSize = true;
+            this.monUnknownShort5Label.Location = new System.Drawing.Point(72, 281);
+            this.monUnknownShort5Label.Name = "monUnknownShort5Label";
+            this.monUnknownShort5Label.Size = new System.Drawing.Size(90, 13);
+            this.monUnknownShort5Label.TabIndex = 23;
+            this.monUnknownShort5Label.Text = "Unknown Short 5";
             // 
-            // monLevelModUD
+            // unkShort5UD
             // 
-            this.monLevelModUD.Location = new System.Drawing.Point(7, 257);
-            this.monLevelModUD.Maximum = new decimal(new int[] {
+            this.unkShort5UD.Location = new System.Drawing.Point(6, 279);
+            this.unkShort5UD.Maximum = new decimal(new int[] {
             32767,
             0,
             0,
             0});
-            this.monLevelModUD.Minimum = new decimal(new int[] {
+            this.unkShort5UD.Minimum = new decimal(new int[] {
             32768,
             0,
             0,
             -2147483648});
-            this.monLevelModUD.Name = "monLevelModUD";
-            this.monLevelModUD.Size = new System.Drawing.Size(60, 20);
-            this.monLevelModUD.TabIndex = 22;
-            this.monLevelModUD.ValueChanged += new System.EventHandler(this.monLevelModUD_ValueChanged);
+            this.unkShort5UD.Name = "unkShort5UD";
+            this.unkShort5UD.Size = new System.Drawing.Size(60, 20);
+            this.unkShort5UD.TabIndex = 22;
+            this.unkShort5UD.ValueChanged += new System.EventHandler(this.monUnkShort5UD_ValueChanged);
             // 
             // monUnkShort4Label
             // 
             this.monUnkShort4Label.AutoSize = true;
-            this.monUnkShort4Label.Location = new System.Drawing.Point(70, 240);
+            this.monUnkShort4Label.Location = new System.Drawing.Point(72, 260);
             this.monUnkShort4Label.Name = "monUnkShort4Label";
             this.monUnkShort4Label.Size = new System.Drawing.Size(64, 13);
             this.monUnkShort4Label.TabIndex = 21;
@@ -534,7 +517,7 @@
             // 
             // monUnkShort4UD
             // 
-            this.monUnkShort4UD.Location = new System.Drawing.Point(7, 236);
+            this.monUnkShort4UD.Location = new System.Drawing.Point(6, 258);
             this.monUnkShort4UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -553,7 +536,7 @@
             // monUnkShort3Label
             // 
             this.monUnkShort3Label.AutoSize = true;
-            this.monUnkShort3Label.Location = new System.Drawing.Point(70, 219);
+            this.monUnkShort3Label.Location = new System.Drawing.Point(72, 239);
             this.monUnkShort3Label.Name = "monUnkShort3Label";
             this.monUnkShort3Label.Size = new System.Drawing.Size(64, 13);
             this.monUnkShort3Label.TabIndex = 19;
@@ -561,7 +544,7 @@
             // 
             // monUnkShort3UD
             // 
-            this.monUnkShort3UD.Location = new System.Drawing.Point(7, 215);
+            this.monUnkShort3UD.Location = new System.Drawing.Point(6, 237);
             this.monUnkShort3UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -580,7 +563,7 @@
             // monCountLabel
             // 
             this.monCountLabel.AutoSize = true;
-            this.monCountLabel.Location = new System.Drawing.Point(70, 198);
+            this.monCountLabel.Location = new System.Drawing.Point(72, 218);
             this.monCountLabel.Name = "monCountLabel";
             this.monCountLabel.Size = new System.Drawing.Size(35, 13);
             this.monCountLabel.TabIndex = 17;
@@ -588,7 +571,7 @@
             // 
             // monCountUD
             // 
-            this.monCountUD.Location = new System.Drawing.Point(7, 194);
+            this.monCountUD.Location = new System.Drawing.Point(6, 216);
             this.monCountUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -607,7 +590,7 @@
             // monSpawnDelayLabel
             // 
             this.monSpawnDelayLabel.AutoSize = true;
-            this.monSpawnDelayLabel.Location = new System.Drawing.Point(70, 177);
+            this.monSpawnDelayLabel.Location = new System.Drawing.Point(72, 197);
             this.monSpawnDelayLabel.Name = "monSpawnDelayLabel";
             this.monSpawnDelayLabel.Size = new System.Drawing.Size(70, 13);
             this.monSpawnDelayLabel.TabIndex = 15;
@@ -615,7 +598,7 @@
             // 
             // monSpawnDelayUD
             // 
-            this.monSpawnDelayUD.Location = new System.Drawing.Point(7, 173);
+            this.monSpawnDelayUD.Location = new System.Drawing.Point(6, 195);
             this.monSpawnDelayUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -634,7 +617,7 @@
             // monUnkShort2Label
             // 
             this.monUnkShort2Label.AutoSize = true;
-            this.monUnkShort2Label.Location = new System.Drawing.Point(70, 156);
+            this.monUnkShort2Label.Location = new System.Drawing.Point(72, 176);
             this.monUnkShort2Label.Name = "monUnkShort2Label";
             this.monUnkShort2Label.Size = new System.Drawing.Size(64, 13);
             this.monUnkShort2Label.TabIndex = 13;
@@ -642,7 +625,7 @@
             // 
             // monUnkShort2UD
             // 
-            this.monUnkShort2UD.Location = new System.Drawing.Point(7, 152);
+            this.monUnkShort2UD.Location = new System.Drawing.Point(6, 174);
             this.monUnkShort2UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -661,7 +644,7 @@
             // monUnkShort1Label
             // 
             this.monUnkShort1Label.AutoSize = true;
-            this.monUnkShort1Label.Location = new System.Drawing.Point(70, 135);
+            this.monUnkShort1Label.Location = new System.Drawing.Point(72, 155);
             this.monUnkShort1Label.Name = "monUnkShort1Label";
             this.monUnkShort1Label.Size = new System.Drawing.Size(64, 13);
             this.monUnkShort1Label.TabIndex = 11;
@@ -669,7 +652,7 @@
             // 
             // monUnkShort1UD
             // 
-            this.monUnkShort1UD.Location = new System.Drawing.Point(7, 131);
+            this.monUnkShort1UD.Location = new System.Drawing.Point(6, 153);
             this.monUnkShort1UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -688,22 +671,22 @@
             // monUnkByte1Label
             // 
             this.monUnkByte1Label.AutoSize = true;
-            this.monUnkByte1Label.Location = new System.Drawing.Point(170, 80);
+            this.monUnkByte1Label.Location = new System.Drawing.Point(72, 134);
             this.monUnkByte1Label.Name = "monUnkByte1Label";
-            this.monUnkByte1Label.Size = new System.Drawing.Size(60, 13);
+            this.monUnkByte1Label.Size = new System.Drawing.Size(70, 13);
             this.monUnkByte1Label.TabIndex = 9;
-            this.monUnkByte1Label.Text = "Unk Byte 1";
+            this.monUnkByte1Label.Text = "Padding Byte";
             // 
             // monUnkByte1UD
             // 
-            this.monUnkByte1UD.Location = new System.Drawing.Point(126, 77);
+            this.monUnkByte1UD.Location = new System.Drawing.Point(6, 132);
             this.monUnkByte1UD.Maximum = new decimal(new int[] {
             255,
             0,
             0,
             0});
             this.monUnkByte1UD.Name = "monUnkByte1UD";
-            this.monUnkByte1UD.Size = new System.Drawing.Size(42, 20);
+            this.monUnkByte1UD.Size = new System.Drawing.Size(60, 20);
             this.monUnkByte1UD.TabIndex = 8;
             this.monUnkByte1UD.ValueChanged += new System.EventHandler(this.monUnkByte1UD_ValueChanged);
             // 
@@ -774,6 +757,8 @@
             // 
             // arrangementGB
             // 
+            this.arrangementGB.Controls.Add(this.arrSpawnDelayLabel);
+            this.arrangementGB.Controls.Add(this.arrSpawnDelayUD);
             this.arrangementGB.Controls.Add(this.arrUnkShort3Label);
             this.arrangementGB.Controls.Add(this.arrUnkShort2Label);
             this.arrangementGB.Controls.Add(this.arrUnkShort1Label);
@@ -787,18 +772,45 @@
             this.arrangementGB.Controls.Add(this.arrInitialCountUD);
             this.arrangementGB.Controls.Add(this.arrFormationUD);
             this.arrangementGB.Controls.Add(this.arrUnkInt1Label);
-            this.arrangementGB.Controls.Add(this.arrUnkInt1UD);
+            this.arrangementGB.Controls.Add(this.arrIdUD);
             this.arrangementGB.Location = new System.Drawing.Point(343, 0);
             this.arrangementGB.Name = "arrangementGB";
-            this.arrangementGB.Size = new System.Drawing.Size(153, 164);
+            this.arrangementGB.Size = new System.Drawing.Size(153, 187);
             this.arrangementGB.TabIndex = 6;
             this.arrangementGB.TabStop = false;
             this.arrangementGB.Text = "Arrangement";
             // 
+            // arrSpawnDelayLabel
+            // 
+            this.arrSpawnDelayLabel.AutoSize = true;
+            this.arrSpawnDelayLabel.Location = new System.Drawing.Point(65, 38);
+            this.arrSpawnDelayLabel.Name = "arrSpawnDelayLabel";
+            this.arrSpawnDelayLabel.Size = new System.Drawing.Size(70, 13);
+            this.arrSpawnDelayLabel.TabIndex = 43;
+            this.arrSpawnDelayLabel.Text = "Spawn Delay";
+            // 
+            // arrSpawnDelayUD
+            // 
+            this.arrSpawnDelayUD.Location = new System.Drawing.Point(4, 35);
+            this.arrSpawnDelayUD.Maximum = new decimal(new int[] {
+            32767,
+            0,
+            0,
+            0});
+            this.arrSpawnDelayUD.Minimum = new decimal(new int[] {
+            32768,
+            0,
+            0,
+            -2147483648});
+            this.arrSpawnDelayUD.Name = "arrSpawnDelayUD";
+            this.arrSpawnDelayUD.Size = new System.Drawing.Size(60, 20);
+            this.arrSpawnDelayUD.TabIndex = 42;
+            this.arrSpawnDelayUD.ValueChanged += new System.EventHandler(this.arrSpawnDelayUD_ValueChanged);
+            // 
             // arrUnkShort3Label
             // 
             this.arrUnkShort3Label.AutoSize = true;
-            this.arrUnkShort3Label.Location = new System.Drawing.Point(65, 143);
+            this.arrUnkShort3Label.Location = new System.Drawing.Point(65, 164);
             this.arrUnkShort3Label.Name = "arrUnkShort3Label";
             this.arrUnkShort3Label.Size = new System.Drawing.Size(64, 13);
             this.arrUnkShort3Label.TabIndex = 34;
@@ -807,7 +819,7 @@
             // arrUnkShort2Label
             // 
             this.arrUnkShort2Label.AutoSize = true;
-            this.arrUnkShort2Label.Location = new System.Drawing.Point(65, 121);
+            this.arrUnkShort2Label.Location = new System.Drawing.Point(65, 142);
             this.arrUnkShort2Label.Name = "arrUnkShort2Label";
             this.arrUnkShort2Label.Size = new System.Drawing.Size(64, 13);
             this.arrUnkShort2Label.TabIndex = 34;
@@ -816,7 +828,7 @@
             // arrUnkShort1Label
             // 
             this.arrUnkShort1Label.AutoSize = true;
-            this.arrUnkShort1Label.Location = new System.Drawing.Point(65, 100);
+            this.arrUnkShort1Label.Location = new System.Drawing.Point(65, 121);
             this.arrUnkShort1Label.Name = "arrUnkShort1Label";
             this.arrUnkShort1Label.Size = new System.Drawing.Size(64, 13);
             this.arrUnkShort1Label.TabIndex = 34;
@@ -824,7 +836,7 @@
             // 
             // arrUnkShort3UD
             // 
-            this.arrUnkShort3UD.Location = new System.Drawing.Point(4, 140);
+            this.arrUnkShort3UD.Location = new System.Drawing.Point(4, 161);
             this.arrUnkShort3UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -842,7 +854,7 @@
             // 
             // arrUnkShort2UD
             // 
-            this.arrUnkShort2UD.Location = new System.Drawing.Point(4, 119);
+            this.arrUnkShort2UD.Location = new System.Drawing.Point(4, 140);
             this.arrUnkShort2UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -860,7 +872,7 @@
             // 
             // arrUnkShort1UD
             // 
-            this.arrUnkShort1UD.Location = new System.Drawing.Point(4, 98);
+            this.arrUnkShort1UD.Location = new System.Drawing.Point(4, 119);
             this.arrUnkShort1UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -879,7 +891,7 @@
             // arrRespawnTriggerLabel
             // 
             this.arrRespawnTriggerLabel.AutoSize = true;
-            this.arrRespawnTriggerLabel.Location = new System.Drawing.Point(66, 79);
+            this.arrRespawnTriggerLabel.Location = new System.Drawing.Point(66, 100);
             this.arrRespawnTriggerLabel.Name = "arrRespawnTriggerLabel";
             this.arrRespawnTriggerLabel.Size = new System.Drawing.Size(88, 13);
             this.arrRespawnTriggerLabel.TabIndex = 38;
@@ -887,7 +899,7 @@
             // 
             // arrRespawnTriggerUD
             // 
-            this.arrRespawnTriggerUD.Location = new System.Drawing.Point(4, 77);
+            this.arrRespawnTriggerUD.Location = new System.Drawing.Point(4, 98);
             this.arrRespawnTriggerUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -906,7 +918,7 @@
             // arrInitialCountLabel
             // 
             this.arrInitialCountLabel.AutoSize = true;
-            this.arrInitialCountLabel.Location = new System.Drawing.Point(66, 58);
+            this.arrInitialCountLabel.Location = new System.Drawing.Point(66, 79);
             this.arrInitialCountLabel.Name = "arrInitialCountLabel";
             this.arrInitialCountLabel.Size = new System.Drawing.Size(62, 13);
             this.arrInitialCountLabel.TabIndex = 36;
@@ -915,7 +927,7 @@
             // arrFormationLabel
             // 
             this.arrFormationLabel.AutoSize = true;
-            this.arrFormationLabel.Location = new System.Drawing.Point(66, 38);
+            this.arrFormationLabel.Location = new System.Drawing.Point(66, 59);
             this.arrFormationLabel.Name = "arrFormationLabel";
             this.arrFormationLabel.Size = new System.Drawing.Size(53, 13);
             this.arrFormationLabel.TabIndex = 34;
@@ -923,7 +935,7 @@
             // 
             // arrInitialCountUD
             // 
-            this.arrInitialCountUD.Location = new System.Drawing.Point(4, 56);
+            this.arrInitialCountUD.Location = new System.Drawing.Point(4, 77);
             this.arrInitialCountUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -941,7 +953,7 @@
             // 
             // arrFormationUD
             // 
-            this.arrFormationUD.Location = new System.Drawing.Point(4, 35);
+            this.arrFormationUD.Location = new System.Drawing.Point(4, 56);
             this.arrFormationUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -960,32 +972,34 @@
             // arrUnkInt1Label
             // 
             this.arrUnkInt1Label.AutoSize = true;
-            this.arrUnkInt1Label.Location = new System.Drawing.Point(82, 16);
+            this.arrUnkInt1Label.Location = new System.Drawing.Point(65, 16);
             this.arrUnkInt1Label.Name = "arrUnkInt1Label";
-            this.arrUnkInt1Label.Size = new System.Drawing.Size(51, 13);
+            this.arrUnkInt1Label.Size = new System.Drawing.Size(18, 13);
             this.arrUnkInt1Label.TabIndex = 34;
-            this.arrUnkInt1Label.Text = "Unk Int 1";
+            this.arrUnkInt1Label.Text = "ID";
             // 
-            // arrUnkInt1UD
+            // arrIdUD
             // 
-            this.arrUnkInt1UD.Location = new System.Drawing.Point(4, 14);
-            this.arrUnkInt1UD.Maximum = new decimal(new int[] {
-            2147483647,
+            this.arrIdUD.Location = new System.Drawing.Point(4, 14);
+            this.arrIdUD.Maximum = new decimal(new int[] {
+            32767,
             0,
             0,
             0});
-            this.arrUnkInt1UD.Minimum = new decimal(new int[] {
-            -2147483648,
+            this.arrIdUD.Minimum = new decimal(new int[] {
+            32768,
             0,
             0,
             -2147483648});
-            this.arrUnkInt1UD.Name = "arrUnkInt1UD";
-            this.arrUnkInt1UD.Size = new System.Drawing.Size(74, 20);
-            this.arrUnkInt1UD.TabIndex = 34;
-            this.arrUnkInt1UD.ValueChanged += new System.EventHandler(this.arrUnkInt1UD_ValueChanged);
+            this.arrIdUD.Name = "arrIdUD";
+            this.arrIdUD.Size = new System.Drawing.Size(60, 20);
+            this.arrIdUD.TabIndex = 34;
+            this.arrIdUD.ValueChanged += new System.EventHandler(this.arrIdUD_ValueChanged);
             // 
             // spawnDataGroupBox
             // 
+            this.spawnDataGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort5Label);
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort4Label);
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort5UD);
@@ -998,9 +1012,9 @@
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort2UD);
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort3UD);
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort1UD);
-            this.spawnDataGroupBox.Location = new System.Drawing.Point(343, 166);
+            this.spawnDataGroupBox.Location = new System.Drawing.Point(342, 186);
             this.spawnDataGroupBox.Name = "spawnDataGroupBox";
-            this.spawnDataGroupBox.Size = new System.Drawing.Size(181, 158);
+            this.spawnDataGroupBox.Size = new System.Drawing.Size(154, 158);
             this.spawnDataGroupBox.TabIndex = 7;
             this.spawnDataGroupBox.TabStop = false;
             this.spawnDataGroupBox.Text = "Spawn Data";
@@ -1180,7 +1194,7 @@
             this.Controls.Add(this.ImportJSONButton);
             this.Controls.Add(this.ExportJSONButton);
             this.Name = "EnemyLayoutViewer";
-            this.Size = new System.Drawing.Size(496, 324);
+            this.Size = new System.Drawing.Size(496, 347);
             this.spawnEntryGroupBox.ResumeLayout(false);
             this.spawnEntryGroupBox.PerformLayout();
             this.monsterGB.ResumeLayout(false);
@@ -1188,9 +1202,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.monUnkInt1UD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.monUnkShort8UD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.monUnkShort7UD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.monUnkShort6UD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.monUnkShort5UD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.monLevelModUD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.monLevelCapUnusedUD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.monLevelModifierUD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.unkShort5UD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.monUnkShort4UD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.monUnkShort3UD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.monCountUD)).EndInit();
@@ -1202,13 +1216,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.monNumUD)).EndInit();
             this.arrangementGB.ResumeLayout(false);
             this.arrangementGB.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.arrSpawnDelayUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrUnkShort3UD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrUnkShort2UD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrUnkShort1UD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrRespawnTriggerUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrInitialCountUD)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.arrFormationUD)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.arrUnkInt1UD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.arrIdUD)).EndInit();
             this.spawnDataGroupBox.ResumeLayout(false);
             this.spawnDataGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SDUnkShort5UD)).EndInit();
@@ -1236,9 +1251,7 @@
         private System.Windows.Forms.ComboBox monsterListCB;
         private System.Windows.Forms.Label monsterListLabel;
         private System.Windows.Forms.Label Arrangement;
-        private System.Windows.Forms.Label spawnDataLabel;
         private System.Windows.Forms.ComboBox arrangementCB;
-        private System.Windows.Forms.ComboBox spawnDataCB;
         private System.Windows.Forms.GroupBox monsterGB;
         private System.Windows.Forms.Label monElementLabel;
         private System.Windows.Forms.NumericUpDown monElementUD;
@@ -1262,12 +1275,12 @@
         private System.Windows.Forms.NumericUpDown monUnkShort3UD;
         private System.Windows.Forms.Label monUnkShort4Label;
         private System.Windows.Forms.NumericUpDown monUnkShort4UD;
-        private System.Windows.Forms.Label monLevelModLabel;
-        private System.Windows.Forms.NumericUpDown monLevelModUD;
-        private System.Windows.Forms.NumericUpDown monUnkShort5UD;
-        private System.Windows.Forms.Label monUnkShort5label;
+        private System.Windows.Forms.Label monUnknownShort5Label;
+        private System.Windows.Forms.NumericUpDown unkShort5UD;
+        private System.Windows.Forms.NumericUpDown monLevelModifierUD;
+        private System.Windows.Forms.Label monLevelModifierlabel;
         private System.Windows.Forms.Label monUnkShort6Label;
-        private System.Windows.Forms.NumericUpDown monUnkShort6UD;
+        private System.Windows.Forms.NumericUpDown monLevelCapUnusedUD;
         private System.Windows.Forms.Label monUnkInt1Label;
         private System.Windows.Forms.Label monUnkShort8Label;
         private System.Windows.Forms.Label monUnkShort7Label;
@@ -1288,7 +1301,7 @@
         private System.Windows.Forms.NumericUpDown arrInitialCountUD;
         private System.Windows.Forms.NumericUpDown arrFormationUD;
         private System.Windows.Forms.Label arrUnkInt1Label;
-        private System.Windows.Forms.NumericUpDown arrUnkInt1UD;
+        private System.Windows.Forms.NumericUpDown arrIdUD;
         private System.Windows.Forms.GroupBox spawnDataGroupBox;
         private System.Windows.Forms.Label SDUnkShort5Label;
         private System.Windows.Forms.Label SDUnkShort4Label;
@@ -1303,5 +1316,7 @@
         private System.Windows.Forms.NumericUpDown SDUnkShort3UD;
         private System.Windows.Forms.NumericUpDown SDUnkShort1UD;
         private System.Windows.Forms.CheckBox monSwordBuffCheck;
+        private System.Windows.Forms.Label arrSpawnDelayLabel;
+        private System.Windows.Forms.NumericUpDown arrSpawnDelayUD;
     }
 }

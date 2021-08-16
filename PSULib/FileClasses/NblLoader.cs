@@ -442,6 +442,11 @@ namespace psu_generic_parser
             }
         }
 
+        public void replaceFile(int index, RawFile toReplace)
+        {
+            throw new NotSupportedException("Cannot replace an NBL chunk in an NBL file");
+        }
+
         public void addFile(int index, RawFile toAdd)
         {
             throw new NotImplementedException();
@@ -628,7 +633,8 @@ namespace psu_generic_parser
             if (!loadedFileCache.ContainsKey(filename))
             {
                 int index = fileContents.FindIndex(p => p.filename == filename);
-                loadedFileCache.Add(filename, PsuFiles.FromRaw(filename, fileContents[index].fileContents, fileContents[index].subHeader, fileContents[index].pointers.ToArray(), (int)fileContents[index].fileOffset, bigEndian));
+                string effectiveFilename = filename.Contains("\0") ? filename.Split('\0')[0] : filename;
+                loadedFileCache.Add(filename, PsuFiles.FromRaw(effectiveFilename, fileContents[index].fileContents, fileContents[index].subHeader, fileContents[index].pointers.ToArray(), (int)fileContents[index].fileOffset, bigEndian));
             }
             return loadedFileCache[filename];
         }
@@ -650,6 +656,15 @@ namespace psu_generic_parser
                 loadedFileCache.Remove(filename);
             }
             int index = fileContents.Select(file => file.filename).ToList().IndexOf(filename);
+            fileContents[index] = toReplace;
+        }
+
+        public void replaceFile(int index, RawFile toReplace)
+        {
+            if (loadedFileCache.ContainsKey(fileContents[index].filename))
+            {
+                loadedFileCache.Remove(fileContents[index].filename);
+            }
             fileContents[index] = toReplace;
         }
 

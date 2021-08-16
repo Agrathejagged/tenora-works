@@ -60,15 +60,6 @@ namespace psu_generic_parser
             arrangementCB.EndUpdate();
             arrangementCB.SelectedIndex = 0;
             UpdateArrangementDisplay();
-
-            spawnDataCB.BeginUpdate();
-            spawnDataCB.Items.Clear();
-            for (int i = 0; i < internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData.Length; i++)
-            {
-                spawnDataCB.Items.Add(i);
-            }
-            spawnDataCB.EndUpdate();
-            spawnDataCB.SelectedIndex = 0;
             UpdateSpawnDataDisplay();
         }
 
@@ -102,9 +93,9 @@ namespace psu_generic_parser
             monCountUD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].count;
             monUnkShort3UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unkShort3;
             monUnkShort4UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unkShort4;
-            monLevelModUD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].levelMod;
-            monUnkShort5UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unkShort5;
-            monUnkShort6UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unkShort6;
+            unkShort5UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unknownShort5;
+            monLevelModifierUD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].levelModifier;
+            monLevelCapUnusedUD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].levelCapUnused;
             monUnkShort7UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unkShort7;
             monUnkShort8UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unkShort8;
             monUnkInt1UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unkInt1;
@@ -112,7 +103,8 @@ namespace psu_generic_parser
 
         private void UpdateArrangementDisplay()
         {
-            arrUnkInt1UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].arrangements[arrangementCB.SelectedIndex].unknownInt1;
+            arrIdUD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].arrangements[arrangementCB.SelectedIndex].arrangementId;
+            arrSpawnDelayUD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].arrangements[arrangementCB.SelectedIndex].arrangementDelay;
             arrFormationUD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].arrangements[arrangementCB.SelectedIndex].formation;
             arrInitialCountUD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].arrangements[arrangementCB.SelectedIndex].initialCount;
             arrRespawnTriggerUD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].arrangements[arrangementCB.SelectedIndex].respawnTrigger;
@@ -123,12 +115,12 @@ namespace psu_generic_parser
 
         private void UpdateSpawnDataDisplay()
         {
-            SDSpawnNumberUD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].spawnNum;
-            SDUnkShort1UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].unkShort1;
-            SDUnkShort2UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].unkShort2;
-            SDUnkShort3UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].unkShort3;
-            SDUnkShort4UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].unkShort4;
-            SDUnkShort5UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].unkShort5;
+            SDSpawnNumberUD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].spawnNum;
+            SDUnkShort1UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].unknownFlag1;
+            SDUnkShort2UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].unknownFlag2;
+            SDUnkShort3UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].unusedShort1;
+            SDUnkShort4UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].unusedShort2;
+            SDUnkShort5UD.Value = internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].unusedShort3;
         }
 
         private void ExportJSON_Click(object sender, EventArgs e)
@@ -252,19 +244,19 @@ namespace psu_generic_parser
             internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unkShort4 = (short)monUnkShort4UD.Value;
         }
 
-        private void monLevelModUD_ValueChanged(object sender, EventArgs e)
-        {
-            internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].levelMod = (short)monLevelModUD.Value;
-        }
-
         private void monUnkShort5UD_ValueChanged(object sender, EventArgs e)
         {
-            internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unkShort5 = (short)monUnkShort5UD.Value;
+            internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unknownShort5 = (short)unkShort5UD.Value;
         }
 
-        private void monUnkShort6UD_ValueChanged(object sender, EventArgs e)
+        private void monLevelModifierUD_ValueChanged(object sender, EventArgs e)
         {
-            internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unkShort6 = (short)monUnkShort6UD.Value;
+            internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].levelModifier = (short)monLevelModifierUD.Value;
+        }
+
+        private void monLevelCapUnusedUD_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].levelCapUnused = (short)monLevelCapUnusedUD.Value;
         }
 
         private void monUnkShort7UD_ValueChanged(object sender, EventArgs e)
@@ -287,9 +279,14 @@ namespace psu_generic_parser
             internalFile.spawns[spawnEntryCB.SelectedIndex].monsters[monsterListCB.SelectedIndex][monstersCB.SelectedIndex].unkByte1 = (byte)monUnkByte1UD.Value;
         }
 
-        private void arrUnkInt1UD_ValueChanged(object sender, EventArgs e)
+        private void arrIdUD_ValueChanged(object sender, EventArgs e)
         {
-            internalFile.spawns[spawnEntryCB.SelectedIndex].arrangements[arrangementCB.SelectedIndex].unknownInt1 = (int)arrUnkInt1UD.Value;
+            internalFile.spawns[spawnEntryCB.SelectedIndex].arrangements[arrangementCB.SelectedIndex].arrangementId = (short)arrIdUD.Value;
+        }
+
+        private void arrSpawnDelayUD_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.spawns[spawnEntryCB.SelectedIndex].arrangements[arrangementCB.SelectedIndex].arrangementDelay = (short)arrSpawnDelayUD.Value;
         }
 
         private void arrFormationUD_ValueChanged(object sender, EventArgs e)
@@ -324,33 +321,32 @@ namespace psu_generic_parser
 
         private void SDSpawnNumberUD_ValueChanged(object sender, EventArgs e)
         {
-            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].spawnNum = (short)SDSpawnNumberUD.Value;
+            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].spawnNum = (short)SDSpawnNumberUD.Value;
         }
 
         private void SDUnkShort1UD_ValueChanged(object sender, EventArgs e)
         {
-            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].unkShort1 = (short)SDUnkShort1UD.Value;
+            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].unknownFlag1 = (short)SDUnkShort1UD.Value;
         }
 
         private void SDUnkShort2UD_ValueChanged(object sender, EventArgs e)
         {
-            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].unkShort2 = (short)SDUnkShort2UD.Value;
+            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].unknownFlag2 = (short)SDUnkShort2UD.Value;
         }
 
         private void SDUnkShort3UD_ValueChanged(object sender, EventArgs e)
         {
-            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].unkShort3 = (short)SDUnkShort3UD.Value;
+            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].unusedShort1 = (short)SDUnkShort3UD.Value;
         }
 
         private void SDUnkShort4UD_ValueChanged(object sender, EventArgs e)
         {
-            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].unkShort4 = (short)SDUnkShort4UD.Value;
+            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].unusedShort2 = (short)SDUnkShort4UD.Value;
         }
 
         private void SDUnkShort5UD_ValueChanged(object sender, EventArgs e)
         {
-            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[spawnDataCB.SelectedIndex].unkShort5 = (short)SDUnkShort5UD.Value;
+            internalFile.spawns[spawnEntryCB.SelectedIndex].spawnData[0].unusedShort3 = (short)SDUnkShort5UD.Value;
         }
-
     }
 }

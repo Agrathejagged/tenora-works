@@ -31,6 +31,7 @@ namespace psu_generic_parser
             public byte unkByte1;
             [DataMember]
             public short unkShort1;
+            //Possibly related to SpawnData::unkShort1 and unkShort2. Valid values are 0, 1, 2, 3 (any value above 3 is treated as equivalent to 3)
             [DataMember]
             public short unkShort2;
             [DataMember]
@@ -42,24 +43,33 @@ namespace psu_generic_parser
             [DataMember]
             public short unkShort4;
             [DataMember]
-            public short levelMod;
+            public short unknownShort5;
             [DataMember]
-            public short unkShort5;
+            public short levelModifier;
             [DataMember]
-            public short unkShort6;
+            public short levelCapUnused;
             [DataMember]
             public short unkShort7;
             [DataMember]
             public short unkShort8;
             [DataMember]
             public int unkInt1;
+            public override string ToString()
+            {
+                return "monsterNum:" + monsterNum + "\telement:" + element + "\tkingBuff:" + kingBuff + "\tshieldBuff:" + shieldBuff + "\tswordBuff:" + swordBuff + "\tunkBuff:" + unkBuff + "\tstaffBuff:" + staffBuff + 
+                    "\tunkByte1:" + unkByte1.ToString("X2") + "\tunkShort1:" + unkShort1.ToString("X4") + "\tunkShort2:" + unkShort2.ToString("X4") + "\tspawnDelay:" + spawnDelay + "\tcount:" + count + 
+                    "\tunkShort3:" + unkShort3.ToString("X4") + "\tunkShort4:" + unkShort4.ToString("X4") + "\tlevelMod:"  + unknownShort5 + "\tunkShort5:" + levelModifier.ToString("X4") + "\tunkShort6:" + levelCapUnused.ToString("X4") + 
+                    "\tunkShort7:" + unkShort7.ToString("X4") + "\tunkShort8:" + unkShort8.ToString("X4") + "\tunkInt1:" + unkInt1.ToString("X8");
+            }
         }
 
         [DataContract]
         public struct Arrangement
         {
             [DataMember]
-            public int unknownInt1;
+            public short arrangementId;
+            [DataMember]
+            public short arrangementDelay;
             [DataMember]
             public short formation;
             [DataMember]
@@ -72,6 +82,10 @@ namespace psu_generic_parser
             public short unknownShort2;
             [DataMember]
             public short unknownShort3;
+            public override string ToString()
+            {
+                return "ID: " + arrangementId + "\tarrangementDelay: " + arrangementDelay + "\tformation: " + formation + "\tinitialCount: " + initialCount + "\trespawnTrigger: " + respawnTrigger + "\tunknownShort1: " + unknownShort1.ToString("X4") + "\tunknownShort2: " + unknownShort2.ToString("X4") + "\tunknownShort3: " + unknownShort3.ToString("X4");
+            }
         }
 
         [DataContract]
@@ -79,16 +93,22 @@ namespace psu_generic_parser
         {
             [DataMember]
             public short spawnNum;
+            //unkShort1 and unkShort2 appear potentially related to MonsterEntry::unkShort3 (they're stored adjacent in memory). These are also apparently flags (only known values are 0 and 1).
             [DataMember]
-            public short unkShort1;
+            public short unknownFlag1;
             [DataMember]
-            public short unkShort2;
+            public short unknownFlag2;
             [DataMember]
-            public short unkShort3;
+            public short unusedShort1;
             [DataMember]
-            public short unkShort4;
+            public short unusedShort2;
             [DataMember]
-            public short unkShort5;
+            public short unusedShort3;
+
+            public override string ToString()
+            {
+                return "num: " + spawnNum + "\tunknownFlag1: " + unknownFlag1.ToString("X4") + "\tunknownFlag2: " + unknownFlag2.ToString("X4") + "\tunusedShort1: " + unusedShort1.ToString("X4") + "\tunusedShort2: " + unusedShort2.ToString("X4") + "\tunusedShort3: " + unusedShort3.ToString("X4");
+            }
         }
 
         [DataContract]
@@ -155,9 +175,9 @@ namespace psu_generic_parser
                         spawns[i].monsters[j][k].count = fileReader.ReadInt16();
                         spawns[i].monsters[j][k].unkShort3 = fileReader.ReadInt16();
                         spawns[i].monsters[j][k].unkShort4 = fileReader.ReadInt16();
-                        spawns[i].monsters[j][k].levelMod = fileReader.ReadInt16();
-                        spawns[i].monsters[j][k].unkShort5 = fileReader.ReadInt16();
-                        spawns[i].monsters[j][k].unkShort6 = fileReader.ReadInt16();
+                        spawns[i].monsters[j][k].unknownShort5 = fileReader.ReadInt16();
+                        spawns[i].monsters[j][k].levelModifier = fileReader.ReadInt16();
+                        spawns[i].monsters[j][k].levelCapUnused = fileReader.ReadInt16();
                         spawns[i].monsters[j][k].unkShort7 = fileReader.ReadInt16();
                         spawns[i].monsters[j][k].unkShort8 = fileReader.ReadInt16();
                         spawns[i].monsters[j][k].unkInt1 = fileReader.ReadInt32();
@@ -167,7 +187,8 @@ namespace psu_generic_parser
                 {
                     transFile.Seek(listData[i * 3 + 1] + j * 16, SeekOrigin.Begin);
                     spawns[i].arrangements[j] = new Arrangement();
-                    spawns[i].arrangements[j].unknownInt1 = fileReader.ReadInt32();
+                    spawns[i].arrangements[j].arrangementId = fileReader.ReadInt16();
+                    spawns[i].arrangements[j].arrangementDelay = fileReader.ReadInt16();
                     spawns[i].arrangements[j].formation = fileReader.ReadInt16();
                     spawns[i].arrangements[j].initialCount = fileReader.ReadInt16();
                     spawns[i].arrangements[j].respawnTrigger = fileReader.ReadInt16();
@@ -180,11 +201,11 @@ namespace psu_generic_parser
                     transFile.Seek(listData[i * 3] + j * 12, SeekOrigin.Begin);
                     spawns[i].spawnData[j] = new SpawnData();
                     spawns[i].spawnData[j].spawnNum = fileReader.ReadInt16();
-                    spawns[i].spawnData[j].unkShort1 = fileReader.ReadInt16();
-                    spawns[i].spawnData[j].unkShort2 = fileReader.ReadInt16();
-                    spawns[i].spawnData[j].unkShort3 = fileReader.ReadInt16();
-                    spawns[i].spawnData[j].unkShort4 = fileReader.ReadInt16();
-                    spawns[i].spawnData[j].unkShort5 = fileReader.ReadInt16();
+                    spawns[i].spawnData[j].unknownFlag1 = fileReader.ReadInt16();
+                    spawns[i].spawnData[j].unknownFlag2 = fileReader.ReadInt16();
+                    spawns[i].spawnData[j].unusedShort1 = fileReader.ReadInt16();
+                    spawns[i].spawnData[j].unusedShort2 = fileReader.ReadInt16();
+                    spawns[i].spawnData[j].unusedShort3 = fileReader.ReadInt16();
                 }
             }
         }
@@ -224,9 +245,9 @@ namespace psu_generic_parser
                         outWriter.Write(tempMonster.count);
                         outWriter.Write(tempMonster.unkShort3);
                         outWriter.Write(tempMonster.unkShort4);
-                        outWriter.Write(tempMonster.levelMod);
-                        outWriter.Write(tempMonster.unkShort5);
-                        outWriter.Write(tempMonster.unkShort6);
+                        outWriter.Write(tempMonster.unknownShort5);
+                        outWriter.Write(tempMonster.levelModifier);
+                        outWriter.Write(tempMonster.levelCapUnused);
                         outWriter.Write(tempMonster.unkShort7);
                         outWriter.Write(tempMonster.unkShort8);
                         outWriter.Write(tempMonster.unkInt1);
@@ -245,7 +266,8 @@ namespace psu_generic_parser
                 for (int j = 0; j < spawns[i].arrangements.Length; j++)
                 {
                     Arrangement tempArrange = spawns[i].arrangements[j];
-                    outWriter.Write(tempArrange.unknownInt1);
+                    outWriter.Write(tempArrange.arrangementId);
+                    outWriter.Write(tempArrange.arrangementDelay);
                     outWriter.Write(tempArrange.formation);
                     outWriter.Write(tempArrange.initialCount);
                     outWriter.Write(tempArrange.respawnTrigger);
@@ -259,11 +281,11 @@ namespace psu_generic_parser
                 {
                     SpawnData tempSpawnData = spawns[i].spawnData[j];
                     outWriter.Write(tempSpawnData.spawnNum);
-                    outWriter.Write(tempSpawnData.unkShort1);
-                    outWriter.Write(tempSpawnData.unkShort2);
-                    outWriter.Write(tempSpawnData.unkShort3);
-                    outWriter.Write(tempSpawnData.unkShort4);
-                    outWriter.Write(tempSpawnData.unkShort5);
+                    outWriter.Write(tempSpawnData.unknownFlag1);
+                    outWriter.Write(tempSpawnData.unknownFlag2);
+                    outWriter.Write(tempSpawnData.unusedShort1);
+                    outWriter.Write(tempSpawnData.unusedShort2);
+                    outWriter.Write(tempSpawnData.unusedShort3);
                 }
             }
             int ptrListLoc = (int)outStream.Position;

@@ -23,24 +23,39 @@ namespace psu_generic_parser
         }
 
         //Creates a RawFile from my custom container format.
-        public RawFile(Stream inStream)
+        public RawFile(Stream inStream, string initialFilename)
         {
             BinaryReader inReader = new BinaryReader(inStream);
-            fileheader = Encoding.ASCII.GetString(inReader.ReadBytes(4));
-            inStream.Seek(0x10, SeekOrigin.Begin);
-            filename = Encoding.GetEncoding("shift-jis").GetString(inReader.ReadBytes(0x20));
-            filename = filename.TrimEnd('\0');
-            fileOffset = inReader.ReadUInt32();
-            int fileLength = inReader.ReadInt32();
-            chunkSize = inReader.ReadUInt32();
-            int pointerCount = inReader.ReadInt32();
-            subHeader = inReader.ReadBytes(0x20);
-            fileContents = inReader.ReadBytes(fileLength);
-            inStream.Seek((inStream.Position + 0x7F) & 0xFFFFFF80, SeekOrigin.Begin);
-
-            for (int i = 0; i < pointerCount; i++)
+            string initialHeader = Encoding.ASCII.GetString(inReader.ReadBytes(4));
+            //Allow naked NBLs/AFS files
+            if (initialHeader == "NMLL" || initialHeader == "AFS\0")
             {
-                pointers.Add(inReader.ReadInt32());
+                fileheader = "STD\0";
+                filename = initialFilename;
+                fileOffset = 0;
+                inStream.Seek(0, SeekOrigin.Begin);
+                subHeader = new byte[0x20];
+                fileContents = inReader.ReadBytes((int)inStream.Length);
+            }
+            else
+            {
+                fileheader = initialHeader;
+                chunkSize = inReader.ReadUInt32();
+                inStream.Seek(0x10, SeekOrigin.Begin);
+                filename = Encoding.GetEncoding("shift-jis").GetString(inReader.ReadBytes(0x20));
+                filename = filename.TrimEnd('\0');
+                fileOffset = inReader.ReadUInt32();
+                int fileLength = inReader.ReadInt32();
+                inReader.ReadInt32();
+                int pointerCount = inReader.ReadInt32();
+                subHeader = inReader.ReadBytes(0x20);
+                fileContents = inReader.ReadBytes(fileLength);
+                inStream.Seek((inStream.Position + 0x7F) & 0xFFFFFF80, SeekOrigin.Begin);
+
+                for (int i = 0; i < pointerCount; i++)
+                {
+                    pointers.Add(inReader.ReadInt32());
+                }
             }
             inReader.Close();
         }
@@ -100,7 +115,7 @@ namespace psu_generic_parser
 
             if (writeMetaData == true)
             {
-                if (pointers == null)
+                if (pointers == null || pointers.Count == 0)
                 {
                     output.AddRange(Encoding.ASCII.GetBytes("STD\0"));
                 }
@@ -109,8 +124,9 @@ namespace psu_generic_parser
                     output.AddRange(Encoding.ASCII.GetBytes(fileNameSansPath.ToUpper().ToCharArray(fileNameSansPath.Length - 3, 3)));
                     output.Add(0);
                 }
+                output.AddRange(BitConverter.GetBytes(chunkSize));
 
-                output.AddRange(new byte[0xC]);
+                output.AddRange(new byte[0x8]);
                 output.AddRange(ContainerUtilities.encodePaddedSjisString(fileNameSansPath, 0x20));
                 output.AddRange(new byte[0x4]);
                 output.AddRange(BitConverter.GetBytes(toSave.Length));

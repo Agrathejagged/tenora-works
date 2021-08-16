@@ -256,6 +256,11 @@ namespace psu_generic_parser.FileClasses
             replaceFile(index, new MemoryStream(toReplace.fileContents));
         }
 
+        public void replaceFile(int index, RawFile toReplace)
+        {
+            replaceFile(index, new MemoryStream(toReplace.fileContents));
+        }
+
         #endregion
 
         public void addFile(int index, RawFile toAdd)

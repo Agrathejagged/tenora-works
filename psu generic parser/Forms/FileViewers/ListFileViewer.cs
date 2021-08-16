@@ -6,7 +6,7 @@ namespace psu_generic_parser
     public partial class ListFileViewer : UserControl
     {
         private ListFile listFile;
-        private string[] categories = { "XNJ", "XNT", "UNKNOWN", "UNKNOWN", "XNM", "UNKNOWN", "UNKNOWN", "XNR/REL", "UNKNOWN", "UNKNOWN", "UNKNOWN", "XNV"};
+        private string[] categories = { "XNJ / Models", "XNT / Texture Lists", "UNKNOWN", "XNA / Bone Lists", "XNM / Model Animations", "UNKNOWN", "UNKNOWN", "XNR/REL Miscellaneous", "UNKNOWN", "UNKNOWN", "UNKNOWN", "XNV / Material Animations", "BIN / Player Model Textures"};
 
         public ListFileViewer(ListFile listFile)
         {
