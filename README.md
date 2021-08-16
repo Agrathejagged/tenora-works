@@ -22,6 +22,8 @@ Gameplay:
   - EnemyLevelBaseParam.xnr (view/edit): Base enemy stat table.
   - Think\*Dragon.xnr (view only, very rough): AI control file for De Ragan/De Ragnus/Zoal Goug/Alteraz Gohg. Does the bare minimum of parsing, most data is still un-annotated.
   - \*Tutor.bin scripts (view/edit): Enemy scripts.
+  - obj_param.xnr (rough): Set object model definitions.
+  - obj_particle_info.xnr (rough): Set object particle references.
 
 Missions:
   - enemy\_\*.xnr (view/edit): Monster layout data.
