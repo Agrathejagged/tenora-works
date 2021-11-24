@@ -30,6 +30,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|AnyCPU'">
+    <OutputPath>bin\Deploy\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,70 +54,77 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AfsLoader.cs" />
-    <Compile Include="BigEndianBinaryReader.cs" />
-    <Compile Include="BigEndianBinaryWriter.cs" />
-    <Compile Include="BlewFish.cs" />
-    <Compile Include="ContainerUtilities.cs" />
-    <Compile Include="FileClasses\CommonInfoFile.cs" />
-    <Compile Include="FileClasses\ContainerFile.cs" />
-    <Compile Include="FileClasses\EnemyDropFile.cs" />
-    <Compile Include="FileClasses\EnemyLayoutFile.cs" />
-    <Compile Include="FileClasses\EnemyLevelParamFile.cs" />
-    <Compile Include="FileClasses\GimTextureFile.cs" />
-    <Compile Include="FileClasses\ItemBulletParamFile.cs" />
-    <Compile Include="FileClasses\ItemPriceFile.cs" />
-    <Compile Include="FileClasses\ItemSkillParamFile.cs" />
-    <Compile Include="FileClasses\ItemSuitParamFile.cs" />
-    <Compile Include="FileClasses\ItemTechParamFile.cs" />
-    <Compile Include="FileClasses\ItemUnitParamFile.cs" />
-    <Compile Include="FileClasses\ListFile.cs" />
-    <Compile Include="FileClasses\MiniAfsLoader.cs" />
+    <Compile Include="FileClasses\Archives\AfsLoader.cs" />
+    <Compile Include="FileClasses\Archives\FilenameAwareContainerFile.cs" />
+    <Compile Include="FileClasses\Characters\PartsInfoFile.cs" />
+    <Compile Include="FileClasses\Enemies\DamageDataFile.cs" />
+    <Compile Include="FileClasses\Enemies\EnemySoundEffectFile.cs" />
+    <Compile Include="Support\PsuCrc32.cs" />
+    <Compile Include="Support\StringUtilities.cs" />
+    <Compile Include="FileClasses\Items\ItemCommonInfoFile.cs" />
+    <Compile Include="FileClasses\Archives\ContainerFile.cs" />
+    <Compile Include="FileClasses\Enemies\ActDataFile.cs" />
+    <Compile Include="FileClasses\Enemies\AtkDatFile.cs" />
+    <Compile Include="FileClasses\Enemies\EnemyMotTblFile.cs" />
+    <Compile Include="FileClasses\Items\EnemyDropFile.cs" />
+    <Compile Include="FileClasses\Missions\EnemyLayoutFile.cs" />
+    <Compile Include="FileClasses\Enemies\EnemyLevelParamFile.cs" />
+    <Compile Include="FileClasses\Enemies\EnemyParamFile.cs" />
+    <Compile Include="FileClasses\Textures\GimTextureFile.cs" />
+    <Compile Include="FileClasses\Items\ItemBulletParamFile.cs" />
+    <Compile Include="FileClasses\Items\ItemPriceFile.cs" />
+    <Compile Include="FileClasses\Items\ItemSkillParamFile.cs" />
+    <Compile Include="FileClasses\Items\ItemSuitParamFile.cs" />
+    <Compile Include="FileClasses\Items\ItemTechParamFile.cs" />
+    <Compile Include="FileClasses\Items\ItemUnitParamFile.cs" />
+    <Compile Include="FileClasses\General\ListFile.cs" />
+    <Compile Include="FileClasses\Maps\LndCommonFile.cs" />
+    <Compile Include="FileClasses\Archives\MiniAfsLoader.cs" />
     <Compile Include="FileClasses\Models\TextureFilterEnums.cs" />
-    <Compile Include="FileClasses\NblLoader.cs" />
-    <Compile Include="FileClasses\NomFile.cs" />
-    <Compile Include="FileClasses\ObjectDropFile.cs" />
-    <Compile Include="FileClasses\ObjectParamFile.cs" />
-    <Compile Include="FileClasses\ObjectParticleInfoFile.cs" />
-    <Compile Include="FileClasses\PackFile.cs" />
-    <Compile Include="FileClasses\PartsInfoFile.cs" />
-    <Compile Include="FileClasses\PointeredFile.cs" />
-    <Compile Include="FileClasses\Psp2TextFile.cs" />
-    <Compile Include="FileClasses\PsuFile.cs" />
-    <Compile Include="FileClasses\PsuFiles.cs" />
-    <Compile Include="FileClasses\QuestListFile.cs" />
-    <Compile Include="FileClasses\RawFile.cs" />
-    <Compile Include="FileClasses\RmagBulletParamFile.cs" />
-    <Compile Include="FileClasses\ScriptFile.cs" />
-    <Compile Include="FileClasses\SetFile.cs" />
-    <Compile Include="FileClasses\Sets\SetObjectDefinitions.cs" />
-    <Compile Include="FileClasses\TableFile.cs" />
-    <Compile Include="FileClasses\TextFile.cs" />
-    <Compile Include="FileClasses\TextureFile.cs" />
-    <Compile Include="FileClasses\ThinkDragonFile.cs" />
-    <Compile Include="FileClasses\UnpointeredFile.cs" />
-    <Compile Include="FileClasses\UvrTextureFile.cs" />
-    <Compile Include="FileClasses\WeaponListFile.cs" />
-    <Compile Include="FileClasses\WeaponParamFile.cs" />
-    <Compile Include="FileClasses\XnaFile.cs" />
-    <Compile Include="FileClasses\XntFile.cs" />
-    <Compile Include="FileClasses\XvrTextureFile.cs" />
-    <Compile Include="FileClasses\XVR\Decoders\Dxt1Decoder.cs" />
-    <Compile Include="FileClasses\XVR\Decoders\Dxt2Decoder.cs" />
-    <Compile Include="FileClasses\XVR\Decoders\Dxt3Decoder.cs" />
-    <Compile Include="FileClasses\XVR\Decoders\Dxt4Decoder.cs" />
-    <Compile Include="FileClasses\XVR\Decoders\Dxt5Decoder.cs" />
-    <Compile Include="FileClasses\XVR\Decoders\DxtnDecoder.cs" />
-    <Compile Include="FileClasses\XVR\Decoders\XvrRasterDecoder.cs" />
-    <Compile Include="FileClasses\XVR\Decoders\XvrRasterDecoders.cs" />
-    <Compile Include="FileClasses\XVR\Decoders\XvrSimpleFormatDecoder.cs" />
-    <Compile Include="FileClasses\XVR\Encoders\DxtnEncoder.cs" />
-    <Compile Include="FileClasses\XVR\Encoders\XvrRasterEncoder.cs" />
-    <Compile Include="FileClasses\XVR\Encoders\XvrRasterEncoders.cs" />
-    <Compile Include="FileClasses\XVR\Encoders\XvrSimpleFormatEncoder.cs" />
-    <Compile Include="FileClasses\XVR\PsuColor.cs" />
-    <Compile Include="FileClasses\XVR\PsuTexturePixelFormat.cs" />
-    <Compile Include="FileClasses\XVR\XvrImageParameters.cs" />
+    <Compile Include="FileClasses\Archives\NblLoader.cs" />
+    <Compile Include="FileClasses\Characters\NomFile.cs" />
+    <Compile Include="FileClasses\Items\ObjectDropFile.cs" />
+    <Compile Include="FileClasses\Maps\ObjectParamFile.cs" />
+    <Compile Include="FileClasses\Maps\ObjectParticleInfoFile.cs" />
+    <Compile Include="FileClasses\Archives\PackFile.cs" />
+    <Compile Include="FileClasses\General\PointeredFile.cs" />
+    <Compile Include="FileClasses\General\Psp2TextFile.cs" />
+    <Compile Include="FileClasses\General\PsuFile.cs" />
+    <Compile Include="FileClasses\General\PsuFiles.cs" />
+    <Compile Include="FileClasses\Missions\QuestListFile.cs" />
+    <Compile Include="FileClasses\General\RawFile.cs" />
+    <Compile Include="FileClasses\Items\RmagBulletParamFile.cs" />
+    <Compile Include="FileClasses\General\ScriptFile.cs" />
+    <Compile Include="FileClasses\General\Scripts\ScriptValidationException.cs" />
+    <Compile Include="FileClasses\Missions\SetFile.cs" />
+    <Compile Include="FileClasses\Missions\Sets\SetObjectDefinitions.cs" />
+    <Compile Include="FileClasses\Missions\TableFile.cs" />
+    <Compile Include="FileClasses\General\TextFile.cs" />
+    <Compile Include="FileClasses\Textures\ITextureFile.cs" />
+    <Compile Include="FileClasses\Bosses\ThinkDragonFile.cs" />
+    <Compile Include="FileClasses\General\UnpointeredFile.cs" />
+    <Compile Include="FileClasses\Textures\UvrTextureFile.cs" />
+    <Compile Include="FileClasses\Items\WeaponListFile.cs" />
+    <Compile Include="FileClasses\Items\WeaponParamFile.cs" />
+    <Compile Include="FileClasses\Models\XnaFile.cs" />
+    <Compile Include="FileClasses\Models\XntFile.cs" />
+    <Compile Include="FileClasses\Textures\XvrTextureFile.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Decoders\Dxt1Decoder.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Decoders\Dxt2Decoder.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Decoders\Dxt3Decoder.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Decoders\Dxt4Decoder.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Decoders\Dxt5Decoder.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Decoders\DxtnDecoder.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Decoders\XvrRasterDecoder.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Decoders\XvrRasterDecoders.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Decoders\XvrSimpleFormatDecoder.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Encoders\DxtnEncoder.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Encoders\XvrRasterEncoder.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Encoders\XvrRasterEncoders.cs" />
+    <Compile Include="FileClasses\Textures\XVR\Encoders\XvrSimpleFormatEncoder.cs" />
+    <Compile Include="FileClasses\Textures\XVR\PsuColor.cs" />
+    <Compile Include="FileClasses\Textures\XVR\PsuTexturePixelFormat.cs" />
+    <Compile Include="FileClasses\Textures\XVR\XvrImageParameters.cs" />
     <Compile Include="GimSharp\Core\PTMethods.cs" />
     <Compile Include="GimSharp\Core\PTStream.cs" />
     <Compile Include="GimSharp\GimTexture\GimDataCodec.cs" />
@@ -129,11 +145,19 @@
     <Compile Include="GimSharp\WuQuantizer\WuQuantizer.cs" />
     <Compile Include="GimSharp\WuQuantizer\WuQuantizerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PrsCompDecomp.cs" />
-    <Compile Include="PrsCompressor.cs" />
+    <Compile Include="Support\PrsCompDecomp.cs" />
+    <Compile Include="Support\PrsCompressor.cs" />
+    <Compile Include="Support\BigEndianBinaryReader.cs" />
+    <Compile Include="Support\BigEndianBinaryWriter.cs" />
+    <Compile Include="Support\BlewFish.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="GimSharp\GimSharp.csproj" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

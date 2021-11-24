@@ -3,7 +3,8 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
-using PSULib.FileClasses.Sets;
+using PSULib.FileClasses.Missions;
+using PSULib.FileClasses.Missions.Sets;
 
 namespace psu_generic_parser.Forms.FileViewers.SetEditorSupportClasses
 {

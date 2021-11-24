@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PSULib.FileClasses.General;
+using System;
 using System.Windows.Forms;
 
 namespace psu_generic_parser

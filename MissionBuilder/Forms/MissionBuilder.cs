@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PSULib.FileClasses.Archives;
+using PSULib.FileClasses.General;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;

@@ -5,13 +5,25 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using psu_generic_parser.FileViewers;
-using psu_generic_parser.FileClasses;
 using System.Security.Cryptography;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using PSULib;
 using System.Drawing;
-using PSULib.FileClasses;
 using psu_generic_parser.Forms.FileViewers;
+using PSULib.FileClasses.Enemies;
+using psu_generic_parser.Forms.FileViewers.Enemies;
+using PSULib.FileClasses.Archives;
+using PSULib.FileClasses.Missions;
+using PSULib.FileClasses.Items;
+using PSULib.FileClasses.General;
+using PSULib.FileClasses.Characters;
+using PSULib.FileClasses.Bosses;
+using PSULib.FileClasses.Textures;
+using PSULib.FileClasses.Models;
+using PSULib.Support;
+using PSULib.FileClasses.Maps;
+using psu_generic_parser.Forms;
+using PSULib.FileClasses.General.Scripts;
 
 namespace psu_generic_parser
 {
@@ -244,7 +256,7 @@ namespace psu_generic_parser
                             filename = CheckForDupeFilenames(writtenFiles, filename);
                         }
                         filename = filename.Replace(".xvr", ".png");
-                        ((TextureFile)toRead.getFileParsed(i)).mipMaps[0].Save(Path.Combine(outDirectory, filename));
+                        ((ITextureFile)toRead.getFileParsed(i)).mipMaps[0].Save(Path.Combine(outDirectory, filename));
                     }
                     else
                     {
@@ -283,127 +295,151 @@ namespace psu_generic_parser
         }
 
         private void setRightPanel(PsuFile toRead)
-        {
+        {            
             splitContainer1.Panel2.Controls.Clear();
             currentRight = null;
             currentRight = toRead;
             UserControl toAdd = new UserControl();
 
-            if (toRead is TextureFile)
+            if (toRead is ITextureFile texFile)
             {
-                toAdd = new XvrViewer((TextureFile)toRead);
+                toAdd = new TextureViewer(texFile);
             }
-            else if (toRead is PointeredFile)
+            else if (toRead is PointeredFile pointeredFile)
             {
-                toAdd = new PointeredFileViewer((PointeredFile)toRead);
+                toAdd = new PointeredFileViewer(pointeredFile);
             }
-            else if (toRead is ListFile)
+            else if (toRead is ActDataFile actDataFile)
             {
-                toAdd = new ListFileViewer((ListFile)toRead);
+                toAdd = new ActDataFileViewer(actDataFile);
             }
-            else if (toRead is XntFile)
+            else if (toRead is EnemySoundEffectFile seDataFile)
             {
-                toAdd = new XntFileViewer((XntFile)toRead);
+                toAdd = new EnemySoundEffectFileViewer(seDataFile);
             }
-            else if (toRead is XnaFile)
+            else if (toRead is ListFile listFile)
             {
-                toAdd = new XnaFileViewer((XnaFile)toRead);
+                toAdd = new ListFileViewer(listFile);
             }
-            else if (toRead is NomFile)
+            else if (toRead is XntFile xntFile)
             {
-                toAdd = new NomFileViewer((NomFile)toRead);
+                toAdd = new XntFileViewer(xntFile);
             }
-            else if (toRead is EnemyLayoutFile)
+            else if (toRead is XnaFile xnaFile)
             {
-                toAdd = new EnemyLayoutViewer((EnemyLayoutFile)toRead);
+                toAdd = new XnaFileViewer(xnaFile);
             }
-            else if (toRead is ItemTechParamFile)
+            else if (toRead is NomFile nomFile)
             {
-                toAdd = new ItemTechParamViewer((ItemTechParamFile)toRead);
+                toAdd = new NomFileViewer(nomFile);
             }
-            else if (toRead is ItemSkillParamFile)
+            else if (toRead is EnemyLayoutFile enemyLayoutFile)
             {
-                toAdd = new ItemSkillParamViewer((ItemSkillParamFile)toRead);
+                toAdd = new EnemyLayoutViewer(enemyLayoutFile);
             }
-            else if (toRead is ItemBulletParamFile)
+            else if (toRead is ItemTechParamFile itemTechParamFile)
             {
-                toAdd = new ItemBulletParamViewer((ItemBulletParamFile)toRead);
+                toAdd = new ItemTechParamViewer(itemTechParamFile);
             }
-            else if (toRead is RmagBulletParamFile)
+            else if (toRead is ItemSkillParamFile itemSkillParamFile)
             {
-                toAdd = new RmagBulletViewer((RmagBulletParamFile)toRead);
+                toAdd = new ItemSkillParamViewer(itemSkillParamFile);
             }
-            else if (toRead is TextFile)
+            else if (toRead is ItemBulletParamFile itemBulletParamFile)
             {
-                toAdd = new TextViewer((TextFile)toRead);
+                toAdd = new ItemBulletParamViewer(itemBulletParamFile);
             }
-            else if (toRead is ScriptFile)
+            else if (toRead is RmagBulletParamFile rmagBulletParamFile)
             {
-                toAdd = new ScriptFileViewer((ScriptFile)toRead);
+                toAdd = new RmagBulletViewer(rmagBulletParamFile);
             }
-            else if (toRead is EnemyLevelParamFile)
+            else if (toRead is TextFile textFile)
             {
-                toAdd = new EnemyStatEditor((EnemyLevelParamFile)toRead);
+                toAdd = new TextViewer(textFile);
             }
-            else if (toRead is WeaponListFile)
+            else if (toRead is ScriptFile scriptFile)
             {
-                toAdd = new WeaponListEditor((WeaponListFile)toRead);
+                toAdd = new ScriptFileViewer(scriptFile);
             }
-            else if (toRead is PartsInfoFile)
+            else if (toRead is EnemyLevelParamFile enemyLevelParamFile)
             {
-                toAdd = new PartsInfoViewer((PartsInfoFile)toRead);
+                toAdd = new EnemyStatEditor(enemyLevelParamFile);
             }
-            else if (toRead is ItemPriceFile)
+            else if (toRead is WeaponListFile weaponListFile)
             {
-                toAdd = new ItemPriceViewer((ItemPriceFile)toRead);
+                toAdd = new WeaponListEditor(weaponListFile);
             }
-            else if (toRead is EnemyDropFile)
+            else if (toRead is PartsInfoFile partsInfoFile)
             {
-                toAdd = new EnemyDropViewer((EnemyDropFile)toRead);
+                toAdd = new PartsInfoViewer(partsInfoFile);
             }
-            else if (toRead is SetFile)
+            else if (toRead is ItemPriceFile itemPriceFile)
             {
-                toAdd = new SetFileViewer((SetFile)toRead);
+                toAdd = new ItemPriceViewer(itemPriceFile);
             }
-            else if(toRead is ThinkDragonFile)
+            else if (toRead is EnemyDropFile enemyDropFile)
             {
-                toAdd = new ThinkDragonViewer((ThinkDragonFile)toRead);
+                toAdd = new EnemyDropViewer(enemyDropFile);
             }
-            else if (toRead is WeaponParamFile)
+            else if (toRead is SetFile setFile)
             {
-                toAdd = new WeaponParamViewer((WeaponParamFile)toRead);
+                toAdd = new SetFileViewer(setFile);
             }
-            else if (toRead is ItemSuitParamFile)
+            else if (toRead is ThinkDragonFile thinkDragonFile)
             {
-                toAdd = new ClothingFileViewer((ItemSuitParamFile)toRead);
+                toAdd = new ThinkDragonViewer(thinkDragonFile);
             }
-            else if (toRead is ItemUnitParamFile)
+            else if (toRead is WeaponParamFile weaponParamFile)
             {
-                toAdd = new UnitParamViewer((ItemUnitParamFile)toRead);
+                toAdd = new WeaponParamViewer(weaponParamFile);
             }
-            else if (toRead is EnemyLevelParamFile)
+            else if (toRead is ItemSuitParamFile itemSuitParamFile)
             {
-                toAdd = new EnemyStatEditor((EnemyLevelParamFile)toRead);
+                toAdd = new ClothingFileViewer(itemSuitParamFile);
             }
-            else if (toRead is CommonInfoFile)
+            else if (toRead is ItemUnitParamFile itemUnitParamFile)
             {
-                toAdd = new ItemCommonInfoViewer((CommonInfoFile)toRead);
+                toAdd = new UnitParamViewer(itemUnitParamFile);
             }
-            else if(toRead is QuestListFile)
+            else if (toRead is ItemCommonInfoFile itemCommonInfoFile)
             {
-                toAdd = new QuestListViewer((QuestListFile)toRead);
+                toAdd = new ItemCommonInfoViewer(itemCommonInfoFile);
             }
-            else if (toRead is ObjectParticleInfoFile)
+            else if (toRead is QuestListFile questListFile)
             {
-                toAdd = new ObjectParticleInfoFileViewer((ObjectParticleInfoFile)toRead);
+                toAdd = new QuestListViewer(questListFile);
             }
-            else if (toRead is ObjectParamFile)
+            else if (toRead is ObjectParticleInfoFile objectParticleInfoFile)
             {
-                toAdd = new ObjParamViewer((ObjectParamFile)toRead);
+                toAdd = new ObjectParticleInfoFileViewer(objectParticleInfoFile);
             }
-            else if (toRead is UnpointeredFile)
+            else if (toRead is ObjectParamFile objParamFile)
             {
-                toAdd = new UnpointeredFileViewer((UnpointeredFile)toRead);
+                toAdd = new ObjParamViewer(objParamFile);
+            }
+            else if (toRead is EnemyParamFile enemyParamFile)
+            {
+                toAdd = new EnemyParamFileViewer(enemyParamFile);
+            }
+            else if (toRead is AtkDatFile atkDatFile)
+            {
+                toAdd = new AtkDatFileViewer(atkDatFile);
+            }
+            else if (toRead is DamageDataFile damageDataFile)
+            {
+                toAdd = new DamageDataFileViewer(damageDataFile);
+            }
+            else if (toRead is EnemyMotTblFile enemyMotTblFile)
+            {
+                toAdd = new EnemyMotTblFileViewer(enemyMotTblFile);
+            }
+            else if(toRead is LndCommonFile lndCommonFile)
+            {
+                toAdd = new LndCommonEditor(lndCommonFile);
+            }
+            else if (toRead is UnpointeredFile unpointeredFile)
+            {
+                toAdd = new UnpointeredFileViewer(unpointeredFile);
             }
             splitContainer1.Panel2.Controls.Add(toAdd);
             toAdd.Dock = DockStyle.Fill;
@@ -430,9 +466,30 @@ namespace psu_generic_parser
                 saveFileDialog1.FileName = fileDialog.FileName;
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
-                    loadedContainer.saveFile(saveFileDialog1.OpenFile());
-                    this.Text = "PSU Generic Parser " + Path.GetFileName(saveFileDialog1.FileName);
-                    fileDialog.FileName = saveFileDialog1.FileName;
+                    MemoryStream saveStream = new MemoryStream();
+                    try
+                    {
+                        byte[] savedContainer = loadedContainer.ToRaw();
+                        File.WriteAllBytes(saveFileDialog1.FileName, savedContainer);
+                        this.Text = "PSU Generic Parser " + Path.GetFileName(saveFileDialog1.FileName);
+                        fileDialog.FileName = saveFileDialog1.FileName;
+                    } catch(ScriptValidationException exc)
+                    {
+                        string joinedErrors = String.Join("\r\n", exc.ScriptValidationErrors.Select(error =>
+                        {
+                            if (error.LineNumber != -1)
+                            {
+                                return error.FunctionName + ", line " + error.LineNumber + ": " + error.Description;
+                            }
+                            else
+                            {
+                                return error.FunctionName + ": " + error.Description;
+                            }
+                        }
+                        ));
+                        string exceptionMessage = $"Could not save archive. \r\nFile \"{exc.FileName}\" failed to validate for the following reasons: \r\n{joinedErrors}";
+                        MessageBox.Show(exceptionMessage, "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
@@ -513,6 +570,29 @@ namespace psu_generic_parser
                 if (replaceDialog.ShowDialog() == DialogResult.OK)
                 {
                     RawFile file = new RawFile(replaceDialog.OpenFile(), Path.GetFileName(replaceDialog.FileName));
+                    if(owningFile is FilenameAwareContainerFile awareContainerFile)
+                    {
+                        string filename = file.filename;
+                        if (filename != tag.FileName && !awareContainerFile.ValidateFilename(filename))
+                        {
+                            FileRenameForm rename = new FileRenameForm(filename);
+                            while (!awareContainerFile.ValidateFilename(filename))
+                            {
+                                if (rename.ShowDialog() == DialogResult.OK)
+                                {
+                                    filename = rename.FileName;
+                                }
+                                else
+                                {
+                                    return;
+                                }
+                            }
+                        }
+                        if (filename != file.filename)
+                        {
+                            file.filename = filename;
+                        }
+                    }
                     owningFile.replaceFile(node.Index, file);
                     node.Text = file.filename;
                     tag.FileName = file.filename;
@@ -886,7 +966,7 @@ namespace psu_generic_parser
             {
                 exportFileDialog.FileName = currentRight.filename;
 
-                if (currentRight is TextureFile)
+                if (currentRight is ITextureFile)
                 {
                     exportFileDialog.FileName = exportFileDialog.FileName.Replace(".xvr", ".png"); // Treat .png as default
                     exportFileDialog.Filter = "Portable Network Graphics (*.png)|*.png|Xbox PowerVR Texture (*.xvr)|*.xvr";
@@ -898,9 +978,9 @@ namespace psu_generic_parser
                 
                 if (exportFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    if (currentRight is TextureFile && Path.GetExtension(exportFileDialog.FileName).Equals(".png"))
+                    if (currentRight is ITextureFile && Path.GetExtension(exportFileDialog.FileName).Equals(".png"))
                     {
-                        ((TextureFile)currentRight).mipMaps[0].Save(exportFileDialog.FileName);
+                        ((ITextureFile)currentRight).mipMaps[0].Save(exportFileDialog.FileName);
                     } else if (currentRight is TextFile && Path.GetExtension(exportFileDialog.FileName).Equals(".txt"))
                     {
                         ((TextFile)currentRight).saveToTextFile(exportFileDialog.OpenFile());
@@ -928,10 +1008,10 @@ namespace psu_generic_parser
                 if (!(parent is NblLoader))
                 {
 
-                    if (file is TextureFile && batchPngExport)
+                    if (file is ITextureFile && batchPngExport)
                     {
                         string filename = Path.Combine(fileDirectory, Path.GetFileName(originalFilename + ".png"));
-                        ((TextureFile)file).mipMaps[0].Save(filename);
+                        ((ITextureFile)file).mipMaps[0].Save(filename);
                     }
                     else
                     {
@@ -1275,6 +1355,478 @@ namespace psu_generic_parser
                     var hitbox = objects[i].Item2.group2Entry;
                     Console.WriteLine("Object " + i + ", first found in " + objects[i].Item1 + ": group 0 = " + hitbox.hitboxShape + "; {" + hitbox.unknownFloat2 + ", " + hitbox.unknownFloat3 + ", " + hitbox.unknownFloat3 + "}; id 1 = " + hitbox.unknownInt5 + "; isolated float = " + hitbox.unknownFloat6 + "; last value = " + hitbox.unknownInt9);
                 }*/
+            }
+        }
+
+        //TODO: This should be in a different program.
+        private string convertDamageResists(int rawResists)
+        {
+            StringBuilder sb = new StringBuilder(3);
+
+            switch (rawResists & 0x3)
+            {
+                default: break;
+                case 1: sb.Append("s"); break;
+                case 2: case 3: sb.Append("S"); break;
+            }
+            switch (rawResists & 0xC)
+            {
+                default: break;
+                case 4: sb.Append("r"); break;
+                case 8: case 0xC: sb.Append("R"); ; break;
+            }
+            switch (rawResists & 0x30)
+            {
+                default: break;
+                case 4: sb.Append("t"); break;
+                case 8: case 0xC: sb.Append("T"); break;
+            }
+            return sb.ToString();
+        }
+
+        private void catalogueEnemyparamToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+
+                Dictionary<string, EnemyParamFile> paramFileMap = new Dictionary<string, EnemyParamFile>();
+                Dictionary<string, ActDataFile> actDataFileMap = new Dictionary<string, ActDataFile>();
+                Dictionary<string, DamageDataFile> damageDataFileMap = new Dictionary<string, DamageDataFile>();
+                foreach (string file in Directory.EnumerateFiles(folderBrowserDialog1.SelectedPath))
+                {
+                    using (Stream s = new FileStream(file, FileMode.Open))
+                    {
+                        byte[] identifier = new byte[4];
+                        s.Read(identifier, 0, 4);
+                        s.Seek(0, SeekOrigin.Begin);
+                        if (identifier.SequenceEqual(new byte[] { 0x4E, 0x4D, 0x4C, 0x4C }))
+                        {
+                            NblLoader nbl = new NblLoader(s);
+                            if (nbl.chunks.Count > 0)
+                            {
+                                foreach (RawFile raw in nbl.chunks[0].fileContents)
+                                {
+                                    if(raw.filename.StartsWith("Param") && !raw.filename.Contains("ColtobaShare"))
+                                    {
+                                        paramFileMap[raw.filename] = (EnemyParamFile)nbl.chunks[0].getFileParsed(raw.filename);
+                                    }
+                                    else if(raw.filename.StartsWith("ActData") && !raw.filename.Contains("Quadruped_a"))
+                                    {
+                                        actDataFileMap[raw.filename] = (ActDataFile)nbl.chunks[0].getFileParsed(raw.filename);
+                                    }
+                                    else if (raw.filename.StartsWith("DamageData") && !raw.filename.Contains("Quadruped_a"))
+                                    {
+                                        damageDataFileMap[raw.filename] = (DamageDataFile)nbl.chunks[0].getFileParsed(raw.filename);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                /*
+                foreach (var entry in paramFileMap.OrderBy(x => x.Key))
+                {
+                    EnemyParamFile file = entry.Value;
+                    Console.Out.WriteLine(entry.Key);
+                    
+                    Console.Out.WriteLine("Base Stats:");
+                    Console.Out.WriteLine("\tHpModifier: " + file.baseParams.HpModifier.ToString("0.00##"));
+                    Console.Out.WriteLine("\tAtpModifier: " + file.baseParams.AtpModifier.ToString("0.00##"));
+                    Console.Out.WriteLine("\tDfpModifier: " + file.baseParams.DfpModifier.ToString("0.00##"));
+                    Console.Out.WriteLine("\tAtaModifier: " + file.baseParams.AtaModifier.ToString("0.00##"));
+                    Console.Out.WriteLine("\tEvpModifier: " + file.baseParams.EvpModifier.ToString("0.00##"));
+                    Console.Out.WriteLine("\tStaModifier: " + file.baseParams.StaModifier.ToString("0.00##"));
+                    Console.Out.WriteLine("\tLckModifier: " + file.baseParams.LckModifier.ToString("0.00##"));
+                    Console.Out.WriteLine("\tTpModifier: " + file.baseParams.TpModifier.ToString("0.00##"));
+                    Console.Out.WriteLine("\tMstModifier: " + file.baseParams.MstModifier.ToString("0.00##"));
+                    Console.Out.WriteLine("\tElementModifier: " + file.baseParams.ElementModifier.ToString("0.00##"));
+                    Console.Out.WriteLine("\tExpModifier: " + file.baseParams.ExpModifier.ToString("0.00##"));
+                    Console.Out.WriteLine("\tUnknownValue1: " + file.baseParams.UnknownValue1);
+                    Console.Out.WriteLine("\tUnknownValue2: " + file.baseParams.UnknownValue2);
+                    Console.Out.WriteLine("\tUnknownValue3: " + file.baseParams.UnknownValue3);
+                    Console.Out.WriteLine("\tStatusResists: " + file.baseParams.StatusResists.ToString("X"));
+                    Console.Out.WriteLine("\tDamageResists: " + convertDamageResists(file.baseParams.DamageResists));
+                    Console.Out.WriteLine("\tUnknownModifier3: " + file.baseParams.UnknownModifier3.ToString("0.00##"));
+                    Console.Out.WriteLine("\tUnknownModifier4: " + file.baseParams.UnknownModifier4.ToString("0.00##"));
+                    Console.Out.WriteLine("\tUnknownValue4: " + file.baseParams.UnknownValue4);
+                    Console.Out.WriteLine("\tUnknownValue5: " + file.baseParams.UnknownValue5);
+                    Console.Out.WriteLine("\tUnknownModifier5: " + file.baseParams.UnknownModifier5.ToString("0.00##"));
+                    Console.Out.WriteLine("\tUnknownModifier6: " + file.baseParams.UnknownModifier6.ToString("0.00##"));
+                    Console.Out.WriteLine("\tUnknownModifier7: " + file.baseParams.UnknownModifier7.ToString("0.00##"));
+                    string element = "UNKNOWN";
+                    switch(file.baseParams.MonsterElement)
+                    {
+                        case 0: element = "Neutral"; break;
+                        case 1: element = "Fire"; break;
+                        case 2:
+                            element = "Lightning"; break;
+                        case 4:
+                            element = "Light"; break;
+                        case 9:
+                            element = "Ice"; break;
+                        case 10:
+                            element = "Ground"; break;
+                        case 12:
+                            element = "Dark"; break;
+                        default: break;
+                    }
+                    Console.Out.WriteLine("\tMonsterElement: " + element);
+                    Console.Out.WriteLine();
+                    Console.Out.WriteLine("Buffs:");
+                    Console.Out.WriteLine("\t?\t??\t???\t????\t?????\tATP\tDFP\tATA\tEVP\tSTA\tLCK\tTP\tMST\tEXP\tSERes\tDmgRes");
+                    //Console.Out.WriteLine("\t?\t??\t???\t????\t?????\tATP\tDFP\tATA\tEVP\tSTA\tLCK\tTP\tMST\tEXP\tUnused\tUnused\tUnused\tUnused\tSERes\tDmgRes");
+                    foreach (var buff in file.buffParams)
+                    {
+                        Console.Out.Write("\t"); 
+                        Console.Out.Write(buff.UnknownValue1 + "\t");
+                        Console.Out.Write(buff.UnknownValue2 + "\t");
+                        Console.Out.Write(buff.UnknownValue3 + "\t");
+                        Console.Out.Write(buff.UnknownValue4 + "\t");
+                        Console.Out.Write(buff.UnusedIntValue1 + "\t");
+                        Console.Out.Write(buff.AtpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(buff.DfpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(buff.AtaModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(buff.EvpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(buff.StaModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(buff.LckModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(buff.TpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(buff.MstModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(buff.ExpModifier.ToString("0.00##") + "\t");
+                        
+                        //Console.Out.Write(buff.UnusedIntValue2 + "\t");
+                        //Console.Out.Write(buff.UnusedModifier1 + "\t");
+                        //Console.Out.Write(buff.UnusedModifier2 + "\t");
+                        //Console.Out.Write(buff.UnusedModifier3 + "\t");
+                        Console.Out.Write(buff.StatusResists.ToString("X") + "\t");
+                        Console.Out.Write(convertDamageResists(buff.DamageResists));
+                        //Console.Out.Write(buff.DamageResists.ToString("X"));
+                        Console.Out.WriteLine();
+                    }
+                    Console.Out.WriteLine();
+                    Console.Out.WriteLine("Attacks:");
+                    //Console.Out.WriteLine("\tBone          \t?\t??\t???\t????\t?????\tOnhit\tSE(s)\tLevel\t??\t???\tHP\tATP\tDFP\tATA\tEVP\tSTA\tLCK\tTP\tMST\tELE%\tEXP\tUnused\tUnused\tUnused");
+                    Console.Out.WriteLine("\tBone          \tX\tY\tZ\tWidth\tHeight\tOnhit\tSE(s)\tLevel\t??\t???\tHP\tATP\tDFP\tATA\tEVP\tSTA\tLCK\tTP\tMST\tELE%\tEXP");
+                    foreach (var attack in file.attackParams)
+                    {
+                        Console.Out.Write("\t");
+                        Console.Out.Write(attack.BoneName.PadRight(14) + "\t");
+                        Console.Out.Write(attack.OffsetX.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.OffsetY.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.OffsetZ.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.BoundCylinderWidth.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.BoundCylinderHeight.ToString("0.00##") + "\t");
+
+                        Console.Out.Write(attack.OnHitEffect.ToString("X4") + "\t");
+                        Console.Out.Write(attack.StatusEffect.ToString("X4") + "\t");
+                        Console.Out.Write(attack.UnknownSubgroup2Int3 + "\t");
+                        Console.Out.Write(attack.UnknownSubgroup2Int4 + "\t");
+                        Console.Out.Write(attack.UnknownSubgroup2Int5.ToString("X4") + "\t");
+
+                        Console.Out.Write(attack.HpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.AtpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.DfpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.AtaModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.EvpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.StaModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.LckModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.TpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.MstModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.ElementModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(attack.ExpModifier.ToString("0.00##"));
+                        
+                        //Console.Out.Write(attack.ExpModifier + "\t");
+                        //Console.Out.Write(attack.UnusedModifier1 + "\t");
+                        //Console.Out.Write(attack.UnusedModifier2 + "\t");
+                        //Console.Out.Write(attack.UnusedModifier3);
+                        Console.Out.WriteLine();
+                    }
+                    Console.Out.WriteLine();
+                    Console.Out.WriteLine("Hitboxes:");
+                    Console.Out.WriteLine("\tCanHit\tBone          \tX\tY\tZ\tWidth\tHeight\tHP\tATP\tDFP\tATA\tEVP\tSTA\tLCK\tTP\tMST\tELE%\tEXP\tUnused\tUnused\tUnused");
+                    foreach (var hitbox in file.hitboxParams)
+                    {
+                        Console.Out.Write("\t");
+                        Console.Out.Write(hitbox.Targetable + "\t");
+                        Console.Out.Write((hitbox.BoneName != null ? hitbox.BoneName : "").PadRight(14) + "\t");
+                        Console.Out.Write(hitbox.OffsetX.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.OffsetY.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.OffsetZ.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.BoundCylinderWidth.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.BoundCylinderHeight.ToString("0.00##") + "\t");
+
+                        Console.Out.Write(hitbox.HpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.AtpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.DfpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.AtaModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.EvpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.StaModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.LckModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.TpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.MstModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.ElementModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.ExpModifier.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.UnusedModifier1.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.UnusedModifier2.ToString("0.00##") + "\t");
+                        Console.Out.Write(hitbox.UnusedModifier3.ToString("0.00##"));
+                        Console.Out.WriteLine();
+                    }
+                    
+                    Console.Out.WriteLine("\tGroup 2:");
+                    foreach (var subentry1 in file.unknownSubEntry1List)
+                    {
+                        Console.Out.Write("\t");
+                        Console.Out.Write("\t" + subentry1.UnknownInt1);
+                        Console.Out.Write("\t" + subentry1.OffsetX.ToString("0.00##"));
+                        Console.Out.Write("\t" + subentry1.OffsetY.ToString("0.00##"));
+                        Console.Out.Write("\t" + subentry1.OffsetZ.ToString("0.00##"));
+                        Console.Out.Write("\t" + subentry1.Scale1.ToString("0.00##"));
+                        Console.Out.WriteLine("\t" + subentry1.Scale2.ToString("0.00##"));
+                    }
+                    Console.Out.WriteLine();
+                    Console.Out.WriteLine("\tGroup 2:");
+                    foreach (var subentry2 in file.unknownSubEntry2List)
+                    {
+                        Console.Out.Write("\t");
+                        Console.Out.Write("\t" + subentry2.UnknownInt1);
+                        Console.Out.Write("\t" + subentry2.UnknownInt2);
+                        Console.Out.Write("\t" + subentry2.UnknownFloat1.ToString("0.00##"));
+                        Console.Out.Write("\t" + subentry2.UnknownInt3);
+                        Console.Out.Write("\t" + subentry2.UnknownInt4);
+                        Console.Out.Write("\t" + subentry2.UnknownInt5);
+                        Console.Out.Write("\t" + subentry2.UnknownInt6);
+                        Console.Out.Write("\t" + subentry2.UnknownInt7);
+                        Console.Out.WriteLine("\t" + subentry2.UnknownInt8);
+                    }
+                    Console.Out.WriteLine();
+                    Console.Out.WriteLine();
+                }
+                */
+                /*
+                foreach(var entry in actDataFileMap)
+                {
+                    ActDataFile actDataFile = entry.Value;
+                    Console.Out.WriteLine(entry.Key);
+                    Console.Out.WriteLine("whatever");
+                    for(int i = 0; i < actDataFile.Actions.Count; i++)
+                    {
+                        Console.Out.WriteLine("Action " + i);
+                        
+                        foreach (var action in actDataFile.Actions[i].ActionEntries)
+                        {
+                            Console.Out.Write("\t" + action.UnknownInt1);
+                            Console.Out.Write("\t" + action.MotTblID);
+                            Console.Out.Write("\t" + action.UnknownFloatAt3);
+                            Console.Out.Write("\t" + action.VerticalExaggeration);
+                            Console.Out.Write("\t" + action.MotionFloat1);
+                            Console.Out.Write("\t" + action.MotionFloat2);
+                            Console.Out.Write("\t" + action.HorizontalUnknown);
+                            Console.Out.Write("\t" + action.UnknownFloatAt8);
+                            Console.Out.Write("\t" + action.UnknownFloatAt9);
+                            Console.Out.Write("\t" + action.UnknownAngleDegrees1);
+                            Console.Out.Write("\t" + action.UnknownIntAt11);
+                            Console.Out.Write("\t" + action.UnknownAngleDegrees2);
+                            Console.Out.Write("\t" + action.UnknownAngleDegrees3);
+                            Console.Out.Write("\t" + action.UnknownStateValue);
+                            Console.Out.Write("\t" + action.UnknownStateModifier1);
+                            Console.Out.Write("\t" + action.UnknownStateModifier2);
+                            Console.Out.Write("\t" + action.AttackID);
+                            Console.Out.Write("\t" + action.UnknownInt15);
+                            Console.Out.Write("\t" + action.UnknownFloat6);
+                            Console.Out.Write("\t" + action.UnknownInt16);
+                            Console.Out.Write("\t" + action.UnknownFloat7);
+                            Console.Out.Write("\t" + action.DamageDataList);
+                            Console.Out.Write("\t" + action.UnknownInt18);
+                            Console.Out.Write("\t" + action.UnknownInt19);
+                            Console.Out.Write("\t" + action.UnknownInt20);
+                            Console.Out.Write("\t" + action.UnknownFloatAt21);
+                            Console.Out.Write("\t" + action.UnusedInt22);
+                            Console.Out.Write("\t" + action.UnusedInt23);
+                            Console.Out.Write("\t" + action.UnusedInt24);
+                            Console.Out.Write("\t" + action.UnusedInt25);
+                            Console.Out.WriteLine();
+                        }
+                        */
+                        /*
+                        for(int j = 0; j < actDataFile.Actions[i].ActionEntries.Count; j++)
+                        {
+                            if (actDataFile.Actions[i].ActionEntries[j].SubEntryList1.Count > 0 || actDataFile.Actions[i].ActionEntries[j].SubEntryList2.Count > 0)
+                            {
+                                Console.Out.WriteLine("\tSubaction " + j);
+                                if (actDataFile.Actions[i].ActionEntries[j].SubEntryList1.Count > 0)
+                                {
+                                    Console.Out.WriteLine("\tSublist 1:");
+                                    for (int k = 0; k < actDataFile.Actions[i].ActionEntries[j].SubEntryList1.Count; k++)
+                                    {
+                                        Console.Out.Write("\t\t" + actDataFile.Actions[i].ActionEntries[j].SubEntryList1[k].UnknownInt1);
+                                        Console.Out.Write("\t\t" + actDataFile.Actions[i].ActionEntries[j].SubEntryList1[k].UnknownFloat.ToString("0.00##"));
+                                        Console.Out.Write("\t\t" + actDataFile.Actions[i].ActionEntries[j].SubEntryList1[k].UnknownInt2);
+                                        Console.Out.WriteLine();
+                                    }
+                                }
+                                if (actDataFile.Actions[i].ActionEntries[j].SubEntryList2.Count > 0)
+                                {
+                                    Console.Out.WriteLine("\tSublist 2:");
+                                    for (int k = 0; k < actDataFile.Actions[i].ActionEntries[j].SubEntryList2.Count; k++)
+                                    {
+                                        Console.Out.Write("\t\t" + actDataFile.Actions[i].ActionEntries[j].SubEntryList2[k].UnknownInt1);
+                                        Console.Out.Write("\t\t" + actDataFile.Actions[i].ActionEntries[j].SubEntryList2[k].UnknownFloat.ToString("0.00##"));
+                                        Console.Out.Write("\t\t" + actDataFile.Actions[i].ActionEntries[j].SubEntryList2[k].UnknownInt2);
+                                        Console.Out.WriteLine();
+                                    }
+                                }
+                                Console.Out.WriteLine();
+                            }
+                        }*/
+                        /*
+                        Console.Out.WriteLine();
+                    }
+                    Console.Out.WriteLine();
+                }
+                */
+                foreach (var entry in damageDataFileMap)
+                {
+                    DamageDataFile damageDataFile = entry.Value;
+                    Console.Out.WriteLine(entry.Key);
+                    for (int i = 0; i < damageDataFile.DamageTypeEntries.Count; i++)
+                    {
+                        Console.Out.WriteLine("Damage lookup " + i);
+                        for(int j = 0; j < damageDataFile.DamageTypeEntries[i].Count; j++)
+                        {
+                            Console.Out.WriteLine("\tDamage index " + j + ", Type: " + damageDataFile.DamageTypeEntries[i][j].DamageType + ", Angle count: " + damageDataFile.DamageTypeEntries[i][j].Angles.Count);
+                            foreach (var angleEntry in damageDataFile.DamageTypeEntries[i][j].Angles)
+                            {
+                                Console.Out.Write("\t\t" + angleEntry.UnknownInt1);
+                                Console.Out.Write("\t" + angleEntry.UnknownInt2);
+                                Console.Out.Write("\tActions: " + string.Join(", ", angleEntry.ActionList));
+                                Console.Out.WriteLine();
+                            }
+                            Console.Out.WriteLine();
+                        }
+                        Console.Out.WriteLine();
+                    }
+                    Console.Out.WriteLine();
+                }
+            }
+        }
+
+        AnimationNameHashDialog dialog = new AnimationNameHashDialog();
+
+        private void calculateAnimationNameHashToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(dialog.IsDisposed)
+            {
+                dialog = new AnimationNameHashDialog();
+            }
+            if (currentRight != null && !(currentRight is NblChunk))
+            {
+                dialog.SetFileName(currentRight.filename);
+            }
+            if (!dialog.Visible)
+            {
+                dialog.Show();
+            }
+        }
+
+        private void addFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var node = treeView1.SelectedNode;
+            FileTreeNodeTag tag = node.Tag as FileTreeNodeTag;
+            if (tag != null && tag.OwnerContainer is NblLoader)
+            {
+                ContainerFile parent = tag.OwnerContainer;
+                OpenFileDialog replaceDialog = new OpenFileDialog();
+                NblChunk chunk = ((NblChunk)parent.getFileParsed(treeView1.SelectedNode.Index));
+
+                if (replaceDialog.ShowDialog() == DialogResult.OK)
+                {
+                    RawFile file = new RawFile(replaceDialog.OpenFile(), Path.GetFileName(replaceDialog.FileName));
+                    string filename = file.filename;
+                    if(!chunk.ValidateFilename(filename))
+                    {
+                        FileRenameForm rename = new FileRenameForm(filename);
+                        while (!chunk.ValidateFilename(filename))
+                        {
+                            if (rename.ShowDialog() == DialogResult.OK)
+                            {
+                                filename = rename.FileName;
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                    }
+                    if(filename != file.filename)
+                    {
+                        file.filename = filename;
+                    }
+
+                    chunk.addFile(file);
+
+                    TreeNode newNode = new TreeNode(file.filename);
+                    FileTreeNodeTag newTag = new FileTreeNodeTag();
+                    newTag.OwnerContainer = chunk;
+                    newTag.FileName = file.filename;
+                    newNode.Tag = newTag;
+                    newNode.ContextMenuStrip = arbitraryFileContextMenuStrip;
+                    node.Nodes.Add(newNode);
+
+                    if(file.fileheader == "NMLL" || file.fileheader == "NMLB")
+                    {
+                        addChildFiles(newNode.Nodes, (ContainerFile)chunk.getFileParsed(newNode.Index));
+                    }
+                    treeView1.SelectedNode = newNode;
+                }
+            }
+        }
+
+        private void deleteFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var node = treeView1.SelectedNode;
+            FileTreeNodeTag tag = node.Tag as FileTreeNodeTag;
+            if (tag != null && tag.OwnerContainer is NblChunk chunk)
+            {
+                chunk.removeFile(node.Index);
+                node.Parent.Nodes.Remove(node);
+            }
+        }
+
+        private void renameFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var node = treeView1.SelectedNode;
+            node.BeginEdit();
+        }
+
+        private void treeView1_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
+        {
+            var node = treeView1.SelectedNode;
+            FileTreeNodeTag tag = node.Tag as FileTreeNodeTag;
+            if (tag != null && tag.OwnerContainer is NblLoader)
+            {
+                e.CancelEdit = true;
+            }
+        }
+
+        private void treeView1_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+        {
+            var node = treeView1.SelectedNode;
+            FileTreeNodeTag tag = node.Tag as FileTreeNodeTag;
+            if (tag != null && tag.OwnerContainer is NblLoader)
+            {
+                e.CancelEdit = true;
+            }
+            else if(tag != null && e.Label != null)
+            {
+                if(!(tag.OwnerContainer is FilenameAwareContainerFile facf) || facf.ValidateFilename(e.Label))
+                {
+                    tag.OwnerContainer.renameFile(node.Index, e.Label);
+                }
+                else
+                {
+                    e.CancelEdit = true;
+                }
             }
         }
     }

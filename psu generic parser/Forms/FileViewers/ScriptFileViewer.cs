@@ -1,171 +1,94 @@
 ﻿using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Drawing;
+using psu_generic_parser.Forms.FileViewers.Scripts;
+using PSULib.FileClasses.General;
 
 namespace psu_generic_parser
 {
     public partial class ScriptFileViewer : UserControl
     {
-        ScriptFile internalFile;
+        readonly ScriptFile internalFile;
         bool changing = true;
         int prevIndex = -1;
         bool forceChange = false;
+        BindingSource binder = new BindingSource();
+        private List<ReferenceFindDialog> children = new List<ReferenceFindDialog>();
 
         public ScriptFileViewer(ScriptFile toImport)
         {
             InitializeComponent();
             internalFile = toImport;
-            dataGridView1.Columns[1].ValueType = typeof(int);
-            for (int i = 0; i < internalFile.subroutines.Count; i++)
+            for (int i = 0; i < internalFile.Subroutines.Count; i++)
             {
-                listBox1.Items.Add(((ScriptFile.subroutine)internalFile.subroutines[i]).name);
+                subroutineListBox.Items.Add((internalFile.Subroutines[i]).SubroutineName);
             }
-            if(listBox1.Items.Count > 0)
-                listBox1.SelectedIndex = 0;
+            List<string> opcodeNames = new List<string>();
+            foreach (string opcode in ScriptFile.opcodes)
+            {
+                if (opcode != "")
+                {
+                    opcodeNames.Add(opcode);
+                }
+            }
+            OpcodeColumn.Items.AddRange(opcodeNames.ToArray());
+            LabelColumn.DataPropertyName = "Label";
+            ArgColumn.DataPropertyName = "OperandText";
+            OpcodeColumn.DataPropertyName = "OpCodeName";
+            if (subroutineListBox.Items.Count > 0)
+                subroutineListBox.SelectedIndex = 0;
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listBox1.SelectedIndex != -1 && (listBox1.SelectedIndex != prevIndex || forceChange))
+            if (subroutineListBox.SelectedIndex != -1 && (subroutineListBox.SelectedIndex != prevIndex || forceChange))
             {
                 forceChange = false;
-                prevIndex = listBox1.SelectedIndex;
-                ScriptFile.subroutine currentSub = (ScriptFile.subroutine)internalFile.subroutines[listBox1.SelectedIndex];
+                prevIndex = subroutineListBox.SelectedIndex;
                 changing = true;
-                textBox1.Text = currentSub.name;
-                if (currentSub.subType == 0x4C)
-                {
-                    comboBox1.SelectedIndex = 1;
-                    dataGridView2.Enabled = true;
-                }
-                else
-                {
-                    comboBox1.SelectedIndex = 0;
-                    dataGridView2.Enabled = false;
-                }
+                ScriptFile.Subroutine currentSub = internalFile.Subroutines[subroutineListBox.SelectedIndex];
+                textBox1.Text = currentSub.SubroutineName;
+                bufferLengthUpDown.Value = currentSub.BufferLength;
+                UpdateUIElements();
                 dataGridView2.AutoGenerateColumns = false;
-                BindingSource binder = new BindingSource();
-                binder.DataSource = currentSub.opcodes;
+                binder.DataSource = currentSub.Operations;
                 dataGridView2.DataSource = binder;
-                IntColumn.DataPropertyName = "intArg";
-                StringColumn.DataPropertyName = "strArg";
-                FloatColumn.DataPropertyName = "floatArg";
-                OpcodeColumn.DataPropertyName = "opcodeName";
-                /*
-                 * dataGridView1.Rows.Clear();
-            
-                if (currentSub.opcodes.Count > 0)
-                {
-                    dataGridView1.Rows.Add(currentSub.opcodes.Count);
-                    for (int i = 0; i < currentSub.opcodes.Count; i++)
-                    {
-                        dataGridView1[0, i].Value = internalFile.opcodes[((ScriptFile.operation)currentSub.opcodes[i]).opcode];
-                        if (internalFile.opcodeTypes[((ScriptFile.operation)currentSub.opcodes[i]).opcode] == 1) // 1 = no args
-                        {
-                            dataGridView1[1, i].ReadOnly = true;
-                            dataGridView1[2, i].ReadOnly = true;
-                            dataGridView1[3, i].ReadOnly = true;
-                        }
-                        else if (internalFile.opcodeTypes[((ScriptFile.operation)currentSub.opcodes[i]).opcode] == 2) // 2 = int
-                        {
-                            dataGridView1[1, i].ReadOnly = true;
-                            dataGridView1[2, i].ReadOnly = false;
-                            dataGridView1[3, i].ReadOnly = true;
-                            dataGridView1[2, i].Value = ((ScriptFile.operation)currentSub.opcodes[i]).intArg;
-                        }
-                        else if (internalFile.opcodeTypes[((ScriptFile.operation)currentSub.opcodes[i]).opcode] == 3) // 3 = float
-                        {
-                            dataGridView1[1, i].ReadOnly = false;
-                            dataGridView1[2, i].ReadOnly = true;
-                            dataGridView1[3, i].ReadOnly = true;
-                            dataGridView1[1, i].Value = ((ScriptFile.operation)currentSub.opcodes[i]).floatArg;
-                        }
-                        else // 4/99 = string
-                        {
-                            dataGridView1[1, i].ReadOnly = true;
-                            dataGridView1[2, i].ReadOnly = true;
-                            dataGridView1[3, i].ReadOnly = false;
-                            dataGridView1[3, i].Value = ((ScriptFile.operation)currentSub.opcodes[i]).strArg;
-                        }
-                    }
-                }
-                 */
                 changing = false;
             }
         }
 
-        private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void UpdateUIElements()
         {
-            /*
-            if (!changing)
+            ScriptFile.Subroutine currentSub = internalFile.Subroutines[subroutineListBox.SelectedIndex];
+            textBox1.Text = currentSub.SubroutineName;
+            if (currentSub.SubType == 0x4C)
             {
-                if (e.RowIndex >= ((ScriptFile.subroutine)internalFile.subroutines[listBox1.SelectedIndex]).opcodes.Count)
-                {
-                    ScriptFile.operation temp = new ScriptFile.operation();
-                    temp.opcode = 1;
-                    ((ScriptFile.subroutine)internalFile.subroutines[listBox1.SelectedIndex]).opcodes.Add(temp);
-                    changing = true;
-                    if (e.ColumnIndex != 0)
-                    {
-                        dataGridView1[0, e.RowIndex].Value = "NOP";
-                        dataGridView1[1, e.RowIndex].ReadOnly = true;
-                        dataGridView1[2, e.RowIndex].ReadOnly = true;
-                        dataGridView1[3, e.RowIndex].ReadOnly = true;
-                    }
-                    changing = false;
-                }
-                if (e.ColumnIndex == 0)
-                {
-                    int newOpcode = Array.IndexOf(internalFile.opcodes, dataGridView1[e.ColumnIndex, e.RowIndex].Value);
-                    if(internalFile.opcodeTypes[newOpcode] == 2)
-                    {
-                        dataGridView1[1, e.RowIndex].ReadOnly = true;
-                        dataGridView1[2, e.RowIndex].ReadOnly = false;
-                        dataGridView1[3, e.RowIndex].ReadOnly = true;
-                    }
-                    else if (internalFile.opcodeTypes[newOpcode] == 3)
-                    {
-                        dataGridView1[1, e.RowIndex].ReadOnly = false;
-                        dataGridView1[2, e.RowIndex].ReadOnly = true;
-                        dataGridView1[3, e.RowIndex].ReadOnly = true;
-                    }
-                    else if (internalFile.opcodeTypes[newOpcode] == 1)
-                    {
-                        dataGridView1[1, e.RowIndex].ReadOnly = true;
-                        dataGridView1[2, e.RowIndex].ReadOnly = true;
-                        dataGridView1[3, e.RowIndex].ReadOnly = true;
-                    }
-                    else
-                    {
-                        dataGridView1[1, e.RowIndex].ReadOnly = true;
-                        dataGridView1[2, e.RowIndex].ReadOnly = true;
-                        dataGridView1[3, e.RowIndex].ReadOnly = false;
-                    }
-                    ((ScriptFile.operation)((ScriptFile.subroutine)internalFile.subroutines[listBox1.SelectedIndex]).opcodes[e.RowIndex]).opcode = 
-                        newOpcode;
-                }
-                else if (e.ColumnIndex == 1)
-                {
-                    ((ScriptFile.operation)((ScriptFile.subroutine)internalFile.subroutines[listBox1.SelectedIndex]).opcodes[e.RowIndex]).floatArg =
-                        Convert.ToSingle((string)dataGridView1[e.ColumnIndex, e.RowIndex].Value);
-                }
-                else if (e.ColumnIndex == 2)
-                {
-                    ((ScriptFile.operation)((ScriptFile.subroutine)internalFile.subroutines[listBox1.SelectedIndex]).opcodes[e.RowIndex]).intArg =
-                        Convert.ToInt32((string)dataGridView1[e.ColumnIndex, e.RowIndex].Value);
-                }
-                else if (e.ColumnIndex == 3)
-                {
-                    ((ScriptFile.operation)((ScriptFile.subroutine)internalFile.subroutines[listBox1.SelectedIndex]).opcodes[e.RowIndex]).strArg =
-                        (string)dataGridView1[e.ColumnIndex, e.RowIndex].Value;
-                }
+                comboBox1.SelectedIndex = 2;
+                bufferLengthLabel.Visible = false;
+                bufferLengthUpDown.Visible = false;
+                dataGridView2.Enabled = true;
             }
-             */
+            else if(currentSub.SubType == 0x49)
+            {
+                comboBox1.SelectedIndex = 1;
+                bufferLengthLabel.Visible = true;
+                bufferLengthUpDown.Visible = true;
+                dataGridView2.Enabled = false;
+            }
+            else if(currentSub.SubType == 0x3C)
+            {
+                comboBox1.SelectedIndex = 0;
+                bufferLengthLabel.Visible = false;
+                bufferLengthUpDown.Visible = false;
+                dataGridView2.Enabled = false;
+            }
+            else
+            {
+                throw new Exception("Received unexpected subroutine type: " + currentSub.SubType.ToString("X2"));
+            }
         }
 
         private void dataGridView2_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -179,20 +102,20 @@ namespace psu_generic_parser
         {
             if (!changing)
             {
-                internalFile.subroutines[listBox1.SelectedIndex].name = textBox1.Text;
-                listBox1.Items[listBox1.SelectedIndex] = textBox1.Text;
+                internalFile.Subroutines[subroutineListBox.SelectedIndex].SubroutineName = textBox1.Text;
+                subroutineListBox.Items[subroutineListBox.SelectedIndex] = textBox1.Text;
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete " + internalFile.subroutines[listBox1.SelectedIndex].name + "?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Are you sure you want to delete " + internalFile.Subroutines[subroutineListBox.SelectedIndex].SubroutineName + "?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                int oldIndex = listBox1.SelectedIndex;
-                listBox1.Items.RemoveAt(oldIndex);
-                internalFile.subroutines.RemoveAt(oldIndex);
+                int oldIndex = subroutineListBox.SelectedIndex;
+                subroutineListBox.Items.RemoveAt(oldIndex);
+                internalFile.Subroutines.RemoveAt(oldIndex);
                 forceChange = true;
-                listBox1.SelectedIndex = Math.Min(oldIndex, listBox1.Items.Count -1);
+                subroutineListBox.SelectedIndex = Math.Min(oldIndex, subroutineListBox.Items.Count -1);
             }
         }
 
@@ -210,7 +133,7 @@ namespace psu_generic_parser
             Label textLabel = new Label() { Left = 50, Top = 20, Text = "Select where to insert subroutine." };
             textLabel.AutoSize = true;
             ComboBox comboBox = new ComboBox() { Left = 50, Top = 50, Width = 400 };
-            comboBox.Items.AddRange(listBox1.Items.Cast<string>().ToArray());
+            comboBox.Items.AddRange(subroutineListBox.Items.Cast<string>().ToArray());
             comboBox.Items.Add("End of file");
             comboBox.SelectedIndex = 0;
             
@@ -226,12 +149,12 @@ namespace psu_generic_parser
             prompt.ShowDialog();
             if (accept && comboBox.SelectedIndex != -1)
             {
-                ScriptFile.subroutine sub = new ScriptFile.subroutine();
-                sub.subType = 0x4C;
-                internalFile.subroutines.Insert(comboBox.SelectedIndex, sub);
-                listBox1.Items.Insert(comboBox.SelectedIndex, internalFile.subroutines[comboBox.SelectedIndex].name);
+                ScriptFile.Subroutine sub = new ScriptFile.Subroutine();
+                sub.SubType = 0x4C;
+                internalFile.Subroutines.Insert(comboBox.SelectedIndex, sub);
+                subroutineListBox.Items.Insert(comboBox.SelectedIndex, internalFile.Subroutines[comboBox.SelectedIndex].SubroutineName);
                 forceChange = true;
-                listBox1.SelectedIndex = comboBox.SelectedIndex;
+                subroutineListBox.SelectedIndex = comboBox.SelectedIndex;
             }
         }
 
@@ -249,7 +172,7 @@ namespace psu_generic_parser
             Label textLabel = new Label() { Left = 50, Top = 20, Text = "Select subroutines to export." };
             textLabel.AutoSize = true;
             CheckedListBox checkList = new CheckedListBox() { Left = 50, Top = 50, Width = 400, Height = 200 };
-            checkList.Items.AddRange(listBox1.Items.Cast<string>().ToArray());
+            checkList.Items.AddRange(subroutineListBox.Items.Cast<string>().ToArray());
             Button confirmation = new Button() { Text = "OK", Left = 125, Width = 100, Top = 260 };
             confirmation.Click += (a, b) => { prompt.Close(); accept = true; };
             Button cancel = new Button() { Text = "Cancel", Left = 250, Width = 100, Top = 260 };
@@ -265,7 +188,6 @@ namespace psu_generic_parser
                 for (int i = 0; i < selectedFuncs.Length; i++)
                 {
                     selectedFuncs[i] = (string)checkList.CheckedItems[i];
-
                 }
                 SaveFileDialog tempDialog = new SaveFileDialog();
                 if (tempDialog.ShowDialog() == DialogResult.OK)
@@ -276,11 +198,6 @@ namespace psu_generic_parser
             }
         }
 
-        private void dataGridView2_DataError(object sender, DataGridViewDataErrorEventArgs e)
-        {
-
-        }
-
         private void button4_Click(object sender, EventArgs e)
         {
             OpenFileDialog tempDia = new OpenFileDialog();
@@ -289,10 +206,10 @@ namespace psu_generic_parser
                 byte[] impScript = System.IO.File.ReadAllBytes(tempDia.FileName);
                 ScriptFile tempScript = new ScriptFile("dummy.bin", impScript);
                 internalFile.importScript(tempScript);
-                foreach (ScriptFile.subroutine sub in tempScript.subroutines)
+                foreach (ScriptFile.Subroutine sub in tempScript.Subroutines)
                 {
-                    if (!listBox1.Items.Contains(sub.name))
-                        listBox1.Items.Add(sub.name);
+                    if (!subroutineListBox.Items.Contains(sub.SubroutineName))
+                        subroutineListBox.Items.Add(sub.SubroutineName);
                 }
             }
         }
@@ -301,15 +218,217 @@ namespace psu_generic_parser
         {
             if (!changing)
             {
-                if (comboBox1.SelectedIndex == 0)
+                changing = true;
+                switch(comboBox1.SelectedIndex)
                 {
-                    internalFile.subroutines[listBox1.SelectedIndex].subType = 0x3C;
-                    dataGridView2.Enabled = false;
+                    //Numeric variable
+                    case 0:
+                        internalFile.Subroutines[subroutineListBox.SelectedIndex].SubType = 0x3C;
+                        break;
+                    //String variable
+                    case 1:
+                        internalFile.Subroutines[subroutineListBox.SelectedIndex].SubType = 0x49;
+                        break;
+                    //Subroutine
+                    case 2:
+                        internalFile.Subroutines[subroutineListBox.SelectedIndex].SubType = 0x4C;
+                        break;
+                }
+                UpdateUIElements();
+                changing = false;
+            }
+        }
+
+        private void dataGridView2_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var hti = dataGridView2.HitTest(e.X, e.Y);
+                if (hti.RowIndex > -1 && hti.RowIndex < dataGridView2.Rows.Count)
+                {
+                    dataGridView2.ClearSelection();
+                    dataGridView2.Rows[hti.RowIndex].Selected = true;
+                }
+            }
+        }
+
+        private void insertRowMenuItem_Click(object sender, EventArgs e)
+        {
+            ScriptFile.Subroutine currentSub = internalFile.Subroutines[subroutineListBox.SelectedIndex];
+            int rowToInsert = dataGridView2.Rows.GetFirstRow(DataGridViewElementStates.Selected);
+            dataGridView2.ClearSelection();
+            ScriptFile.Operation newOp = new ScriptFile.Operation();
+            newOp.OpCode = 1;
+            currentSub.Operations.Insert(rowToInsert, newOp);
+            binder.ResetBindings(false);
+            dataGridView2.Refresh();
+        }
+
+        private void deleteRowMenuItem_Click(object sender, EventArgs e)
+        {
+            int rowToDelete = dataGridView2.Rows.GetFirstRow(DataGridViewElementStates.Selected);
+            ScriptFile.Subroutine currentSub = internalFile.Subroutines[subroutineListBox.SelectedIndex];
+            dataGridView2.ClearSelection();
+            currentSub.Operations.RemoveAt(rowToDelete);
+            binder.ResetBindings(false);
+            dataGridView2.Refresh();
+        }
+
+        private void bufferLengthUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if(!changing)
+            {
+                ScriptFile.Subroutine currentSub = internalFile.Subroutines[subroutineListBox.SelectedIndex];
+                currentSub.BufferLength = (int)bufferLengthUpDown.Value;
+            }
+        }
+
+        private void subroutineSearch_TextChanged(object sender, EventArgs e)
+        {
+            int result = subroutineListBox.FindString(subroutineSearchBox.Text);
+            if(result != -1)
+            {
+                subroutineListBox.SelectedIndex = result;
+                subroutineSearchBox.ForeColor = SystemColors.WindowText;
+            }
+            else
+            {
+                subroutineSearchBox.ForeColor = Color.Red;
+            }
+        }
+
+        private void goToReferenceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int rowToRead = dataGridView2.Rows.GetFirstRow(DataGridViewElementStates.Selected);
+            ScriptFile.Subroutine currentSub = internalFile.Subroutines[subroutineListBox.SelectedIndex];
+            ScriptFile.Operation currentOp = currentSub.Operations[rowToRead];
+            if (currentOp.OpCodeType == ScriptFile.OpCodeOperandTypes.BranchTarget)
+            {
+                int selectedIndex = currentSub.Operations.FindIndex(op => op.Label == currentOp.OperandText);
+                if (selectedIndex != -1)
+                {
+                    dataGridView2.ClearSelection();
+                    dataGridView2.CurrentCell = dataGridView2.Rows[selectedIndex].Cells[0];
                 }
                 else
                 {
-                    internalFile.subroutines[listBox1.SelectedIndex].subType = 0x4C;
-                    dataGridView2.Enabled = true;
+                    MessageBox.Show("Could not find label: " + currentOp.OperandText);
+                }
+            }
+            else if(currentOp.OpCodeType == ScriptFile.OpCodeOperandTypes.FunctionName || currentOp.OpCodeType == ScriptFile.OpCodeOperandTypes.NumericVariableName || currentOp.OpCodeType == ScriptFile.OpCodeOperandTypes.StringVariableName)
+            {
+                int selectedIndex = internalFile.Subroutines.FindIndex(op => op.SubroutineName == currentOp.OperandText);
+                if (selectedIndex != -1)
+                {
+                    subroutineListBox.SelectedIndex = selectedIndex;
+                }
+                else
+                {
+                    MessageBox.Show("Could not find function/variable: " + currentOp.OperandText);
+                }
+            }
+        }
+
+        private void operationsContextMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (dataGridView2.SelectedRows.Count == 0)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                int rowToRead = dataGridView2.Rows.GetFirstRow(DataGridViewElementStates.Selected);
+                ScriptFile.Subroutine currentSub = internalFile.Subroutines[subroutineListBox.SelectedIndex];
+                if (rowToRead < currentSub.Operations.Count)
+                {
+                    ScriptFile.Operation currentOp = currentSub.Operations[rowToRead];
+                    goToReferenceToolStripMenuItem.Visible = hasDestination(currentOp.OpCodeType);
+                    deleteRowMenuItem.Enabled = true;
+                }
+                else
+                {
+                    deleteRowMenuItem.Enabled = false;
+                    goToReferenceToolStripMenuItem.Visible = false;
+                }
+            }
+        }
+
+        private bool hasDestination(ScriptFile.OpCodeOperandTypes testType)
+        {
+            switch (testType)
+            {
+                case ScriptFile.OpCodeOperandTypes.FunctionName: case ScriptFile.OpCodeOperandTypes.BranchTarget: case ScriptFile.OpCodeOperandTypes.NumericVariableName: case ScriptFile.OpCodeOperandTypes.StringVariableName: return true;
+            }
+            return false;
+        }
+
+        private bool hasSubroutineDestination(ScriptFile.OpCodeOperandTypes testType)
+        {
+            return testType == ScriptFile.OpCodeOperandTypes.FunctionName || testType == ScriptFile.OpCodeOperandTypes.NumericVariableName || testType == ScriptFile.OpCodeOperandTypes.StringVariableName;
+        }
+
+        public void SelectOperation(string subroutineName, int lineNumber)
+        {
+            int functionIndex = internalFile.Subroutines.FindIndex(sub => sub.SubroutineName == subroutineName);
+            if(functionIndex != -1)
+            {
+                subroutineListBox.SelectedIndex = functionIndex;
+                if(internalFile.Subroutines[functionIndex].Operations.Count > lineNumber)
+                {
+                    dataGridView2.CurrentCell = dataGridView2.Rows[lineNumber].Cells[0];
+                }
+            }
+        }
+
+        private void findReferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string subroutineName = (string)subroutineListBox.SelectedItem;
+            var findResults = new List<Tuple<string, int>>();
+            foreach(var subroutine in internalFile.Subroutines)
+            {
+                for(int i = 0; i < subroutine.Operations.Count; i++)
+                {
+                    if(hasSubroutineDestination(subroutine.Operations[i].OpCodeType) && subroutine.Operations[i].OperandText == subroutineName)
+                    {
+                        findResults.Add(new Tuple<string, int>(subroutine.SubroutineName, i));
+                    }
+                }
+            }
+
+            if(findResults.Count > 0)
+            {
+                ReferenceFindDialog dlg = new ReferenceFindDialog(this, subroutineName, findResults);
+                children.Add(dlg);
+                dlg.Show();
+            }
+            else
+            {
+                MessageBox.Show("No references found to subroutine/variable " + subroutineName, "No Results Found");
+            }
+        }
+
+        private void subroutineListBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            subroutineListBox.SelectedIndex = subroutineListBox.IndexFromPoint(e.Location);
+            /*
+            if (e.Button == MouseButtons.Right)
+            {
+                var hti = subroutineListBox..HitTest(e.X, e.Y);
+                if (hti.RowIndex > -1 && hti.RowIndex < dataGridView2.Rows.Count)
+                {
+                    dataGridView2.ClearSelection();
+                    dataGridView2.Rows[hti.RowIndex].Selected = true;
+                }
+            }*/
+        }
+
+        private void ScriptFileViewer_ParentChanged(object sender, EventArgs e)
+        {
+            if (this.Parent == null)
+            {
+                foreach (var child in children)
+                {
+                    child.Hide();
                 }
             }
         }

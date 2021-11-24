@@ -1,4 +1,6 @@
-﻿namespace psu_generic_parser
+﻿using PSULib.FileClasses.Enemies;
+
+namespace psu_generic_parser
 {
     partial class EnemyStatEditor
     {
@@ -30,6 +32,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.enemyLevelParamFileBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -41,7 +44,6 @@
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.enemyLevelParamFileBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.enemyLevelParamFileBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -70,6 +72,10 @@
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             // 
+            // enemyLevelParamFileBindingSource
+            // 
+            this.enemyLevelParamFileBindingSource.DataSource = typeof(EnemyLevelParamFile);
+            // 
             // Column1
             // 
             this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -97,7 +103,7 @@
             // Column4
             // 
             this.Column4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Column4.HeaderText = "Ata";
+            this.Column4.HeaderText = "ATA";
             this.Column4.Name = "Column4";
             this.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Column4.Width = 34;
@@ -121,10 +127,10 @@
             // Column7
             // 
             this.Column7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Column7.HeaderText = "CHR";
+            this.Column7.HeaderText = "LCK";
             this.Column7.Name = "Column7";
             this.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column7.Width = 36;
+            this.Column7.Width = 33;
             // 
             // Column8
             // 
@@ -145,10 +151,10 @@
             // Column10
             // 
             this.Column10.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Column10.HeaderText = "?";
+            this.Column10.HeaderText = "ELE";
             this.Column10.Name = "Column10";
             this.Column10.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Column10.Width = 19;
+            this.Column10.Width = 33;
             // 
             // Column11
             // 
@@ -157,10 +163,6 @@
             this.Column11.Name = "Column11";
             this.Column11.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.Column11.Width = 34;
-            // 
-            // enemyLevelParamFileBindingSource
-            // 
-            this.enemyLevelParamFileBindingSource.DataSource = typeof(psu_generic_parser.EnemyLevelParamFile);
             // 
             // EnemyStatEditor
             // 

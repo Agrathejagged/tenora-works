@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using PSULib.FileClasses.Characters;
 
 namespace psu_generic_parser
 {

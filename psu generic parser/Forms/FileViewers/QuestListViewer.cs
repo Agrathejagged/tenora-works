@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using PSULib.FileClasses.Missions;
 
 namespace psu_generic_parser.FileViewers
 {

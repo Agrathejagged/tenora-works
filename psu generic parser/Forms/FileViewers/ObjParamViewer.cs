@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PSULib.FileClasses;
 using System.Windows.Forms;
+using PSULib.FileClasses.Maps;
 
 namespace psu_generic_parser.Forms.FileViewers
 {

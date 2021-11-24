@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.Serialization.Json;
 using System.IO;
+using PSULib.FileClasses.Missions;
 
 namespace psu_generic_parser
 {
@@ -141,6 +142,7 @@ namespace psu_generic_parser
                 EnemyLayoutFile tempLayout = (EnemyLayoutFile)tempJson.ReadObject(tempStream);
                 tempStream.Close();
                 internalFile.spawns = tempLayout.spawns;
+                InitializeDisplay();
             }
         }
 

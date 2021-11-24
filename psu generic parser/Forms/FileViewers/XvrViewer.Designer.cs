@@ -1,6 +1,6 @@
 ﻿namespace psu_generic_parser
 {
-    partial class XvrViewer
+    partial class TextureViewer
     {
         /// <summary> 
         /// Required designer variable.

@@ -20,6 +20,7 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,7 +33,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -55,9 +55,18 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|AnyCPU'">
+    <OutputPath>..\deploy\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.0\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
@@ -99,6 +108,54 @@
     </Compile>
     <Compile Include="Forms\FileViewers\ClothingFileViewer.Designer.cs">
       <DependentUpon>ClothingFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\ActDataFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\ActDataFileViewer.Designer.cs">
+      <DependentUpon>ActDataFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\AtkDatFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\AtkDatFileViewer.Designer.cs">
+      <DependentUpon>AtkDatFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\DamageDataAnglePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\DamageDataAnglePanel.Designer.cs">
+      <DependentUpon>DamageDataAnglePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\DamageDataFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\DamageDataFileViewer.Designer.cs">
+      <DependentUpon>DamageDataFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\EnemyMotTblFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\EnemyMotTblFileViewer.Designer.cs">
+      <DependentUpon>EnemyMotTblFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\EnemyParamFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\EnemyParamFileViewer.Designer.cs">
+      <DependentUpon>EnemyParamFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\EnemySoundEffectFileViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Enemies\EnemySoundEffectFileViewer.Designer.cs">
+      <DependentUpon>EnemySoundEffectFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AnimationNameHashDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AnimationNameHashDialog.Designer.cs">
+      <DependentUpon>AnimationNameHashDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FileViewers\EnemyStatEditor.cs">
       <SubType>UserControl</SubType>
@@ -154,6 +211,12 @@
     <Compile Include="Forms\FileViewers\ListFileViewer.Designer.cs">
       <DependentUpon>ListFileViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FileViewers\LndCommonEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\LndCommonEditor.Designer.cs">
+      <DependentUpon>LndCommonEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FileViewers\NomFileViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -177,6 +240,12 @@
     </Compile>
     <Compile Include="Forms\FileViewers\ScriptFileViewer.Designer.cs">
       <DependentUpon>ScriptFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Scripts\ReferenceFindDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Scripts\ReferenceFindDialog.Designer.cs">
+      <DependentUpon>ReferenceFindDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FileViewers\SetEditorSupportClasses\HexMetadataEditor.cs">
       <SubType>UserControl</SubType>
@@ -233,6 +302,12 @@
     <Compile Include="Forms\FileViewers\XntFileViewer.Designer.cs">
       <DependentUpon>XntFileViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FileRenameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FileRenameForm.Designer.cs">
+      <DependentUpon>FileRenameForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\HexEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -269,6 +344,30 @@
       <DependentUpon>ClothingFileViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Enemies\ActDataFileViewer.resx">
+      <DependentUpon>ActDataFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Enemies\AtkDatFileViewer.resx">
+      <DependentUpon>AtkDatFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Enemies\DamageDataAnglePanel.resx">
+      <DependentUpon>DamageDataAnglePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Enemies\DamageDataFileViewer.resx">
+      <DependentUpon>DamageDataFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Enemies\EnemyMotTblFileViewer.resx">
+      <DependentUpon>EnemyMotTblFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Enemies\EnemyParamFileViewer.resx">
+      <DependentUpon>EnemyParamFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Enemies\EnemySoundEffectFileViewer.resx">
+      <DependentUpon>EnemySoundEffectFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AnimationNameHashDialog.resx">
+      <DependentUpon>AnimationNameHashDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\EnemyStatEditor.resx">
       <DependentUpon>EnemyStatEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -304,6 +403,9 @@
     <EmbeddedResource Include="Forms\FileViewers\ListFileViewer.resx">
       <DependentUpon>ListFileViewer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\LndCommonEditor.resx">
+      <DependentUpon>LndCommonEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\NomFileViewer.resx">
       <DependentUpon>NomFileViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -321,6 +423,9 @@
     <EmbeddedResource Include="Forms\FileViewers\ScriptFileViewer.resx">
       <DependentUpon>ScriptFileViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Scripts\ReferenceFindDialog.resx">
+      <DependentUpon>ReferenceFindDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\SetEditorSupportClasses\HexMetadataEditor.resx">
       <DependentUpon>HexMetadataEditor.cs</DependentUpon>
@@ -347,6 +452,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\XntFileViewer.resx">
       <DependentUpon>XntFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileRenameForm.resx">
+      <DependentUpon>FileRenameForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\HexEditForm.resx">
       <DependentUpon>HexEditForm.cs</DependentUpon>
@@ -454,6 +562,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Deploy (
+rmdir $(SolutionDir)ForUpload\psu_generic_parser
+mkdir $(SolutionDir)ForUpload\psu_generic_parser
+xcopy "$(TargetDir)" "$(SolutionDir)ForUpload\psu_generic_parser" /S /Y )</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

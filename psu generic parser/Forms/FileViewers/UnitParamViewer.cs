@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Collections;
+using PSULib.FileClasses.Items;
 
 namespace psu_generic_parser
 {

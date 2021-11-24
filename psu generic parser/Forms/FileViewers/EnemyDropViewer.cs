@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
+using PSULib.FileClasses.Items;
 
 namespace psu_generic_parser
 {

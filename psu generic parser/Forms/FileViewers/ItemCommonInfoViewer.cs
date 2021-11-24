@@ -6,14 +6,15 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using PSULib.FileClasses.Items;
 
 namespace psu_generic_parser
 {
-    
+
     public partial class ItemCommonInfoViewer : UserControl
     {
-        CommonInfoFile internalFile;
-        public ItemCommonInfoViewer(CommonInfoFile inFile)
+        ItemCommonInfoFile internalFile;
+        public ItemCommonInfoViewer(ItemCommonInfoFile inFile)
         {
             InitializeComponent();
             internalFile = inFile;
@@ -55,7 +56,7 @@ namespace psu_generic_parser
                 {
                     coordinate[2] = internalFile.entries[coordinate[0]][coordinate[1]].Length;
                     Array.Resize(ref internalFile.entries[coordinate[0]][coordinate[1]], internalFile.entries[coordinate[0]][coordinate[1]].Length + 1);
-                    internalFile.entries[coordinate[0]][coordinate[1]][coordinate[2]] = new List<CommonInfoFile.CommonEntry>();
+                    internalFile.entries[coordinate[0]][coordinate[1]][coordinate[2]] = new List<ItemCommonInfoFile.CommonEntry>();
                     e.Node.Text = coordinate[0].ToString("X2") + ":" + coordinate[2].ToString("X2") + ":zz:" + coordinate[1].ToString("X2");
                     TreeNode tempNode = new TreeNode("Add new...");
                     tempNode.Tag = new int[] { coordinate[0], coordinate[1], -1 };

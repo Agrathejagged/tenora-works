@@ -4,10 +4,11 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Runtime.Serialization.Json;
 using System.IO;
-using static psu_generic_parser.SetFile;
+using static PSULib.FileClasses.Missions.SetFile;
 using static psu_generic_parser.HexEditForm;
 using psu_generic_parser.Forms.FileViewers.SetEditorSupportClasses;
-using PSULib.FileClasses.Sets;
+using PSULib.FileClasses.Missions;
+using PSULib.FileClasses.Missions.Sets;
 
 namespace psu_generic_parser
 {
@@ -15,7 +16,6 @@ namespace psu_generic_parser
     {
         public SetFile internalFile;
         public ObjectEntry objectEntry;
-        public HexEditForm objectListHeaderForm;
         public HexEditForm objectMetaData;
         private int currentMapIndex = -1; //to make sure it doesn't reload when we rename the current map
 
@@ -90,10 +90,6 @@ namespace psu_generic_parser
 
         private void updateObjectList()
         {
-            if (objectListHeaderForm != null)
-            {
-                objectListHeaderForm.Close();
-            }
             objectListCB.BeginUpdate();
             objectListCB.Items.Clear();
             for(int i = 0; i < internalFile.mapData[mapListCB.SelectedIndex].headers.Length; i++)
@@ -111,12 +107,27 @@ namespace psu_generic_parser
         {
             setObjectListBox.BeginUpdate();
             setObjectListBox.Items.Clear();
-            for(int i = 0; i < internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].objects.Length; i++)
+            ListHeader header = internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex];
+            for (int i = 0; i < header.objects.Length; i++)
             {
                 setObjectListBox.Items.Add("Object " + i);
             }
             setObjectListBox.EndUpdate();
             setObjectListBox.SelectedIndex = 0;
+
+            unusedHeaderInt1UD.Value = Convert.ToDecimal(header.unusedInt1);
+
+            boundSphereValue1UD.Value = Convert.ToDecimal(header.unusedBoundSphereValue1);
+            boundSphereValue2UD.Value = Convert.ToDecimal(header.unusedBoundSphereValue2);
+            boundSphereValue3UD.Value = Convert.ToDecimal(header.unusedBoundSphereValue3);
+            boundSphereValue4UD.Value = Convert.ToDecimal(header.unusedBoundSphereValue4);
+
+            unusedShort1UD.Value = Convert.ToDecimal(header.unusedShort1);
+            unknownShort1UD.Value = Convert.ToDecimal(header.unknownShort1);
+            unusedHeaderInt2UD.Value = Convert.ToDecimal(header.unusedInt2);
+            listIndexUD.Value = Convert.ToDecimal(header.listIndex);
+            unknownPairedShort1UD.Value = Convert.ToDecimal(header.unknownPairedShort1);
+            unknownPairedShort2UD.Value = Convert.ToDecimal(header.unknownPairedShort2);
 
             //Load parameters from the first object of the object list
             updateObjectDisplay();
@@ -149,19 +160,6 @@ namespace psu_generic_parser
             updateObjectDisplay();
         }
 
-        private void editObjectSetHeaderBytesButton_Click(object sender, EventArgs e)
-        {
-            objectListHeaderForm = new HexEditForm(internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].headerBytes,
-                $"Map List {mapListCB.SelectedIndex}, Set {objectListCB.SelectedIndex}, Object {setObjectListBox.SelectedIndex}", false, null);
-            objectListHeaderForm.Show();
-            objectListHeaderForm.setBytesDelegate = new SetBytesDelegate(this.setObjectSetHeaderBytes);
-        }
-
-        private void setObjectSetHeaderBytes(byte[] bytes)
-        {
-            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].headerBytes = bytes;
-        }
-
         private void mapListCB_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (currentMapIndex != mapListCB.SelectedIndex)
@@ -186,7 +184,6 @@ namespace psu_generic_parser
             newObjectList[0].metadata = new byte[0];
 
             ListHeader newListHeader = new ListHeader();
-            newListHeader.headerBytes = new byte[36];
             newListHeader.objects = newObjectList;
 
             MapListing newMapListing = new MapListing();
@@ -235,7 +232,6 @@ namespace psu_generic_parser
             newObjectList[0].metadata = new byte[0];
 
             ListHeader newListHeader = new ListHeader();
-            newListHeader.headerBytes = new byte[36];
             newListHeader.objects = newObjectList;
             newHeaderList.Add(newListHeader);
 
@@ -418,6 +414,61 @@ namespace psu_generic_parser
         private void areaIdComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             internalFile.areaID = (short)areaIdComboBox.SelectedIndex;
+        }
+
+        private void unusedHeaderInt1NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].unusedInt1 = (int)unusedHeaderInt1UD.Value;
+        }
+
+        private void boundSphereValue1NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].unusedBoundSphereValue1 = (int)boundSphereValue1UD.Value;
+        }
+
+        private void boundSphereValue2NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].unusedBoundSphereValue2 = (int)boundSphereValue2UD.Value;
+        }
+
+        private void boundSphereValue3NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].unusedBoundSphereValue3 = (int)boundSphereValue3UD.Value;
+        }
+
+        private void boundSphereValue4NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].unusedBoundSphereValue4 = (int)boundSphereValue4UD.Value;
+        }
+
+        private void unusedShort1NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].unusedShort1 = (short)unusedShort1UD.Value;
+        }
+
+        private void unknownShort1NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].unknownShort1 = (short)unknownShort1UD.Value;
+        }
+
+        private void unusedHeaderInt2NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].unusedInt2 = (short)unusedHeaderInt2UD.Value;
+        }
+
+        private void listIndexNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].listIndex = (short)listIndexUD.Value;
+        }
+
+        private void unknownShortPair1NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].unknownPairedShort1 = (short)unknownPairedShort1UD.Value;
+        }
+
+        private void unknownShortPair2NumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].unknownPairedShort2 = (short)unknownPairedShort2UD.Value;
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using PSULib.FileClasses.Enemies;
 
 namespace psu_generic_parser
 {

@@ -2,26 +2,27 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.IO;
-using psu_generic_parser.FileClasses;
-using psu_generic_parser.FileClasses.XVR;
+using PSULib.FileClasses.Textures.XVR;
+using PSULib.FileClasses.Textures;
+using PSULib.FileClasses.General;
 
 namespace psu_generic_parser
 {
-    public partial class XvrViewer : UserControl
+    public partial class TextureViewer : UserControl
     {
-        TextureFile internalTexture;
+        ITextureFile internalTexture;
         int currentMip = 0;
         int mipCount = 0;
         string filename = "";
         private PsuTexturePixelFormat[] permittedFormats = { PsuTexturePixelFormat.Argb1555, PsuTexturePixelFormat.Rgb555, PsuTexturePixelFormat.Argb4444, PsuTexturePixelFormat.Rgb565, PsuTexturePixelFormat.Argb8888, PsuTexturePixelFormat.Xrgb8888, PsuTexturePixelFormat.Rgb655, PsuTexturePixelFormat.Rgba8888, PsuTexturePixelFormat.Abgr8888 };
 
-        XvrViewer()
+        TextureViewer()
         {
             InitializeComponent();
             Dock = DockStyle.Fill;
         }
 
-        public XvrViewer(TextureFile toLoad) : this()
+        public TextureViewer(ITextureFile toLoad) : this()
         {
             if(toLoad is PsuFile)
             {
