@@ -358,12 +358,6 @@
     <Compile Include="Forms\FileViewers\SoundFileViewer.Designer.cs">
       <DependentUpon>SoundFileViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FileViewers\TableViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Forms\FileViewers\TableViewer.Designer.cs">
-      <DependentUpon>TableViewer.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FileViewers\Bosses\ThinkDragonViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -564,9 +558,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\SoundFileViewer.resx">
       <DependentUpon>SoundFileViewer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FileViewers\TableViewer.resx">
-      <DependentUpon>TableViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\Bosses\ThinkDragonViewer.resx">
       <DependentUpon>ThinkDragonViewer.cs</DependentUpon>

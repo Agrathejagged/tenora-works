@@ -11,7 +11,7 @@ PSULib, the PSU Generic Parser, and other smallish derived projects
 Gameplay:
   - itemCommonInfo.xnr (view/edit): Item ID/rarity mapping file.
   - itemBulletParam\*.xnr (view/edit): Bullet Art parameter files. AOTI/PSP1 only.
-  - itemSkillParam\*.xnr (view/edit): Skill parameter files. AOTI/PSP1 only.
+  - itemSkillParam\*.xnr (view/edit): Skill parameter files. AOTI/PSP1/PSP2i only.
   - itemTechParam0(1-6)\*.xnr (view/edit): Technic parameter files for standard technics. Does not include support for itemTechParam11\_EnemyB.xnr. AOTI/PSP1 only.
   - itemLineUnitParam.xnr (view/edit): Unit parameter file. AOTI/PSP1 only.
   - itemPartsParam.xnr (view/edit): CAST Parts parameter file. AOTI/PSP1 only.
@@ -21,6 +21,7 @@ Gameplay:
   - itemObjectDrop.xnr (present in PSULib, no UI): Box/tree/etc drop tables. AOTI only.
   - EnemyLevelBaseParam.xnr (view/edit): Base enemy stat table.
   - Think\*Dragon.xnr (view only, very rough): AI control file for De Ragan/De Ragnus/Zoal Goug/Alteraz Gohg. Does the bare minimum of parsing, most data is still un-annotated.
+  - \*ServerParam.xnr (view/edit): Stats for boss hitboxes/attacks.
   - \*Tutor.bin scripts (view/edit): Enemy scripts.
   - obj_param.xnr (rough): Set object model definitions.
   - obj_particle_info.xnr (rough): Set object particle references.
@@ -36,6 +37,11 @@ Aesthetic:
   - XNT texture lists (view/edit): Map model texture IDs to XVR files
   - NOM animations (view only, very rough): Player animations for PSU (PC/PS2) and PSP1/2/i. Does the bare minimum of parsing, most data is still unknown.
   - partsinfo.xnr (view/edit): Control data to map character appearance values to models in the character AFS file.
+  - .dat sound files (view only): Sound effects. These primarily live in de_SoundData.nbl (e1afdc9bb0c165c5ffd05f720ff7b1d2 in v1, c6b02b24a7f93391abf8faa4298b7b27 in AotI) and xa_SoundData.afs (cb32d7e8ded73697671fa54e47842393 in v1, b787754faa6817fc3b980e751e0907f2 in AotI)
+  - LndEnemyLight.rel (view/edit): Controls the lighting on enemies in a particular map. Note that the light positions are hardcoded and therefore the ones set in the files are not used.
+  - LndEffect.rel (view/edit): Controls fog, player lighting, depth of field, and the weird gradients in maps.
+  - FogBank.rel (view/edit): Controls the fog colors used by the "FogBank" objects (e.g dark rooms, poison rooms, alarms, etc) placed in missions.
+  
 
 Miscellaneous:
   - .k/.bin text files (view/edit): Game text.
@@ -49,6 +55,7 @@ Miscellaneous:
   - essen: initial research on PSU's file formats, including [gasetools](https://github.com/essen/gasetools).
   - scriptkiddie: Heavy research into PSU's data formats
   - shadowth117: Cleanup, a few missing file viewers (set editing, enemy layout editing), heavily pushing for this release
+  - lostbob117: Identifying stuff, bug testing, etc
 
 # Included code:
   - GIMSharp from [Puyo Tools](https://github.com/nickworonekin/puyotools)

@@ -58,7 +58,6 @@
     <Compile Include="FileClasses\Archives\FilenameAwareContainerFile.cs" />
     <Compile Include="FileClasses\Bosses\Data\BossAttackStat.cs" />
     <Compile Include="FileClasses\Bosses\Data\BossHitboxStat.cs" />
-    <Compile Include="FileClasses\Bosses\ParamForm1File.cs" />
     <Compile Include="FileClasses\Bosses\ParamServerFile.cs" />
     <Compile Include="FileClasses\Characters\PartsInfoFile.cs" />
     <Compile Include="FileClasses\Enemies\DamageDataFile.cs" />

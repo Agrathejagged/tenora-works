@@ -327,7 +327,7 @@ namespace Set_Object_Manager
             public float rotateX, rotateZ, rotateY;
             public int unknownInt1, unknownInt2, unknownInt3, unknownInt4;
 
-            public override bool Equals(object obj)
+            public override bool Equals(object? obj)
             {
                 return obj is ParticleGroup3Entry entry &&
                        nextEntryTop == entry.nextEntryTop &&
