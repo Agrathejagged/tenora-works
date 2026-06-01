@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using PSULib.Support;
+using GimSharp;
 
 namespace PSULib.FileClasses.General
 {
@@ -46,22 +47,23 @@ namespace PSULib.FileClasses.General
 
             //Check if the file pointers make sense, update the raw data to be relative to 0 rather than relative to baseAddr
             //Also some files like to point at stuff in the padding space, so account for that.
-            byte[] modifiedData = modifiedData = (byte[])rawData.Clone();
-            /*if(rawData.Length % 0x20 != 0)
+            byte[] modifiedData;// = modifiedData = (byte[])rawData.Clone();
+            if(rawData.Length % 0x20 != 0)
             {
                 modifiedData = new byte[((rawData.Length + 0x20) & 0xFFFFFFE0)];
                 Array.Copy(rawData, modifiedData, rawData.Length);
-            }*/
-            /*
+            }
+            
             else
             {
                 modifiedData = (byte[])rawData.Clone();
-            }*/
+            }
             int[] rebasedPointers = new int[ptrs.Length];
 
             MemoryStream memStream = new MemoryStream(modifiedData);
             var fileReader = BigEndianBinaryReader.GetEndianSpecificBinaryReader(memStream, useAsBigEndian);
             BinaryWriter modifiedWriter = BigEndianBinaryWriter.GetEndianSpecificBinaryWriter(memStream, useAsBigEndian);
+            int paddedLength = (int)(modifiedData.Length + 0x1F & 0xFFFFFFF0);
 
             for (int i = 0; i < rebasedPointers.Length; i++)
             {
@@ -72,7 +74,7 @@ namespace PSULib.FileClasses.General
                 }
                 memStream.Seek(rebasedPointers[i], SeekOrigin.Begin);
                 int pointerDestination = fileReader.ReadInt32() - baseAddr;
-                if (pointerDestination < 0 || pointerDestination > modifiedData.Length)
+                if (pointerDestination < 0 || pointerDestination > paddedLength)
                 {
                     markFileBroken(rawData, ptrs, baseAddr);
                 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30225.117
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "psu generic parser", "psu generic parser\psu generic parser.csproj", "{15155AA9-777C-4A09-8629-742FECC6E6AF}"
 EndProject
@@ -12,6 +12,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfHexEditorCore", "WPFHexaEditor\WpfHexEditorCore.csproj", "{F5F025FF-AA90-4868-910D-46CF9B6B57D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FPB Extractor", "FPB Extractor\FPB Extractor.csproj", "{23340141-5EF9-4881-90A4-B5EA63024C45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Counter Editor", "Counter Editor\Counter Editor.csproj", "{7B7BD22F-1E3C-464A-880D-B640D54CB406}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Set Object Manager", "Set Object Manager\Set Object Manager.csproj", "{AB1A9566-9B13-409D-A22B-16B96B9E00D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +54,18 @@ Global
 		{23340141-5EF9-4881-90A4-B5EA63024C45}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
 		{23340141-5EF9-4881-90A4-B5EA63024C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23340141-5EF9-4881-90A4-B5EA63024C45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B7BD22F-1E3C-464A-880D-B640D54CB406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B7BD22F-1E3C-464A-880D-B640D54CB406}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B7BD22F-1E3C-464A-880D-B640D54CB406}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{7B7BD22F-1E3C-464A-880D-B640D54CB406}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{7B7BD22F-1E3C-464A-880D-B640D54CB406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B7BD22F-1E3C-464A-880D-B640D54CB406}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB1A9566-9B13-409D-A22B-16B96B9E00D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB1A9566-9B13-409D-A22B-16B96B9E00D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB1A9566-9B13-409D-A22B-16B96B9E00D6}.Deploy|Any CPU.ActiveCfg = Deploy|Any CPU
+		{AB1A9566-9B13-409D-A22B-16B96B9E00D6}.Deploy|Any CPU.Build.0 = Deploy|Any CPU
+		{AB1A9566-9B13-409D-A22B-16B96B9E00D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB1A9566-9B13-409D-A22B-16B96B9E00D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 
 namespace PSULib.Support
 {
@@ -54,7 +56,9 @@ namespace PSULib.Support
                 {
 
                     while (getCtrlBit())
+                    {
                         output[destPos++] = decompBuffer[currDecompPos++];
+                    }
 
                     if (getCtrlBit())
                     {

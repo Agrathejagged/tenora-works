@@ -14,12 +14,12 @@ namespace PSULib.FileClasses.Enemies
         public class MotTblEntry
         {
             public int FileIdentifier { get; set; }
-            public float UnknownModifer1 { get; set; }
-            public float UnknownModifer2 { get; set; }
-            public float UnknownModifer3 { get; set; }
-            public float UnknownModifer4 { get; set; }
+            public float StartFrame { get; set; }
+            public float EndFrame { get; set; }
+            public float AnimationSpeed { get; set; }
+            public float SmoothingModifier { get; set; }
             public short UnknownShort1 { get; set; }
-            public short UnknownShort2 { get; set; }
+            public short RepeatCount { get; set; }
         }
 
         public List<MotTblEntry> MotTblEntries { get; set; } = new List<MotTblEntry>();
@@ -45,12 +45,12 @@ namespace PSULib.FileClasses.Enemies
                 {
                     MotTblEntry entry = new MotTblEntry();
                     entry.FileIdentifier = inReader.ReadInt32();
-                    entry.UnknownModifer1 = inReader.ReadSingle();
-                    entry.UnknownModifer2 = inReader.ReadSingle();
-                    entry.UnknownModifer3 = inReader.ReadSingle();
-                    entry.UnknownModifer4 = inReader.ReadSingle();
+                    entry.StartFrame = inReader.ReadSingle();
+                    entry.EndFrame = inReader.ReadSingle();
+                    entry.AnimationSpeed = inReader.ReadSingle();
+                    entry.SmoothingModifier = inReader.ReadSingle();
                     entry.UnknownShort1 = inReader.ReadInt16();
-                    entry.UnknownShort2 = inReader.ReadInt16();
+                    entry.RepeatCount = inReader.ReadInt16();
                     MotTblEntries.Add(entry);
                 }
             }
@@ -69,12 +69,12 @@ namespace PSULib.FileClasses.Enemies
             foreach (var entry in MotTblEntries)
             {
                 outWriter.Write(entry.FileIdentifier);
-                outWriter.Write(entry.UnknownModifer1);
-                outWriter.Write(entry.UnknownModifer2);
-                outWriter.Write(entry.UnknownModifer3);
-                outWriter.Write(entry.UnknownModifer4);
+                outWriter.Write(entry.StartFrame);
+                outWriter.Write(entry.EndFrame);
+                outWriter.Write(entry.AnimationSpeed);
+                outWriter.Write(entry.SmoothingModifier);
                 outWriter.Write(entry.UnknownShort1);
-                outWriter.Write(entry.UnknownShort2);
+                outWriter.Write(entry.RepeatCount);
             }
 
             //Write the table of contents

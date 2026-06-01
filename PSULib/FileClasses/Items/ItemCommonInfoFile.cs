@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using PSULib.FileClasses.General;
+using PSULib.Support;
 
 namespace PSULib.FileClasses.Items
 {
@@ -147,7 +148,7 @@ namespace PSULib.FileClasses.Items
                     currentIndex++;
                 }
             }
-            outStream.Seek(outStream.Position + 3 & 0xFFFFFFFC, SeekOrigin.Begin);
+            outWriter.Trim(4);
             int headersLoc = (int)outStream.Position;
             for (int i = 0; i < totalEntries; i++)
             {

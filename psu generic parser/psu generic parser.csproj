@@ -60,11 +60,17 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>none</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Bcl.HashCode, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.6.0.0\lib\net462\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
@@ -77,15 +83,47 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=10.0.0.8, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.10.0.8\lib\net462\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Formats.Nrbf, Version=10.0.0.8, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Formats.Nrbf.10.0.8\lib\net462\System.Formats.Nrbf.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=10.0.0.8, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.10.0.8\lib\net462\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Resources.Extensions, Version=10.0.0.8, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Resources.Extensions.10.0.8\lib\net462\System.Resources.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Security.AccessControl, Version=6.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.AccessControl.6.0.1\lib\net461\System.Security.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Principal.Windows, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Principal.Windows.5.0.0\lib\net461\System.Security.Principal.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="System.ServiceModel.Web">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ValueTuple" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -103,11 +141,23 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\FileViewers\Bosses\BossServerParamViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Bosses\BossServerParamViewer.Designer.cs">
+      <DependentUpon>BossServerParamViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FileViewers\ClothingFileViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Forms\FileViewers\ClothingFileViewer.Designer.cs">
       <DependentUpon>ClothingFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Common\ColorEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Common\ColorEditor.Designer.cs">
+      <DependentUpon>ColorEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FileViewers\Enemies\ActDataFileViewer.cs">
       <SubType>UserControl</SubType>
@@ -169,11 +219,17 @@
     <Compile Include="Forms\FileViewers\EnemyDropViewer.Designer.cs">
       <DependentUpon>EnemyDropViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FileViewers\EnemyLayoutViewer.cs">
+    <Compile Include="Forms\FileViewers\Missions\EnemyLayoutViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\FileViewers\EnemyLayoutViewer.Designer.cs">
+    <Compile Include="Forms\FileViewers\Missions\EnemyLayoutViewer.Designer.cs">
       <DependentUpon>EnemyLayoutViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\FogBankViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\FogBankViewer.Designer.cs">
+      <DependentUpon>FogBankViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FileViewers\ItemBulletParamViewer.cs">
       <SubType>UserControl</SubType>
@@ -199,6 +255,12 @@
     <Compile Include="Forms\FileViewers\ItemSkillParamViewer.Designer.cs">
       <DependentUpon>ItemSkillParamViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FileViewers\ItemSkillParamViewerPsp2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\ItemSkillParamViewerPsp2.Designer.cs">
+      <DependentUpon>ItemSkillParamViewerPsp2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FileViewers\ItemTechParamViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -216,6 +278,36 @@
     </Compile>
     <Compile Include="Forms\FileViewers\LndCommonEditor.Designer.cs">
       <DependentUpon>LndCommonEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\LndEffects\FogBankPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\LndEffects\FogBankPanel.Designer.cs">
+      <DependentUpon>FogBankPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\LndEffects\GradientEditorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\LndEffects\GradientEditorPanel.Designer.cs">
+      <DependentUpon>GradientEditorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\LndEffects\LightEditorPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\LndEffects\LightEditorPanel.Designer.cs">
+      <DependentUpon>LightEditorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\LndEffectViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\LndEffectViewer.Designer.cs">
+      <DependentUpon>LndEffectViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\LndEnemyLightViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\LndEnemyLightViewer.Designer.cs">
+      <DependentUpon>LndEnemyLightViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FileViewers\NomFileViewer.cs">
       <SubType>UserControl</SubType>
@@ -254,16 +346,28 @@
       <DependentUpon>HexMetadataEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FileViewers\SetEditorSupportClasses\SetObjectMetadataEditors.cs" />
-    <Compile Include="Forms\FileViewers\SetFileViewer.cs">
+    <Compile Include="Forms\FileViewers\Missions\SetFileViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\FileViewers\SetFileViewer.Designer.cs">
+    <Compile Include="Forms\FileViewers\Missions\SetFileViewer.Designer.cs">
       <DependentUpon>SetFileViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FileViewers\ThinkDragonViewer.cs">
+    <Compile Include="Forms\FileViewers\SoundFileViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\FileViewers\ThinkDragonViewer.Designer.cs">
+    <Compile Include="Forms\FileViewers\SoundFileViewer.Designer.cs">
+      <DependentUpon>SoundFileViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\TableViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\TableViewer.Designer.cs">
+      <DependentUpon>TableViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Bosses\ThinkDragonViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Bosses\ThinkDragonViewer.Designer.cs">
       <DependentUpon>ThinkDragonViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FileViewers\UnitParamViewer.cs">
@@ -340,9 +444,15 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\FileViewers\Bosses\BossServerParamViewer.resx">
+      <DependentUpon>BossServerParamViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\ClothingFileViewer.resx">
       <DependentUpon>ClothingFileViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Common\ColorEditor.resx">
+      <DependentUpon>ColorEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\Enemies\ActDataFileViewer.resx">
       <DependentUpon>ActDataFileViewer.cs</DependentUpon>
@@ -376,9 +486,12 @@
       <DependentUpon>EnemyDropViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FileViewers\EnemyLayoutViewer.resx">
+    <EmbeddedResource Include="Forms\FileViewers\Missions\EnemyLayoutViewer.resx">
       <DependentUpon>EnemyLayoutViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\FogBankViewer.resx">
+      <DependentUpon>FogBankViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\ItemBulletParamViewer.resx">
       <DependentUpon>ItemBulletParamViewer.cs</DependentUpon>
@@ -406,6 +519,21 @@
     <EmbeddedResource Include="Forms\FileViewers\LndCommonEditor.resx">
       <DependentUpon>LndCommonEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\LndEffects\FogBankPanel.resx">
+      <DependentUpon>FogBankPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\LndEffects\GradientEditorPanel.resx">
+      <DependentUpon>GradientEditorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\LndEffects\LightEditorPanel.resx">
+      <DependentUpon>LightEditorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\LndEffectViewer.resx">
+      <DependentUpon>LndEffectViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\LndEnemyLightViewer.resx">
+      <DependentUpon>LndEnemyLightViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\NomFileViewer.resx">
       <DependentUpon>NomFileViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -430,11 +558,17 @@
     <EmbeddedResource Include="Forms\FileViewers\SetEditorSupportClasses\HexMetadataEditor.resx">
       <DependentUpon>HexMetadataEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FileViewers\SetFileViewer.resx">
+    <EmbeddedResource Include="Forms\FileViewers\Missions\SetFileViewer.resx">
       <DependentUpon>SetFileViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FileViewers\ThinkDragonViewer.resx">
+    <EmbeddedResource Include="Forms\FileViewers\SoundFileViewer.resx">
+      <DependentUpon>SoundFileViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\TableViewer.resx">
+      <DependentUpon>TableViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Bosses\ThinkDragonViewer.resx">
       <DependentUpon>ThinkDragonViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\UnitParamViewer.resx">
@@ -561,6 +695,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\gradient_preview.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Deploy (
@@ -568,6 +705,13 @@ rmdir $(SolutionDir)ForUpload\psu_generic_parser
 mkdir $(SolutionDir)ForUpload\psu_generic_parser
 xcopy "$(TargetDir)" "$(SolutionDir)ForUpload\psu_generic_parser" /S /Y )</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets" Condition="Exists('..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

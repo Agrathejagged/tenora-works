@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using PSULib.FileClasses.General;
+using PSULib.Support;
 
 namespace PSULib.FileClasses.Items
 {
@@ -52,6 +53,10 @@ namespace PSULib.FileClasses.Items
             int tiers = inReader.ReadInt32();
             short bulletCount = inReader.ReadInt16();
             short hitboxCount = inReader.ReadInt16();
+            if(!ptrs.Contains((int)(inStream.Position + baseAddr)))
+            {
+                throw new Exception("Invalid pointer; this is probably not a PSU bullet.");
+            }
             int hitboxLoc = inReader.ReadInt32() - baseAddr;
             int skillLoc = inReader.ReadInt32() - baseAddr;
             allBullets = new BulletTier[9][];
@@ -152,7 +157,7 @@ namespace PSULib.FileClasses.Items
             outWriter.Write(0x1C);
             ptrs[1] = (int)outStream.Position;
             outWriter.Write(tierLoc);
-            outStream.Seek(outStream.Position + 7 & 0xFFFFFFF8, SeekOrigin.Begin);
+            outWriter.Trim(8);
             int fileLength = (int)outStream.Position;
             outStream.Seek(0, SeekOrigin.Begin);
             outWriter.Write(0x0052584E);

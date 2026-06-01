@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using psu_generic_parser.Forms.FileViewers.Scripts;
 using PSULib.FileClasses.General;
+using System.Windows.Navigation;
+using System.Text.RegularExpressions;
+using System.Media;
 
 namespace psu_generic_parser
 {
@@ -285,8 +288,15 @@ namespace psu_generic_parser
 
         private void subroutineSearch_TextChanged(object sender, EventArgs e)
         {
-            int result = subroutineListBox.FindString(subroutineSearchBox.Text);
-            if(result != -1)
+            findSubroutineByName(subroutineSearchBox.Text, subroutineListBox.SelectedIndex, findIndex);
+        }
+
+        private void findSubroutineByName(string subName, int selectedIndex, Func<string, int, int> findFunc)
+        {
+            string sanitized = "^" + Regex.Escape(subName).Replace("\\*", ".*");
+            int localResult = findFunc(sanitized, selectedIndex);
+            int result = localResult != -1 ? localResult : findFunc(sanitized, 0);
+            if (result != -1)
             {
                 subroutineListBox.SelectedIndex = result;
                 subroutineSearchBox.ForeColor = SystemColors.WindowText;
@@ -294,7 +304,18 @@ namespace psu_generic_parser
             else
             {
                 subroutineSearchBox.ForeColor = Color.Red;
+                SystemSounds.Exclamation.Play();
             }
+        }
+
+        private int findIndex(string searchString, int initialIndex)
+        {
+            return internalFile.Subroutines.FindIndex(initialIndex, subroutine => Regex.IsMatch(subroutine.SubroutineName, searchString, RegexOptions.IgnoreCase));
+        }
+
+        private int findLastIndex(string searchString, int lastIndex)
+        {
+            return internalFile.Subroutines.FindLastIndex(lastIndex > 0 ? lastIndex : internalFile.Subroutines.Count - 1, subroutine => Regex.IsMatch(subroutine.SubroutineName, searchString, RegexOptions.IgnoreCase));
         }
 
         private void goToReferenceToolStripMenuItem_Click(object sender, EventArgs e)
@@ -430,6 +451,22 @@ namespace psu_generic_parser
                 {
                     child.Hide();
                 }
+            }
+        }
+
+        private void subroutineSearchBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == '\r')
+            {
+                if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+                {
+                    findSubroutineByName(subroutineSearchBox.Text, subroutineListBox.SelectedIndex - 1, findLastIndex);
+                }
+                else
+                {
+                    findSubroutineByName(subroutineSearchBox.Text, subroutineListBox.SelectedIndex + 1, findIndex);
+                }
+                e.Handled = true;
             }
         }
     }

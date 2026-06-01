@@ -86,7 +86,7 @@ namespace PSULib.FileClasses.Maps
         }
 
         //This one appears to be particle/sound event bindings.
-        public class ObjectGroup4Entry
+        public class ParticleSoundReferenceList
         {
             public List<ParticleBinding> particleBindings { get; set; } = new List<ParticleBinding>();
             public List<SoundBinding> soundBindings { get; set; } = new List<SoundBinding>();
@@ -119,16 +119,16 @@ namespace PSULib.FileClasses.Maps
         {
             public int id { get; set; }
             public string fileName { get; set; }
-            public float unknownFloat { get; set; }
+            public float renderDistance { get; set; }
         }
 
         public class ObjectEntry
         {
-            public List<ObjectGroup1Entry> group1Entries { get; } = new List<ObjectGroup1Entry>();
-            public ObjectHitbox group2Entry { get; set; }
-            public List<AnimationReference> group3Entries { get; } = new List<AnimationReference>();
-            public ObjectGroup4Entry group4Entry { get; set; }
-            public List<ModelReference> group5Entries { get; } = new List<ModelReference>(); // always 8? why is there even a count?
+            public List<ObjectGroup1Entry> GroupOneEntries { get; } = new List<ObjectGroup1Entry>();
+            public ObjectHitbox Hitbox { get; set; }
+            public List<AnimationReference> Animations { get; } = new List<AnimationReference>();
+            public ParticleSoundReferenceList ParticleSoundReferences { get; set; }
+            public List<ModelReference> Models { get; } = new List<ModelReference>(); // always 8? why is there even a count?
         }
 
         public Dictionary<int, ObjectEntry> ObjectDefinitions = new Dictionary<int, ObjectEntry>();
@@ -199,7 +199,7 @@ namespace PSULib.FileClasses.Maps
                         group1Entry.byte6 = inReader.ReadByte();
                         group1Entry.byte7 = inReader.ReadByte();
                         group1Entry.byte8 = inReader.ReadByte();
-                        entry.group1Entries.Add(group1Entry);
+                        entry.GroupOneEntries.Add(group1Entry);
                     }
                 }
 
@@ -216,7 +216,7 @@ namespace PSULib.FileClasses.Maps
                     group2Entry.unusedValue7 = inReader.ReadInt32();
                     group2Entry.unusedValue8 = inReader.ReadInt32();
                     group2Entry.unknownInt9 = inReader.ReadInt32();
-                    entry.group2Entry = group2Entry;
+                    entry.Hitbox = group2Entry;
                 }
 
                 if (pointersForObject[2] != 0)
@@ -257,7 +257,7 @@ namespace PSULib.FileClasses.Maps
                         {
                             group3Entry.boneAnimName = inReader.ReadAsciiString(string2Address);
                         }
-                        entry.group3Entries.Add(group3Entry);
+                        entry.Animations.Add(group3Entry);
                     }
                 }
 
@@ -265,7 +265,7 @@ namespace PSULib.FileClasses.Maps
                 {
                     //This is gonna have _lots_ of "if thing isn't as expected", because I know almost nothing about this data type.
                     inStream.Seek(pointersForObject[3], SeekOrigin.Begin);
-                    ObjectGroup4Entry group4Entry = new ObjectGroup4Entry();
+                    ParticleSoundReferenceList group4Entry = new ParticleSoundReferenceList();
                     int subentry1Pointer = inReader.ReadInt32();
                     int subentry2Pointer = inReader.ReadInt32();
                     byte subentry1Count = inReader.ReadByte();
@@ -314,7 +314,7 @@ namespace PSULib.FileClasses.Maps
                             group4Entry.soundBindings.Add(subentry2);
                         }
                     }
-                    entry.group4Entry = group4Entry;
+                    entry.ParticleSoundReferences = group4Entry;
                 }
 
                 if (pointersForObject[4] != 0)
@@ -341,9 +341,9 @@ namespace PSULib.FileClasses.Maps
                             {
                                 stringLoc -= baseAddr;
                             }
-                            group5Entry.unknownFloat = inReader.ReadSingle();
+                            group5Entry.renderDistance = inReader.ReadSingle();
                             group5Entry.fileName = inReader.ReadAsciiString(stringLoc);
-                            entry.group5Entries.Add(group5Entry);
+                            entry.Models.Add(group5Entry);
                         }
                     }
                 }
@@ -352,29 +352,35 @@ namespace PSULib.FileClasses.Maps
             }
         }
 
+        public ObjectParamFile(string filename, Dictionary<int, ObjectEntry> dictionary)
+        {
+            this.filename = filename;
+            ObjectDefinitions = dictionary;
+        }
+
         public override byte[] ToRaw()
         {
             //Order probably doesn't matter too much here, but it's conventionally 2-1-5-3-4.
             List<string> stringList = new List<string>();
             foreach (var currentObject in ObjectDefinitions.Values)
             {
-                foreach (var group5 in currentObject.group5Entries)
+                foreach (var group5 in currentObject.Models)
                 {
                     addIfNotNull(stringList, group5.fileName);
                 }
-                foreach (var group3 in currentObject.group3Entries)
+                foreach (var group3 in currentObject.Animations)
                 {
                     addIfNotNull(stringList, group3.boneAnimName);
                     addIfNotNull(stringList, group3.texAnimName);
                 }
-                if (currentObject.group4Entry != null)
+                if (currentObject.ParticleSoundReferences != null)
                 {
-                    foreach (var particleBind in currentObject.group4Entry.particleBindings)
+                    foreach (var particleBind in currentObject.ParticleSoundReferences.particleBindings)
                     {
                         addIfNotNull(stringList, particleBind.particleName);
                         addIfNotNull(stringList, particleBind.eventName);
                     }
-                    foreach (var soundBind in currentObject.group4Entry.soundBindings)
+                    foreach (var soundBind in currentObject.ParticleSoundReferences.soundBindings)
                     {
                         addIfNotNull(stringList, soundBind.eventName);
                     }
@@ -410,7 +416,7 @@ namespace PSULib.FileClasses.Maps
             {
                 var currentObject = ObjectDefinitions[objectIds[i]];
                 int group2Loc = (int)outStream.Position;
-                var group2Entry = currentObject.group2Entry;
+                var group2Entry = currentObject.Hitbox;
                 outWriter.Write(group2Entry.hitboxShape);
                 outWriter.Write(group2Entry.unknownFloat2);
                 outWriter.Write(group2Entry.unknownFloat3);
@@ -422,7 +428,7 @@ namespace PSULib.FileClasses.Maps
                 outWriter.Write(group2Entry.unknownInt9);
 
                 int group1LeafLoc = (int)outStream.Position;
-                foreach (var group1Entry in currentObject.group1Entries)
+                foreach (var group1Entry in currentObject.GroupOneEntries)
                 {
                     outWriter.Write(group1Entry.byte1);
                     outWriter.Write(group1Entry.byte2);
@@ -434,28 +440,28 @@ namespace PSULib.FileClasses.Maps
                     outWriter.Write(group1Entry.byte8);
                 }
                 int group1BranchLoc = (int)outStream.Position;
-                if (currentObject.group1Entries.Count > 0)
+                if (currentObject.GroupOneEntries.Count > 0)
                 {
-                    outWriter.Write(currentObject.group1Entries.Count);
+                    outWriter.Write(currentObject.GroupOneEntries.Count);
                     pointerLocs.Add((int)outStream.Position);
                     outWriter.Write(group1LeafLoc);
                 }
 
                 //Group 5 is always 8 entries.
                 List<int> group5LeafLocs = new List<int>();
-                foreach (var group5Entry in currentObject.group5Entries)
+                foreach (var group5Entry in currentObject.Models)
                 {
                     group5LeafLocs.Add((int)outStream.Position);
                     writeIfNotNull(outWriter, group5Entry.fileName, stringLocs, pointerLocs);
-                    outWriter.Write(group5Entry.unknownFloat);
+                    outWriter.Write(group5Entry.renderDistance);
                 }
 
                 int group5BranchLoc = (int)outStream.Position;
                 for (int j = 0; j < 8; j++)
                 {
-                    if (j < currentObject.group5Entries.Count)
+                    if (j < currentObject.Models.Count)
                     {
-                        outWriter.Write(currentObject.group5Entries[j].id);
+                        outWriter.Write(currentObject.Models[j].id);
                         pointerLocs.Add((int)outStream.Position);
                         outWriter.Write(group5LeafLocs[j]);
                     }
@@ -467,12 +473,12 @@ namespace PSULib.FileClasses.Maps
                 }
 
                 int group5RootLoc = (int)outStream.Position;
-                outWriter.Write(Math.Max(currentObject.group5Entries.Count, 8));
+                outWriter.Write(Math.Max(currentObject.Models.Count, 8));
                 pointerLocs.Add((int)outStream.Position);
                 outWriter.Write(group5BranchLoc);
 
                 int group3LeafLoc = (int)outStream.Position;
-                foreach (var group3Entry in currentObject.group3Entries)
+                foreach (var group3Entry in currentObject.Animations)
                 {
                     outWriter.Write(group3Entry.unknownIdentifier1);
                     writeIfNotNull(outWriter, group3Entry.texAnimName, stringLocs, pointerLocs);
@@ -489,16 +495,16 @@ namespace PSULib.FileClasses.Maps
                 }
 
                 int group3BranchLoc = (int)outStream.Position;
-                outWriter.Write(currentObject.group3Entries.Count);
+                outWriter.Write(currentObject.Animations.Count);
                 pointerLocs.Add((int)outStream.Position);
                 outWriter.Write(group3LeafLoc);
 
-                bool group4Exists = currentObject.group4Entry != null && (currentObject.group4Entry.particleBindings.Count > 0 || currentObject.group4Entry.soundBindings.Count > 0);
+                bool group4Exists = currentObject.ParticleSoundReferences != null && (currentObject.ParticleSoundReferences.particleBindings.Count > 0 || currentObject.ParticleSoundReferences.soundBindings.Count > 0);
                 int group4BranchLoc;
                 if (group4Exists)
                 {
                     int group4Leaf1Loc = (int)outStream.Position;
-                    foreach (var group4SubEntry1 in currentObject.group4Entry.particleBindings)
+                    foreach (var group4SubEntry1 in currentObject.ParticleSoundReferences.particleBindings)
                     {
                         writeIfNotNull(outWriter, group4SubEntry1.particleName, stringLocs, pointerLocs);
                         writeIfNotNull(outWriter, group4SubEntry1.eventName, stringLocs, pointerLocs);
@@ -508,7 +514,7 @@ namespace PSULib.FileClasses.Maps
                         outWriter.Write(group4SubEntry1.usedInt6);
                     }
                     int group4Leaf2Loc = (int)outStream.Position;
-                    foreach (var group4SubEntry2 in currentObject.group4Entry.soundBindings)
+                    foreach (var group4SubEntry2 in currentObject.ParticleSoundReferences.soundBindings)
                     {
                         outWriter.Write(group4SubEntry2.soundId);
                         writeIfNotNull(outWriter, group4SubEntry2.eventName, stringLocs, pointerLocs);
@@ -522,16 +528,16 @@ namespace PSULib.FileClasses.Maps
                     outWriter.Write(group4Leaf1Loc);
                     pointerLocs.Add((int)outStream.Position);
                     outWriter.Write(group4Leaf2Loc);
-                    outWriter.Write((byte)currentObject.group4Entry.particleBindings.Count);
-                    outWriter.Write((byte)currentObject.group4Entry.soundBindings.Count);
-                    outWriter.Write(currentObject.group4Entry.mysteryData);
+                    outWriter.Write((byte)currentObject.ParticleSoundReferences.particleBindings.Count);
+                    outWriter.Write((byte)currentObject.ParticleSoundReferences.soundBindings.Count);
+                    outWriter.Write(currentObject.ParticleSoundReferences.mysteryData);
                 }
                 else
                 {
                     group4BranchLoc = 0;
                 }
                 objectLocs.Add((int)outStream.Position);
-                if (currentObject.group1Entries.Count > 0)
+                if (currentObject.GroupOneEntries.Count > 0)
                 {
                     pointerLocs.Add((int)outStream.Position);
                     outWriter.Write(group1BranchLoc);
@@ -542,7 +548,7 @@ namespace PSULib.FileClasses.Maps
                 }
                 pointerLocs.Add((int)outStream.Position);
                 outWriter.Write(group2Loc);
-                if (currentObject.group3Entries.Count > 0)
+                if (currentObject.Animations.Count > 0)
                 {
                     pointerLocs.Add((int)outStream.Position);
                     outWriter.Write(group3BranchLoc);
@@ -560,7 +566,7 @@ namespace PSULib.FileClasses.Maps
                 {
                     outWriter.Write(0);
                 }
-                if (currentObject.group5Entries.Count > 0)
+                if (currentObject.Models.Count > 0)
                 {
                     pointerLocs.Add((int)outStream.Position);
                     outWriter.Write(group5RootLoc);

@@ -66,10 +66,10 @@ namespace PSULib.FileClasses.Maps
             {
                 nameLocs[i] = (int)outStream.Position;
                 writer.Write(Encoding.ASCII.GetBytes(particleFileEntries[i].ParticleName + "\0"));
-                outStream.Seek((outStream.Position + 3) % 4, SeekOrigin.Current);
+                writer.Trim(4);
                 filenameLocs[i] = (int)outStream.Position;
                 writer.Write(Encoding.ASCII.GetBytes(particleFileEntries[i].ParticleFileName + "\0"));
-                outStream.Seek((outStream.Position + 3) % 4, SeekOrigin.Current);
+                writer.Trim(4);
             }
             int listLoc = (int)outStream.Position;
             for (int i = 0; i < particleFileEntries.Count; i++)
@@ -89,11 +89,13 @@ namespace PSULib.FileClasses.Maps
             writer.Write(particleFileEntries.Count);
 
             int fileLength = (int)outStream.Position;
+            writer.Trim(0x10);
             outStream.Seek(0x0, SeekOrigin.Begin);
             writer.Write(0x52584E); //"NXR"
             writer.Write(fileLength);
             writer.Write(headerLoc);
             calculatedPointers = pointers.ToArray();
+            this.header = buildSubheader((int)outStream.Length);
             return outStream.ToArray();
         }
     }

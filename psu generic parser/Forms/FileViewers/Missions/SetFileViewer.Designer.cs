@@ -524,6 +524,7 @@ namespace psu_generic_parser
             this.headerInt3UD.Name = "headerInt3UD";
             this.headerInt3UD.Size = new System.Drawing.Size(90, 20);
             this.headerInt3UD.TabIndex = 38;
+            this.headerInt3UD.ValueChanged += new System.EventHandler(this.headerInt3UD_ValueChanged);
             // 
             // headerInt2UD
             // 
@@ -541,6 +542,7 @@ namespace psu_generic_parser
             this.headerInt2UD.Name = "headerInt2UD";
             this.headerInt2UD.Size = new System.Drawing.Size(90, 20);
             this.headerInt2UD.TabIndex = 37;
+            this.headerInt2UD.ValueChanged += new System.EventHandler(this.headerInt2UD_ValueChanged);
             // 
             // headerShort1UD
             // 
@@ -558,6 +560,7 @@ namespace psu_generic_parser
             this.headerShort1UD.Name = "headerShort1UD";
             this.headerShort1UD.Size = new System.Drawing.Size(62, 20);
             this.headerShort1UD.TabIndex = 36;
+            this.headerShort1UD.ValueChanged += new System.EventHandler(this.headerShort1UD_ValueChanged);
             // 
             // headerInt1UD
             // 
@@ -575,6 +578,7 @@ namespace psu_generic_parser
             this.headerInt1UD.Name = "headerInt1UD";
             this.headerInt1UD.Size = new System.Drawing.Size(90, 20);
             this.headerInt1UD.TabIndex = 33;
+            this.headerInt1UD.ValueChanged += new System.EventHandler(this.headerInt1UD_ValueChanged);
             // 
             // label4
             // 

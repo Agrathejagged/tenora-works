@@ -134,14 +134,14 @@
             // exportSelectedFileToolStripMenuItem
             // 
             this.exportSelectedFileToolStripMenuItem.Name = "exportSelectedFileToolStripMenuItem";
-            this.exportSelectedFileToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.exportSelectedFileToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.exportSelectedFileToolStripMenuItem.Text = "Export Selected";
             this.exportSelectedFileToolStripMenuItem.Click += new System.EventHandler(this.exportSelectedToolStripMenuItem_Click);
             // 
             // exportAllToolStripMenuItem
             // 
             this.exportAllToolStripMenuItem.Name = "exportAllToolStripMenuItem";
-            this.exportAllToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.exportAllToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.exportAllToolStripMenuItem.Text = "Export All";
             this.exportAllToolStripMenuItem.Click += new System.EventHandler(this.exportAllToolStripMenuItem_Click);
             // 
@@ -202,7 +202,7 @@
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.calculateAnimationNameHashToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // calculateAnimationNameHashToolStripMenuItem
@@ -310,6 +310,10 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.treeView1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Size = new System.Drawing.Size(802, 395);
             this.splitContainer1.SplitterDistance = 265;
             this.splitContainer1.TabIndex = 14;
@@ -402,14 +406,14 @@
             // renameFileToolStripMenuItem
             // 
             this.renameFileToolStripMenuItem.Name = "renameFileToolStripMenuItem";
-            this.renameFileToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.renameFileToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.renameFileToolStripMenuItem.Text = "Rename File";
             this.renameFileToolStripMenuItem.Click += new System.EventHandler(this.renameFileToolStripMenuItem_Click);
             // 
             // deleteFileToolStripMenuItem
             // 
             this.deleteFileToolStripMenuItem.Name = "deleteFileToolStripMenuItem";
-            this.deleteFileToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.deleteFileToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.deleteFileToolStripMenuItem.Text = "Delete File";
             this.deleteFileToolStripMenuItem.Click += new System.EventHandler(this.deleteFileToolStripMenuItem_Click);
             // 
@@ -482,15 +486,15 @@
             // 
             this.compressChunkToolStripMenuItem.CheckOnClick = true;
             this.compressChunkToolStripMenuItem.Name = "compressChunkToolStripMenuItem";
-            this.compressChunkToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.compressChunkToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.compressChunkToolStripMenuItem.Text = "Compress Chunk";
             this.compressChunkToolStripMenuItem.CheckedChanged += new System.EventHandler(this.compressChunkToolStripMenuItem_CheckedChanged);
             // 
             // addFileToolStripMenuItem
             // 
             this.addFileToolStripMenuItem.Name = "addFileToolStripMenuItem";
-            this.addFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.addFileToolStripMenuItem.Text = "Add File";
+            this.addFileToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.addFileToolStripMenuItem.Text = "Add File(s)";
             this.addFileToolStripMenuItem.Click += new System.EventHandler(this.addFileToolStripMenuItem_Click);
             // 
             // MainForm

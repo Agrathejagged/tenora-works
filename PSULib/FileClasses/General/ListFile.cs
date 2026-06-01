@@ -57,6 +57,12 @@ namespace PSULib.FileClasses.General
             }
         }
 
+        public ListFile(string filename, List<List<string>> inputFilenames)
+        {
+            this.filename = filename;
+            filenames = inputFilenames.Select(list => list.Select(entry => new GenericFilenameReference { Filename = entry }).ToList()).ToList();
+        }
+
         public override byte[] ToRaw()
         {
             MemoryStream outStream = new MemoryStream();

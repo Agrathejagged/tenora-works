@@ -65,16 +65,20 @@ namespace psu_generic_parser
             headerInt2UD.Value = Convert.ToDecimal(objectEntry.headerInt2);
             headerInt3UD.Value = Convert.ToDecimal(objectEntry.headerInt3);
             headerShort1UD.Value = Convert.ToDecimal(objectEntry.headerShort1);
+            updateObjectLabel(objectEntry.objID);
+            reloadMetadataEditor();
+        }
 
-            if(SetObjectDefinitions.definitions.ContainsKey(objectEntry.objID))
+        private void updateObjectLabel(int objID)
+        {
+            if (SetObjectDefinitions.definitions.ContainsKey(objID))
             {
-                objectNameLabel.Text = SetObjectDefinitions.definitions[objectEntry.objID].name;
+                objectNameLabel.Text = SetObjectDefinitions.definitions[objID].name;
             }
             else
             {
                 objectNameLabel.Text = "INVALID OBJECT";
             }
-            reloadMetadataEditor();
         }
 
         private void reloadMetadataEditor()
@@ -367,6 +371,7 @@ namespace psu_generic_parser
                     Array.Resize(ref objectEntry.metadata, def.metadataLengthAotI);
                 }
             }
+            updateObjectLabel(objectEntry.objID);
             reloadMetadataEditor();
         }
 
@@ -469,6 +474,26 @@ namespace psu_generic_parser
         private void unknownShortPair2NumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             internalFile.mapData[mapListCB.SelectedIndex].headers[objectListCB.SelectedIndex].unknownPairedShort2 = (short)unknownPairedShort2UD.Value;
+        }
+
+        private void headerInt1UD_ValueChanged(object sender, EventArgs e)
+        {
+            objectEntry.headerInt1 = (int)headerInt1UD.Value;
+        }
+
+        private void headerInt2UD_ValueChanged(object sender, EventArgs e)
+        {
+            objectEntry.headerInt2 = (int)headerInt2UD.Value;
+        }
+
+        private void headerInt3UD_ValueChanged(object sender, EventArgs e)
+        {
+            objectEntry.headerInt3 = (int)headerInt3UD.Value;
+        }
+
+        private void headerShort1UD_ValueChanged(object sender, EventArgs e)
+        {
+            objectEntry.headerShort1 = (short)headerShort1UD.Value;
         }
     }
 }

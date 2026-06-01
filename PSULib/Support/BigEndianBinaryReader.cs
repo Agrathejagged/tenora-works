@@ -61,25 +61,4 @@ namespace PSULib.Support
             return (ushort)((value & 0x00FFu) << 8 | (value & 0xFF00u) >> 8);
         }
     }
-
-    public static class BinaryReaderAddition
-    {
-        public static int ReadLittleEndianInt32(this BinaryReader binaryReader)
-        {
-            return BitConverter.ToInt32(binaryReader.ReadBytes(4), 0);
-        }
-
-        public static string ReadAsciiString(this BinaryReader inReader, int location)
-        {
-            inReader.BaseStream.Seek(location, SeekOrigin.Begin);
-            StringBuilder sb = new StringBuilder();
-            char c = (char)inReader.ReadByte();
-            while (c != '\0')
-            {
-                sb.Append(c);
-                c = (char)inReader.ReadByte();
-            }
-            return sb.ToString();
-        }
-    }
 }

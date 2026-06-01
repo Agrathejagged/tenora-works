@@ -29,13 +29,13 @@ namespace psu_generic_parser.Forms.FileViewers
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             var objDefinition = internalFile.ObjectDefinitions[(int)listBox1.Items[listBox1.SelectedIndex]];
-            dataGridView1.DataSource = objDefinition.group1Entries;
-            propertyGrid1.SelectedObject = objDefinition.group2Entry;
-            dataGridView3.DataSource = objDefinition.group3Entries;
-            if (objDefinition.group4Entry != null)
+            dataGridView1.DataSource = objDefinition.GroupOneEntries;
+            propertyGrid1.SelectedObject = objDefinition.Hitbox;
+            dataGridView3.DataSource = objDefinition.Animations;
+            if (objDefinition.ParticleSoundReferences != null)
             {
-                group4Sub1Datagrid.DataSource = objDefinition.group4Entry.particleBindings;
-                group4Sub2Datagrid.DataSource = objDefinition.group4Entry.soundBindings;
+                group4Sub1Datagrid.DataSource = objDefinition.ParticleSoundReferences.particleBindings;
+                group4Sub2Datagrid.DataSource = objDefinition.ParticleSoundReferences.soundBindings;
                 group4Sub2Datagrid.Enabled = true;
                 group4Sub1Datagrid.Enabled = true;
             }
@@ -46,7 +46,7 @@ namespace psu_generic_parser.Forms.FileViewers
                 group4Sub2Datagrid.Enabled = false;
                 group4Sub1Datagrid.Enabled = false;
             }
-            dataGridView5.DataSource = objDefinition.group5Entries;
+            dataGridView5.DataSource = objDefinition.Models;
         }
     }
 }

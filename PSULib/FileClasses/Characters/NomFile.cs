@@ -93,9 +93,9 @@ namespace PSULib.FileClasses.Characters
         public NomFile(string inFilename, byte[] rawData, byte[] subHeader, int[] ptrs, int baseAddr)
         {
             List<int> rotationOffsets = new List<int>();
-            List<int> positionOffsets = new List<int>();
-            List<int> list3Offsets = new List<int>();
-            List<int> list4Offsets = new List<int>();
+            List<int> xPositionOffsets = new List<int>();
+            List<int> yPositionOffsets = new List<int>();
+            List<int> zPositionOffsets = new List<int>();
 
             header = subHeader;
             filename = inFilename;
@@ -113,17 +113,17 @@ namespace PSULib.FileClasses.Characters
 
             //Populate offset lists. These should always have a set length and a set amount. All observed so far have anyways
             for (int i = 0; i < 28; i++) { rotationOffsets.Add(inReader.ReadInt32()); }
-            for (int i = 0; i < 28; i++) { positionOffsets.Add(inReader.ReadInt32()); }
-            for (int i = 0; i < 28; i++) { list3Offsets.Add(inReader.ReadInt32()); }
-            for (int i = 0; i < 28; i++) { list4Offsets.Add(inReader.ReadInt32()); }
+            for (int i = 0; i < 28; i++) { xPositionOffsets.Add(inReader.ReadInt32()); }
+            for (int i = 0; i < 28; i++) { yPositionOffsets.Add(inReader.ReadInt32()); }
+            for (int i = 0; i < 28; i++) { zPositionOffsets.Add(inReader.ReadInt32()); }
 
             //Populate the actual frame data lists
 
             //Read Rotation frame list
             ReadNomList(rotationOffsets, rotationFrameList, inReader, true);
-            ReadNomList(positionOffsets, xPositionFrameList, inReader, false);
-            ReadNomList(list3Offsets, yPositionFrameList, inReader, false);
-            ReadNomList(list4Offsets, zPositionFrameList, inReader, false);
+            ReadNomList(xPositionOffsets, xPositionFrameList, inReader, false);
+            ReadNomList(yPositionOffsets, yPositionFrameList, inReader, false);
+            ReadNomList(zPositionOffsets, zPositionFrameList, inReader, false);
         }
 
         private void ReadNomList(List<int> frameOffsets, List<List<NomFrame>> frameList, BinaryReader inReader, bool isRotList = false)

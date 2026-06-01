@@ -56,9 +56,25 @@
   <ItemGroup>
     <Compile Include="FileClasses\Archives\AfsLoader.cs" />
     <Compile Include="FileClasses\Archives\FilenameAwareContainerFile.cs" />
+    <Compile Include="FileClasses\Bosses\Data\BossAttackStat.cs" />
+    <Compile Include="FileClasses\Bosses\Data\BossHitboxStat.cs" />
+    <Compile Include="FileClasses\Bosses\ParamForm1File.cs" />
+    <Compile Include="FileClasses\Bosses\ParamServerFile.cs" />
     <Compile Include="FileClasses\Characters\PartsInfoFile.cs" />
     <Compile Include="FileClasses\Enemies\DamageDataFile.cs" />
     <Compile Include="FileClasses\Enemies\EnemySoundEffectFile.cs" />
+    <Compile Include="FileClasses\General\FogBankFile.cs" />
+    <Compile Include="FileClasses\General\PsuSoundFile.cs" />
+    <Compile Include="FileClasses\Items\Psp2ItemSkillParamFile.cs" />
+    <Compile Include="FileClasses\Missions\Sets\DefaultEnemyText.cs" />
+    <Compile Include="Support\BinaryReaderExtensions.cs" />
+    <Compile Include="Support\BinaryWriterExtensions.cs" />
+    <Compile Include="Support\Color3f.cs" />
+    <Compile Include="FileClasses\Maps\Common\LndFog.cs" />
+    <Compile Include="FileClasses\Maps\Common\LndLight.cs" />
+    <Compile Include="FileClasses\Maps\LndEffectFile.cs" />
+    <Compile Include="FileClasses\Maps\LndEnemyLightFile.cs" />
+    <Compile Include="Support\Color4f.cs" />
     <Compile Include="Support\PsuCrc32.cs" />
     <Compile Include="Support\StringUtilities.cs" />
     <Compile Include="FileClasses\Items\ItemCommonInfoFile.cs" />

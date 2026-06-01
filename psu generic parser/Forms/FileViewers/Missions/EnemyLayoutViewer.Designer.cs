@@ -34,18 +34,16 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.spawnEntryCB = new System.Windows.Forms.ComboBox();
             this.spawnEntryLabel = new System.Windows.Forms.Label();
-            this.spawnEntryGroupBox = new System.Windows.Forms.GroupBox();
-            this.arrangementCB = new System.Windows.Forms.ComboBox();
-            this.Arrangement = new System.Windows.Forms.Label();
+            this.spawnDataSelectionComboBox = new System.Windows.Forms.ComboBox();
             this.monstersCB = new System.Windows.Forms.ComboBox();
-            this.monstersLabel = new System.Windows.Forms.Label();
-            this.monsterListCB = new System.Windows.Forms.ComboBox();
+            this.arrangementComboBox = new System.Windows.Forms.ComboBox();
             this.monsterListLabel = new System.Windows.Forms.Label();
             this.monsterGB = new System.Windows.Forms.GroupBox();
-            this.monStaffBuffCheck = new System.Windows.Forms.CheckBox();
-            this.monBootBuffCheck = new System.Windows.Forms.CheckBox();
-            this.monShieldBuffCheck = new System.Windows.Forms.CheckBox();
-            this.monSwordBuffCheck = new System.Windows.Forms.CheckBox();
+            this.enemyNameLabel = new System.Windows.Forms.Label();
+            this.monBuff4Check = new System.Windows.Forms.CheckBox();
+            this.monBuff3Check = new System.Windows.Forms.CheckBox();
+            this.monBuff2Check = new System.Windows.Forms.CheckBox();
+            this.monBuff1Check = new System.Windows.Forms.CheckBox();
             this.monUnkInt1Label = new System.Windows.Forms.Label();
             this.monUnkShort8Label = new System.Windows.Forms.Label();
             this.monUnkShort7Label = new System.Windows.Forms.Label();
@@ -107,7 +105,16 @@
             this.SDUnkShort2UD = new System.Windows.Forms.NumericUpDown();
             this.SDUnkShort3UD = new System.Windows.Forms.NumericUpDown();
             this.SDUnkShort1UD = new System.Windows.Forms.NumericUpDown();
-            this.spawnEntryGroupBox.SuspendLayout();
+            this.elementNameLabel = new System.Windows.Forms.Label();
+            this.addEntryButton = new System.Windows.Forms.Button();
+            this.removeEntryButton = new System.Windows.Forms.Button();
+            this.addSpawnDataButton = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.removeSpawnDataButton = new System.Windows.Forms.Button();
+            this.removeArrangementButton = new System.Windows.Forms.Button();
+            this.addArrangementButton = new System.Windows.Forms.Button();
+            this.removeMonsterButton = new System.Windows.Forms.Button();
+            this.addMonsterButton = new System.Windows.Forms.Button();
             this.monsterGB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.monUnkInt1UD)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monUnkShort8UD)).BeginInit();
@@ -144,7 +151,8 @@
             // 
             // ExportJSONButton
             // 
-            this.ExportJSONButton.Location = new System.Drawing.Point(3, 251);
+            this.ExportJSONButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ExportJSONButton.Location = new System.Drawing.Point(3, 429);
             this.ExportJSONButton.Name = "ExportJSONButton";
             this.ExportJSONButton.Size = new System.Drawing.Size(81, 23);
             this.ExportJSONButton.TabIndex = 0;
@@ -154,7 +162,8 @@
             // 
             // ImportJSONButton
             // 
-            this.ImportJSONButton.Location = new System.Drawing.Point(3, 280);
+            this.ImportJSONButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ImportJSONButton.Location = new System.Drawing.Point(90, 429);
             this.ImportJSONButton.Name = "ImportJSONButton";
             this.ImportJSONButton.Size = new System.Drawing.Size(81, 23);
             this.ImportJSONButton.TabIndex = 1;
@@ -168,99 +177,83 @@
             // 
             // spawnEntryCB
             // 
+            this.spawnEntryCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.spawnEntryCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.spawnEntryCB.FormattingEnabled = true;
-            this.spawnEntryCB.Location = new System.Drawing.Point(7, 20);
+            this.spawnEntryCB.Location = new System.Drawing.Point(82, 4);
             this.spawnEntryCB.Name = "spawnEntryCB";
-            this.spawnEntryCB.Size = new System.Drawing.Size(71, 21);
+            this.spawnEntryCB.Size = new System.Drawing.Size(258, 21);
             this.spawnEntryCB.TabIndex = 2;
             this.spawnEntryCB.SelectedIndexChanged += new System.EventHandler(this.spawnEntryCB_SelectedIndexChanged);
             // 
             // spawnEntryLabel
             // 
             this.spawnEntryLabel.AutoSize = true;
-            this.spawnEntryLabel.Location = new System.Drawing.Point(8, 4);
+            this.spawnEntryLabel.Location = new System.Drawing.Point(10, 9);
             this.spawnEntryLabel.Name = "spawnEntryLabel";
             this.spawnEntryLabel.Size = new System.Drawing.Size(67, 13);
             this.spawnEntryLabel.TabIndex = 3;
             this.spawnEntryLabel.Text = "Spawn Entry";
             // 
-            // spawnEntryGroupBox
+            // spawnDataSelectionComboBox
             // 
-            this.spawnEntryGroupBox.Controls.Add(this.arrangementCB);
-            this.spawnEntryGroupBox.Controls.Add(this.Arrangement);
-            this.spawnEntryGroupBox.Controls.Add(this.monstersCB);
-            this.spawnEntryGroupBox.Controls.Add(this.monstersLabel);
-            this.spawnEntryGroupBox.Controls.Add(this.monsterListCB);
-            this.spawnEntryGroupBox.Controls.Add(this.monsterListLabel);
-            this.spawnEntryGroupBox.Location = new System.Drawing.Point(0, 47);
-            this.spawnEntryGroupBox.Name = "spawnEntryGroupBox";
-            this.spawnEntryGroupBox.Size = new System.Drawing.Size(84, 147);
-            this.spawnEntryGroupBox.TabIndex = 4;
-            this.spawnEntryGroupBox.TabStop = false;
-            this.spawnEntryGroupBox.Text = "Spawn Lists";
-            // 
-            // arrangementCB
-            // 
-            this.arrangementCB.FormattingEnabled = true;
-            this.arrangementCB.Location = new System.Drawing.Point(7, 119);
-            this.arrangementCB.Name = "arrangementCB";
-            this.arrangementCB.Size = new System.Drawing.Size(71, 21);
-            this.arrangementCB.TabIndex = 5;
-            this.arrangementCB.SelectedIndexChanged += new System.EventHandler(this.arrangementCB_SelectedIndexChanged);
-            // 
-            // Arrangement
-            // 
-            this.Arrangement.AutoSize = true;
-            this.Arrangement.Location = new System.Drawing.Point(11, 102);
-            this.Arrangement.Name = "Arrangement";
-            this.Arrangement.Size = new System.Drawing.Size(67, 13);
-            this.Arrangement.TabIndex = 4;
-            this.Arrangement.Text = "Arrangement";
+            this.spawnDataSelectionComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.spawnDataSelectionComboBox.FormattingEnabled = true;
+            this.spawnDataSelectionComboBox.Location = new System.Drawing.Point(6, 19);
+            this.spawnDataSelectionComboBox.Name = "spawnDataSelectionComboBox";
+            this.spawnDataSelectionComboBox.Size = new System.Drawing.Size(72, 21);
+            this.spawnDataSelectionComboBox.TabIndex = 7;
+            this.spawnDataSelectionComboBox.SelectedIndexChanged += new System.EventHandler(this.spawnDataSelectionComboBox_SelectedIndexChanged);
             // 
             // monstersCB
             // 
+            this.monstersCB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.monstersCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.monstersCB.FormattingEnabled = true;
-            this.monstersCB.Location = new System.Drawing.Point(7, 74);
+            this.monstersCB.Location = new System.Drawing.Point(43, 13);
             this.monstersCB.Name = "monstersCB";
-            this.monstersCB.Size = new System.Drawing.Size(71, 21);
+            this.monstersCB.Size = new System.Drawing.Size(137, 21);
             this.monstersCB.TabIndex = 3;
             this.monstersCB.SelectedIndexChanged += new System.EventHandler(this.monstersCB_SelectedIndexChanged);
             // 
-            // monstersLabel
+            // arrangementComboBox
             // 
-            this.monstersLabel.AutoSize = true;
-            this.monstersLabel.Location = new System.Drawing.Point(17, 57);
-            this.monstersLabel.Name = "monstersLabel";
-            this.monstersLabel.Size = new System.Drawing.Size(50, 13);
-            this.monstersLabel.TabIndex = 2;
-            this.monstersLabel.Text = "Monsters";
-            // 
-            // monsterListCB
-            // 
-            this.monsterListCB.FormattingEnabled = true;
-            this.monsterListCB.Location = new System.Drawing.Point(7, 33);
-            this.monsterListCB.Name = "monsterListCB";
-            this.monsterListCB.Size = new System.Drawing.Size(71, 21);
-            this.monsterListCB.TabIndex = 1;
-            this.monsterListCB.SelectedIndexChanged += new System.EventHandler(this.monsterListCB_SelectedIndexChanged);
+            this.arrangementComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.arrangementComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.arrangementComboBox.FormattingEnabled = true;
+            this.arrangementComboBox.Location = new System.Drawing.Point(82, 31);
+            this.arrangementComboBox.Name = "arrangementComboBox";
+            this.arrangementComboBox.Size = new System.Drawing.Size(258, 21);
+            this.arrangementComboBox.TabIndex = 1;
+            this.arrangementComboBox.SelectedIndexChanged += new System.EventHandler(this.monsterListCB_SelectedIndexChanged);
             // 
             // monsterListLabel
             // 
             this.monsterListLabel.AutoSize = true;
-            this.monsterListLabel.Location = new System.Drawing.Point(10, 16);
+            this.monsterListLabel.Location = new System.Drawing.Point(9, 34);
             this.monsterListLabel.Name = "monsterListLabel";
-            this.monsterListLabel.Size = new System.Drawing.Size(64, 13);
+            this.monsterListLabel.Size = new System.Drawing.Size(67, 13);
             this.monsterListLabel.TabIndex = 0;
-            this.monsterListLabel.Text = "Monster List";
+            this.monsterListLabel.Text = "Arrangement";
             // 
             // monsterGB
             // 
-            this.monsterGB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.monsterGB.Controls.Add(this.monStaffBuffCheck);
-            this.monsterGB.Controls.Add(this.monBootBuffCheck);
-            this.monsterGB.Controls.Add(this.monShieldBuffCheck);
-            this.monsterGB.Controls.Add(this.monSwordBuffCheck);
+            this.monsterGB.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.monsterGB.Controls.Add(this.removeMonsterButton);
+            this.monsterGB.Controls.Add(this.addMonsterButton);
+            this.monsterGB.Controls.Add(this.label1);
+            this.monsterGB.Controls.Add(this.elementNameLabel);
+            this.monsterGB.Controls.Add(this.enemyNameLabel);
+            this.monsterGB.Controls.Add(this.monstersCB);
+            this.monsterGB.Controls.Add(this.monBuff4Check);
+            this.monsterGB.Controls.Add(this.monBuff3Check);
+            this.monsterGB.Controls.Add(this.monBuff2Check);
+            this.monsterGB.Controls.Add(this.monBuff1Check);
             this.monsterGB.Controls.Add(this.monUnkInt1Label);
             this.monsterGB.Controls.Add(this.monUnkShort8Label);
             this.monsterGB.Controls.Add(this.monUnkShort7Label);
@@ -292,62 +285,72 @@
             this.monsterGB.Controls.Add(this.monElementUD);
             this.monsterGB.Controls.Add(this.monNumLabel);
             this.monsterGB.Controls.Add(this.monNumUD);
-            this.monsterGB.Location = new System.Drawing.Point(86, 0);
+            this.monsterGB.Location = new System.Drawing.Point(3, 53);
+            this.monsterGB.MinimumSize = new System.Drawing.Size(269, 370);
             this.monsterGB.Name = "monsterGB";
-            this.monsterGB.Size = new System.Drawing.Size(253, 344);
+            this.monsterGB.Size = new System.Drawing.Size(316, 370);
             this.monsterGB.TabIndex = 5;
             this.monsterGB.TabStop = false;
-            this.monsterGB.Text = "Monster";
+            this.monsterGB.Text = "Monsters";
             // 
-            // monStaffBuffCheck
+            // enemyNameLabel
             // 
-            this.monStaffBuffCheck.AutoSize = true;
-            this.monStaffBuffCheck.Location = new System.Drawing.Point(7, 114);
-            this.monStaffBuffCheck.Name = "monStaffBuffCheck";
-            this.monStaffBuffCheck.Size = new System.Drawing.Size(70, 17);
-            this.monStaffBuffCheck.TabIndex = 7;
-            this.monStaffBuffCheck.Text = "Staff Buff";
-            this.monStaffBuffCheck.UseVisualStyleBackColor = true;
-            this.monStaffBuffCheck.CheckedChanged += new System.EventHandler(this.monStaffCheck_CheckedChanged);
+            this.enemyNameLabel.AutoSize = true;
+            this.enemyNameLabel.Location = new System.Drawing.Point(123, 44);
+            this.enemyNameLabel.Name = "enemyNameLabel";
+            this.enemyNameLabel.Size = new System.Drawing.Size(35, 13);
+            this.enemyNameLabel.TabIndex = 35;
+            this.enemyNameLabel.Text = "label1";
             // 
-            // monBootBuffCheck
+            // monBuff4Check
             // 
-            this.monBootBuffCheck.AutoSize = true;
-            this.monBootBuffCheck.Location = new System.Drawing.Point(7, 100);
-            this.monBootBuffCheck.Name = "monBootBuffCheck";
-            this.monBootBuffCheck.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.monBootBuffCheck.Size = new System.Drawing.Size(70, 17);
-            this.monBootBuffCheck.TabIndex = 6;
-            this.monBootBuffCheck.Text = "Boot Buff";
-            this.monBootBuffCheck.UseVisualStyleBackColor = true;
-            this.monBootBuffCheck.CheckedChanged += new System.EventHandler(this.monBootBuffCheck_CheckedChanged);
+            this.monBuff4Check.AutoSize = true;
+            this.monBuff4Check.Location = new System.Drawing.Point(10, 138);
+            this.monBuff4Check.Name = "monBuff4Check";
+            this.monBuff4Check.Size = new System.Drawing.Size(54, 17);
+            this.monBuff4Check.TabIndex = 7;
+            this.monBuff4Check.Text = "Buff 4";
+            this.monBuff4Check.UseVisualStyleBackColor = true;
+            this.monBuff4Check.CheckedChanged += new System.EventHandler(this.monBuff4Check_CheckedChanged);
             // 
-            // monShieldBuffCheck
+            // monBuff3Check
             // 
-            this.monShieldBuffCheck.AutoSize = true;
-            this.monShieldBuffCheck.Location = new System.Drawing.Point(7, 86);
-            this.monShieldBuffCheck.Name = "monShieldBuffCheck";
-            this.monShieldBuffCheck.Size = new System.Drawing.Size(77, 17);
-            this.monShieldBuffCheck.TabIndex = 5;
-            this.monShieldBuffCheck.Text = "Shield Buff";
-            this.monShieldBuffCheck.UseVisualStyleBackColor = true;
-            this.monShieldBuffCheck.CheckedChanged += new System.EventHandler(this.monShieldBuffCheck_CheckedChanged);
+            this.monBuff3Check.AutoSize = true;
+            this.monBuff3Check.Location = new System.Drawing.Point(10, 124);
+            this.monBuff3Check.Name = "monBuff3Check";
+            this.monBuff3Check.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.monBuff3Check.Size = new System.Drawing.Size(54, 17);
+            this.monBuff3Check.TabIndex = 6;
+            this.monBuff3Check.Text = "Buff 3";
+            this.monBuff3Check.UseVisualStyleBackColor = true;
+            this.monBuff3Check.CheckedChanged += new System.EventHandler(this.monBuff3Check_CheckedChanged);
             // 
-            // monSwordBuffCheck
+            // monBuff2Check
             // 
-            this.monSwordBuffCheck.AutoSize = true;
-            this.monSwordBuffCheck.Location = new System.Drawing.Point(7, 72);
-            this.monSwordBuffCheck.Name = "monSwordBuffCheck";
-            this.monSwordBuffCheck.Size = new System.Drawing.Size(78, 17);
-            this.monSwordBuffCheck.TabIndex = 34;
-            this.monSwordBuffCheck.Text = "Sword Buff";
-            this.monSwordBuffCheck.UseVisualStyleBackColor = true;
-            this.monSwordBuffCheck.CheckedChanged += new System.EventHandler(this.monSwordBuffCheck_CheckedChanged);
+            this.monBuff2Check.AutoSize = true;
+            this.monBuff2Check.Location = new System.Drawing.Point(10, 110);
+            this.monBuff2Check.Name = "monBuff2Check";
+            this.monBuff2Check.Size = new System.Drawing.Size(54, 17);
+            this.monBuff2Check.TabIndex = 5;
+            this.monBuff2Check.Text = "Buff 2";
+            this.monBuff2Check.UseVisualStyleBackColor = true;
+            this.monBuff2Check.CheckedChanged += new System.EventHandler(this.monBuff2Check_CheckedChanged);
+            // 
+            // monBuff1Check
+            // 
+            this.monBuff1Check.AutoSize = true;
+            this.monBuff1Check.Location = new System.Drawing.Point(10, 96);
+            this.monBuff1Check.Name = "monBuff1Check";
+            this.monBuff1Check.Size = new System.Drawing.Size(54, 17);
+            this.monBuff1Check.TabIndex = 34;
+            this.monBuff1Check.Text = "Buff 1";
+            this.monBuff1Check.UseVisualStyleBackColor = true;
+            this.monBuff1Check.CheckedChanged += new System.EventHandler(this.monBuff1Check_CheckedChanged);
             // 
             // monUnkInt1Label
             // 
             this.monUnkInt1Label.AutoSize = true;
-            this.monUnkInt1Label.Location = new System.Drawing.Point(200, 59);
+            this.monUnkInt1Label.Location = new System.Drawing.Point(190, 138);
             this.monUnkInt1Label.Name = "monUnkInt1Label";
             this.monUnkInt1Label.Size = new System.Drawing.Size(51, 13);
             this.monUnkInt1Label.TabIndex = 33;
@@ -356,7 +359,7 @@
             // monUnkShort8Label
             // 
             this.monUnkShort8Label.AutoSize = true;
-            this.monUnkShort8Label.Location = new System.Drawing.Point(187, 39);
+            this.monUnkShort8Label.Location = new System.Drawing.Point(177, 118);
             this.monUnkShort8Label.Name = "monUnkShort8Label";
             this.monUnkShort8Label.Size = new System.Drawing.Size(64, 13);
             this.monUnkShort8Label.TabIndex = 32;
@@ -365,7 +368,7 @@
             // monUnkShort7Label
             // 
             this.monUnkShort7Label.AutoSize = true;
-            this.monUnkShort7Label.Location = new System.Drawing.Point(187, 16);
+            this.monUnkShort7Label.Location = new System.Drawing.Point(177, 95);
             this.monUnkShort7Label.Name = "monUnkShort7Label";
             this.monUnkShort7Label.Size = new System.Drawing.Size(64, 13);
             this.monUnkShort7Label.TabIndex = 31;
@@ -373,7 +376,7 @@
             // 
             // monUnkInt1UD
             // 
-            this.monUnkInt1UD.Location = new System.Drawing.Point(126, 56);
+            this.monUnkInt1UD.Location = new System.Drawing.Point(116, 135);
             this.monUnkInt1UD.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -391,7 +394,7 @@
             // 
             // monUnkShort8UD
             // 
-            this.monUnkShort8UD.Location = new System.Drawing.Point(126, 35);
+            this.monUnkShort8UD.Location = new System.Drawing.Point(116, 114);
             this.monUnkShort8UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -409,7 +412,7 @@
             // 
             // monUnkShort7UD
             // 
-            this.monUnkShort7UD.Location = new System.Drawing.Point(126, 14);
+            this.monUnkShort7UD.Location = new System.Drawing.Point(116, 93);
             this.monUnkShort7UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -428,7 +431,7 @@
             // monUnkShort6Label
             // 
             this.monUnkShort6Label.AutoSize = true;
-            this.monUnkShort6Label.Location = new System.Drawing.Point(72, 323);
+            this.monUnkShort6Label.Location = new System.Drawing.Point(75, 347);
             this.monUnkShort6Label.Name = "monUnkShort6Label";
             this.monUnkShort6Label.Size = new System.Drawing.Size(101, 13);
             this.monUnkShort6Label.TabIndex = 27;
@@ -436,7 +439,7 @@
             // 
             // monLevelCapUnusedUD
             // 
-            this.monLevelCapUnusedUD.Location = new System.Drawing.Point(6, 321);
+            this.monLevelCapUnusedUD.Location = new System.Drawing.Point(9, 345);
             this.monLevelCapUnusedUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -455,7 +458,7 @@
             // monLevelModifierlabel
             // 
             this.monLevelModifierlabel.AutoSize = true;
-            this.monLevelModifierlabel.Location = new System.Drawing.Point(72, 302);
+            this.monLevelModifierlabel.Location = new System.Drawing.Point(75, 326);
             this.monLevelModifierlabel.Name = "monLevelModifierlabel";
             this.monLevelModifierlabel.Size = new System.Drawing.Size(73, 13);
             this.monLevelModifierlabel.TabIndex = 25;
@@ -463,7 +466,7 @@
             // 
             // monLevelModifierUD
             // 
-            this.monLevelModifierUD.Location = new System.Drawing.Point(6, 300);
+            this.monLevelModifierUD.Location = new System.Drawing.Point(9, 324);
             this.monLevelModifierUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -482,7 +485,7 @@
             // monUnknownShort5Label
             // 
             this.monUnknownShort5Label.AutoSize = true;
-            this.monUnknownShort5Label.Location = new System.Drawing.Point(72, 281);
+            this.monUnknownShort5Label.Location = new System.Drawing.Point(75, 305);
             this.monUnknownShort5Label.Name = "monUnknownShort5Label";
             this.monUnknownShort5Label.Size = new System.Drawing.Size(90, 13);
             this.monUnknownShort5Label.TabIndex = 23;
@@ -490,7 +493,7 @@
             // 
             // unkShort5UD
             // 
-            this.unkShort5UD.Location = new System.Drawing.Point(6, 279);
+            this.unkShort5UD.Location = new System.Drawing.Point(9, 303);
             this.unkShort5UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -509,15 +512,15 @@
             // monUnkShort4Label
             // 
             this.monUnkShort4Label.AutoSize = true;
-            this.monUnkShort4Label.Location = new System.Drawing.Point(72, 260);
+            this.monUnkShort4Label.Location = new System.Drawing.Point(75, 284);
             this.monUnkShort4Label.Name = "monUnkShort4Label";
-            this.monUnkShort4Label.Size = new System.Drawing.Size(64, 13);
+            this.monUnkShort4Label.Size = new System.Drawing.Size(90, 13);
             this.monUnkShort4Label.TabIndex = 21;
-            this.monUnkShort4Label.Text = "Unk Short 4";
+            this.monUnkShort4Label.Text = "Unknown Short 4";
             // 
             // monUnkShort4UD
             // 
-            this.monUnkShort4UD.Location = new System.Drawing.Point(6, 258);
+            this.monUnkShort4UD.Location = new System.Drawing.Point(9, 282);
             this.monUnkShort4UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -536,15 +539,15 @@
             // monUnkShort3Label
             // 
             this.monUnkShort3Label.AutoSize = true;
-            this.monUnkShort3Label.Location = new System.Drawing.Point(72, 239);
+            this.monUnkShort3Label.Location = new System.Drawing.Point(75, 263);
             this.monUnkShort3Label.Name = "monUnkShort3Label";
-            this.monUnkShort3Label.Size = new System.Drawing.Size(64, 13);
+            this.monUnkShort3Label.Size = new System.Drawing.Size(90, 13);
             this.monUnkShort3Label.TabIndex = 19;
-            this.monUnkShort3Label.Text = "Unk Short 3";
+            this.monUnkShort3Label.Text = "Unknown Short 3";
             // 
             // monUnkShort3UD
             // 
-            this.monUnkShort3UD.Location = new System.Drawing.Point(6, 237);
+            this.monUnkShort3UD.Location = new System.Drawing.Point(9, 261);
             this.monUnkShort3UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -563,7 +566,7 @@
             // monCountLabel
             // 
             this.monCountLabel.AutoSize = true;
-            this.monCountLabel.Location = new System.Drawing.Point(72, 218);
+            this.monCountLabel.Location = new System.Drawing.Point(75, 242);
             this.monCountLabel.Name = "monCountLabel";
             this.monCountLabel.Size = new System.Drawing.Size(35, 13);
             this.monCountLabel.TabIndex = 17;
@@ -571,7 +574,7 @@
             // 
             // monCountUD
             // 
-            this.monCountUD.Location = new System.Drawing.Point(6, 216);
+            this.monCountUD.Location = new System.Drawing.Point(9, 240);
             this.monCountUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -590,7 +593,7 @@
             // monSpawnDelayLabel
             // 
             this.monSpawnDelayLabel.AutoSize = true;
-            this.monSpawnDelayLabel.Location = new System.Drawing.Point(72, 197);
+            this.monSpawnDelayLabel.Location = new System.Drawing.Point(75, 221);
             this.monSpawnDelayLabel.Name = "monSpawnDelayLabel";
             this.monSpawnDelayLabel.Size = new System.Drawing.Size(70, 13);
             this.monSpawnDelayLabel.TabIndex = 15;
@@ -598,7 +601,7 @@
             // 
             // monSpawnDelayUD
             // 
-            this.monSpawnDelayUD.Location = new System.Drawing.Point(6, 195);
+            this.monSpawnDelayUD.Location = new System.Drawing.Point(9, 219);
             this.monSpawnDelayUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -617,15 +620,15 @@
             // monUnkShort2Label
             // 
             this.monUnkShort2Label.AutoSize = true;
-            this.monUnkShort2Label.Location = new System.Drawing.Point(72, 176);
+            this.monUnkShort2Label.Location = new System.Drawing.Point(75, 200);
             this.monUnkShort2Label.Name = "monUnkShort2Label";
-            this.monUnkShort2Label.Size = new System.Drawing.Size(64, 13);
+            this.monUnkShort2Label.Size = new System.Drawing.Size(90, 13);
             this.monUnkShort2Label.TabIndex = 13;
-            this.monUnkShort2Label.Text = "Unk Short 2";
+            this.monUnkShort2Label.Text = "Unknown Short 2";
             // 
             // monUnkShort2UD
             // 
-            this.monUnkShort2UD.Location = new System.Drawing.Point(6, 174);
+            this.monUnkShort2UD.Location = new System.Drawing.Point(9, 198);
             this.monUnkShort2UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -644,15 +647,15 @@
             // monUnkShort1Label
             // 
             this.monUnkShort1Label.AutoSize = true;
-            this.monUnkShort1Label.Location = new System.Drawing.Point(72, 155);
+            this.monUnkShort1Label.Location = new System.Drawing.Point(75, 179);
             this.monUnkShort1Label.Name = "monUnkShort1Label";
-            this.monUnkShort1Label.Size = new System.Drawing.Size(64, 13);
+            this.monUnkShort1Label.Size = new System.Drawing.Size(89, 13);
             this.monUnkShort1Label.TabIndex = 11;
-            this.monUnkShort1Label.Text = "Unk Short 1";
+            this.monUnkShort1Label.Text = "Spawn Animation";
             // 
             // monUnkShort1UD
             // 
-            this.monUnkShort1UD.Location = new System.Drawing.Point(6, 153);
+            this.monUnkShort1UD.Location = new System.Drawing.Point(9, 177);
             this.monUnkShort1UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -671,7 +674,7 @@
             // monUnkByte1Label
             // 
             this.monUnkByte1Label.AutoSize = true;
-            this.monUnkByte1Label.Location = new System.Drawing.Point(72, 134);
+            this.monUnkByte1Label.Location = new System.Drawing.Point(75, 158);
             this.monUnkByte1Label.Name = "monUnkByte1Label";
             this.monUnkByte1Label.Size = new System.Drawing.Size(70, 13);
             this.monUnkByte1Label.TabIndex = 9;
@@ -679,7 +682,7 @@
             // 
             // monUnkByte1UD
             // 
-            this.monUnkByte1UD.Location = new System.Drawing.Point(6, 132);
+            this.monUnkByte1UD.Location = new System.Drawing.Point(9, 156);
             this.monUnkByte1UD.Maximum = new decimal(new int[] {
             255,
             0,
@@ -693,7 +696,7 @@
             // monKingBuffCheck
             // 
             this.monKingBuffCheck.AutoSize = true;
-            this.monKingBuffCheck.Location = new System.Drawing.Point(7, 58);
+            this.monKingBuffCheck.Location = new System.Drawing.Point(10, 82);
             this.monKingBuffCheck.Name = "monKingBuffCheck";
             this.monKingBuffCheck.Size = new System.Drawing.Size(69, 17);
             this.monKingBuffCheck.TabIndex = 4;
@@ -704,7 +707,7 @@
             // monElementLabel
             // 
             this.monElementLabel.AutoSize = true;
-            this.monElementLabel.Location = new System.Drawing.Point(70, 38);
+            this.monElementLabel.Location = new System.Drawing.Point(72, 63);
             this.monElementLabel.Name = "monElementLabel";
             this.monElementLabel.Size = new System.Drawing.Size(45, 13);
             this.monElementLabel.TabIndex = 3;
@@ -712,7 +715,7 @@
             // 
             // monElementUD
             // 
-            this.monElementUD.Location = new System.Drawing.Point(7, 37);
+            this.monElementUD.Location = new System.Drawing.Point(10, 61);
             this.monElementUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -731,15 +734,15 @@
             // monNumLabel
             // 
             this.monNumLabel.AutoSize = true;
-            this.monNumLabel.Location = new System.Drawing.Point(69, 19);
+            this.monNumLabel.Location = new System.Drawing.Point(72, 43);
             this.monNumLabel.Name = "monNumLabel";
-            this.monNumLabel.Size = new System.Drawing.Size(55, 13);
+            this.monNumLabel.Size = new System.Drawing.Size(45, 13);
             this.monNumLabel.TabIndex = 1;
-            this.monNumLabel.Text = "Monster #";
+            this.monNumLabel.Text = "Monster";
             // 
             // monNumUD
             // 
-            this.monNumUD.Location = new System.Drawing.Point(7, 16);
+            this.monNumUD.Location = new System.Drawing.Point(10, 40);
             this.monNumUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -757,6 +760,7 @@
             // 
             // arrangementGB
             // 
+            this.arrangementGB.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.arrangementGB.Controls.Add(this.arrSpawnDelayLabel);
             this.arrangementGB.Controls.Add(this.arrSpawnDelayUD);
             this.arrangementGB.Controls.Add(this.arrUnkShort3Label);
@@ -773,9 +777,10 @@
             this.arrangementGB.Controls.Add(this.arrFormationUD);
             this.arrangementGB.Controls.Add(this.arrUnkInt1Label);
             this.arrangementGB.Controls.Add(this.arrIdUD);
-            this.arrangementGB.Location = new System.Drawing.Point(343, 0);
+            this.arrangementGB.Location = new System.Drawing.Point(325, 53);
+            this.arrangementGB.MinimumSize = new System.Drawing.Size(0, 189);
             this.arrangementGB.Name = "arrangementGB";
-            this.arrangementGB.Size = new System.Drawing.Size(153, 187);
+            this.arrangementGB.Size = new System.Drawing.Size(153, 189);
             this.arrangementGB.TabIndex = 6;
             this.arrangementGB.TabStop = false;
             this.arrangementGB.Text = "Arrangement";
@@ -783,7 +788,7 @@
             // arrSpawnDelayLabel
             // 
             this.arrSpawnDelayLabel.AutoSize = true;
-            this.arrSpawnDelayLabel.Location = new System.Drawing.Point(65, 38);
+            this.arrSpawnDelayLabel.Location = new System.Drawing.Point(61, 43);
             this.arrSpawnDelayLabel.Name = "arrSpawnDelayLabel";
             this.arrSpawnDelayLabel.Size = new System.Drawing.Size(70, 13);
             this.arrSpawnDelayLabel.TabIndex = 43;
@@ -791,7 +796,7 @@
             // 
             // arrSpawnDelayUD
             // 
-            this.arrSpawnDelayUD.Location = new System.Drawing.Point(4, 35);
+            this.arrSpawnDelayUD.Location = new System.Drawing.Point(0, 40);
             this.arrSpawnDelayUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -810,7 +815,7 @@
             // arrUnkShort3Label
             // 
             this.arrUnkShort3Label.AutoSize = true;
-            this.arrUnkShort3Label.Location = new System.Drawing.Point(65, 164);
+            this.arrUnkShort3Label.Location = new System.Drawing.Point(61, 169);
             this.arrUnkShort3Label.Name = "arrUnkShort3Label";
             this.arrUnkShort3Label.Size = new System.Drawing.Size(64, 13);
             this.arrUnkShort3Label.TabIndex = 34;
@@ -819,7 +824,7 @@
             // arrUnkShort2Label
             // 
             this.arrUnkShort2Label.AutoSize = true;
-            this.arrUnkShort2Label.Location = new System.Drawing.Point(65, 142);
+            this.arrUnkShort2Label.Location = new System.Drawing.Point(61, 147);
             this.arrUnkShort2Label.Name = "arrUnkShort2Label";
             this.arrUnkShort2Label.Size = new System.Drawing.Size(64, 13);
             this.arrUnkShort2Label.TabIndex = 34;
@@ -828,7 +833,7 @@
             // arrUnkShort1Label
             // 
             this.arrUnkShort1Label.AutoSize = true;
-            this.arrUnkShort1Label.Location = new System.Drawing.Point(65, 121);
+            this.arrUnkShort1Label.Location = new System.Drawing.Point(61, 126);
             this.arrUnkShort1Label.Name = "arrUnkShort1Label";
             this.arrUnkShort1Label.Size = new System.Drawing.Size(64, 13);
             this.arrUnkShort1Label.TabIndex = 34;
@@ -836,7 +841,7 @@
             // 
             // arrUnkShort3UD
             // 
-            this.arrUnkShort3UD.Location = new System.Drawing.Point(4, 161);
+            this.arrUnkShort3UD.Location = new System.Drawing.Point(0, 166);
             this.arrUnkShort3UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -854,7 +859,7 @@
             // 
             // arrUnkShort2UD
             // 
-            this.arrUnkShort2UD.Location = new System.Drawing.Point(4, 140);
+            this.arrUnkShort2UD.Location = new System.Drawing.Point(0, 145);
             this.arrUnkShort2UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -872,7 +877,7 @@
             // 
             // arrUnkShort1UD
             // 
-            this.arrUnkShort1UD.Location = new System.Drawing.Point(4, 119);
+            this.arrUnkShort1UD.Location = new System.Drawing.Point(0, 124);
             this.arrUnkShort1UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -891,7 +896,7 @@
             // arrRespawnTriggerLabel
             // 
             this.arrRespawnTriggerLabel.AutoSize = true;
-            this.arrRespawnTriggerLabel.Location = new System.Drawing.Point(66, 100);
+            this.arrRespawnTriggerLabel.Location = new System.Drawing.Point(62, 105);
             this.arrRespawnTriggerLabel.Name = "arrRespawnTriggerLabel";
             this.arrRespawnTriggerLabel.Size = new System.Drawing.Size(88, 13);
             this.arrRespawnTriggerLabel.TabIndex = 38;
@@ -899,7 +904,7 @@
             // 
             // arrRespawnTriggerUD
             // 
-            this.arrRespawnTriggerUD.Location = new System.Drawing.Point(4, 98);
+            this.arrRespawnTriggerUD.Location = new System.Drawing.Point(0, 103);
             this.arrRespawnTriggerUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -918,7 +923,7 @@
             // arrInitialCountLabel
             // 
             this.arrInitialCountLabel.AutoSize = true;
-            this.arrInitialCountLabel.Location = new System.Drawing.Point(66, 79);
+            this.arrInitialCountLabel.Location = new System.Drawing.Point(62, 84);
             this.arrInitialCountLabel.Name = "arrInitialCountLabel";
             this.arrInitialCountLabel.Size = new System.Drawing.Size(62, 13);
             this.arrInitialCountLabel.TabIndex = 36;
@@ -927,7 +932,7 @@
             // arrFormationLabel
             // 
             this.arrFormationLabel.AutoSize = true;
-            this.arrFormationLabel.Location = new System.Drawing.Point(66, 59);
+            this.arrFormationLabel.Location = new System.Drawing.Point(62, 64);
             this.arrFormationLabel.Name = "arrFormationLabel";
             this.arrFormationLabel.Size = new System.Drawing.Size(53, 13);
             this.arrFormationLabel.TabIndex = 34;
@@ -935,7 +940,7 @@
             // 
             // arrInitialCountUD
             // 
-            this.arrInitialCountUD.Location = new System.Drawing.Point(4, 77);
+            this.arrInitialCountUD.Location = new System.Drawing.Point(0, 82);
             this.arrInitialCountUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -953,7 +958,7 @@
             // 
             // arrFormationUD
             // 
-            this.arrFormationUD.Location = new System.Drawing.Point(4, 56);
+            this.arrFormationUD.Location = new System.Drawing.Point(0, 61);
             this.arrFormationUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -972,7 +977,7 @@
             // arrUnkInt1Label
             // 
             this.arrUnkInt1Label.AutoSize = true;
-            this.arrUnkInt1Label.Location = new System.Drawing.Point(65, 16);
+            this.arrUnkInt1Label.Location = new System.Drawing.Point(61, 21);
             this.arrUnkInt1Label.Name = "arrUnkInt1Label";
             this.arrUnkInt1Label.Size = new System.Drawing.Size(18, 13);
             this.arrUnkInt1Label.TabIndex = 34;
@@ -980,7 +985,7 @@
             // 
             // arrIdUD
             // 
-            this.arrIdUD.Location = new System.Drawing.Point(4, 14);
+            this.arrIdUD.Location = new System.Drawing.Point(0, 19);
             this.arrIdUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -999,7 +1004,10 @@
             // spawnDataGroupBox
             // 
             this.spawnDataGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.spawnDataGroupBox.Controls.Add(this.removeSpawnDataButton);
+            this.spawnDataGroupBox.Controls.Add(this.addSpawnDataButton);
+            this.spawnDataGroupBox.Controls.Add(this.spawnDataSelectionComboBox);
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort5Label);
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort4Label);
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort5UD);
@@ -1012,9 +1020,10 @@
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort2UD);
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort3UD);
             this.spawnDataGroupBox.Controls.Add(this.SDUnkShort1UD);
-            this.spawnDataGroupBox.Location = new System.Drawing.Point(342, 186);
+            this.spawnDataGroupBox.Location = new System.Drawing.Point(325, 242);
+            this.spawnDataGroupBox.MinimumSize = new System.Drawing.Size(0, 181);
             this.spawnDataGroupBox.Name = "spawnDataGroupBox";
-            this.spawnDataGroupBox.Size = new System.Drawing.Size(154, 158);
+            this.spawnDataGroupBox.Size = new System.Drawing.Size(154, 181);
             this.spawnDataGroupBox.TabIndex = 7;
             this.spawnDataGroupBox.TabStop = false;
             this.spawnDataGroupBox.Text = "Spawn Data";
@@ -1022,24 +1031,24 @@
             // SDUnkShort5Label
             // 
             this.SDUnkShort5Label.AutoSize = true;
-            this.SDUnkShort5Label.Location = new System.Drawing.Point(65, 131);
+            this.SDUnkShort5Label.Location = new System.Drawing.Point(65, 152);
             this.SDUnkShort5Label.Name = "SDUnkShort5Label";
             this.SDUnkShort5Label.Size = new System.Drawing.Size(64, 13);
             this.SDUnkShort5Label.TabIndex = 35;
-            this.SDUnkShort5Label.Text = "Unk Short 5";
+            this.SDUnkShort5Label.Text = "Unk Short 3";
             // 
             // SDUnkShort4Label
             // 
             this.SDUnkShort4Label.AutoSize = true;
-            this.SDUnkShort4Label.Location = new System.Drawing.Point(65, 110);
+            this.SDUnkShort4Label.Location = new System.Drawing.Point(65, 131);
             this.SDUnkShort4Label.Name = "SDUnkShort4Label";
             this.SDUnkShort4Label.Size = new System.Drawing.Size(64, 13);
             this.SDUnkShort4Label.TabIndex = 35;
-            this.SDUnkShort4Label.Text = "Unk Short 4";
+            this.SDUnkShort4Label.Text = "Unk Short 2";
             // 
             // SDUnkShort5UD
             // 
-            this.SDUnkShort5UD.Location = new System.Drawing.Point(4, 129);
+            this.SDUnkShort5UD.Location = new System.Drawing.Point(4, 150);
             this.SDUnkShort5UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -1057,7 +1066,7 @@
             // 
             // SDUnkShort4UD
             // 
-            this.SDUnkShort4UD.Location = new System.Drawing.Point(4, 108);
+            this.SDUnkShort4UD.Location = new System.Drawing.Point(4, 129);
             this.SDUnkShort4UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -1076,16 +1085,16 @@
             // SDUnkShort3Label
             // 
             this.SDUnkShort3Label.AutoSize = true;
-            this.SDUnkShort3Label.Location = new System.Drawing.Point(65, 89);
+            this.SDUnkShort3Label.Location = new System.Drawing.Point(65, 110);
             this.SDUnkShort3Label.Name = "SDUnkShort3Label";
             this.SDUnkShort3Label.Size = new System.Drawing.Size(64, 13);
             this.SDUnkShort3Label.TabIndex = 42;
-            this.SDUnkShort3Label.Text = "Unk Short 3";
+            this.SDUnkShort3Label.Text = "Unk Short 1";
             // 
             // SDSpawnNumberLabel
             // 
             this.SDSpawnNumberLabel.AutoSize = true;
-            this.SDSpawnNumberLabel.Location = new System.Drawing.Point(65, 27);
+            this.SDSpawnNumberLabel.Location = new System.Drawing.Point(65, 48);
             this.SDSpawnNumberLabel.Name = "SDSpawnNumberLabel";
             this.SDSpawnNumberLabel.Size = new System.Drawing.Size(80, 13);
             this.SDSpawnNumberLabel.TabIndex = 42;
@@ -1094,15 +1103,15 @@
             // SDUnkShort2Label
             // 
             this.SDUnkShort2Label.AutoSize = true;
-            this.SDUnkShort2Label.Location = new System.Drawing.Point(65, 68);
+            this.SDUnkShort2Label.Location = new System.Drawing.Point(65, 89);
             this.SDUnkShort2Label.Name = "SDUnkShort2Label";
-            this.SDUnkShort2Label.Size = new System.Drawing.Size(64, 13);
+            this.SDUnkShort2Label.Size = new System.Drawing.Size(59, 13);
             this.SDUnkShort2Label.TabIndex = 43;
-            this.SDUnkShort2Label.Text = "Unk Short 2";
+            this.SDUnkShort2Label.Text = "Unk Flag 2";
             // 
             // SDSpawnNumberUD
             // 
-            this.SDSpawnNumberUD.Location = new System.Drawing.Point(4, 24);
+            this.SDSpawnNumberUD.Location = new System.Drawing.Point(4, 45);
             this.SDSpawnNumberUD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -1121,15 +1130,15 @@
             // SDUnkShort1Label
             // 
             this.SDUnkShort1Label.AutoSize = true;
-            this.SDUnkShort1Label.Location = new System.Drawing.Point(65, 47);
+            this.SDUnkShort1Label.Location = new System.Drawing.Point(65, 68);
             this.SDUnkShort1Label.Name = "SDUnkShort1Label";
-            this.SDUnkShort1Label.Size = new System.Drawing.Size(64, 13);
+            this.SDUnkShort1Label.Size = new System.Drawing.Size(59, 13);
             this.SDUnkShort1Label.TabIndex = 44;
-            this.SDUnkShort1Label.Text = "Unk Short 1";
+            this.SDUnkShort1Label.Text = "Unk Flag 1";
             // 
             // SDUnkShort2UD
             // 
-            this.SDUnkShort2UD.Location = new System.Drawing.Point(4, 66);
+            this.SDUnkShort2UD.Location = new System.Drawing.Point(4, 87);
             this.SDUnkShort2UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -1147,7 +1156,7 @@
             // 
             // SDUnkShort3UD
             // 
-            this.SDUnkShort3UD.Location = new System.Drawing.Point(4, 87);
+            this.SDUnkShort3UD.Location = new System.Drawing.Point(4, 108);
             this.SDUnkShort3UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -1165,7 +1174,7 @@
             // 
             // SDUnkShort1UD
             // 
-            this.SDUnkShort1UD.Location = new System.Drawing.Point(4, 45);
+            this.SDUnkShort1UD.Location = new System.Drawing.Point(4, 66);
             this.SDUnkShort1UD.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -1181,22 +1190,131 @@
             this.SDUnkShort1UD.TabIndex = 45;
             this.SDUnkShort1UD.ValueChanged += new System.EventHandler(this.SDUnkShort1UD_ValueChanged);
             // 
+            // elementNameLabel
+            // 
+            this.elementNameLabel.AutoSize = true;
+            this.elementNameLabel.Location = new System.Drawing.Point(123, 63);
+            this.elementNameLabel.Name = "elementNameLabel";
+            this.elementNameLabel.Size = new System.Drawing.Size(35, 13);
+            this.elementNameLabel.TabIndex = 36;
+            this.elementNameLabel.Text = "label2";
+            // 
+            // addEntryButton
+            // 
+            this.addEntryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.addEntryButton.Location = new System.Drawing.Point(347, 2);
+            this.addEntryButton.Name = "addEntryButton";
+            this.addEntryButton.Size = new System.Drawing.Size(57, 23);
+            this.addEntryButton.TabIndex = 8;
+            this.addEntryButton.Text = "Add";
+            this.addEntryButton.UseVisualStyleBackColor = true;
+            this.addEntryButton.Click += new System.EventHandler(this.addEntryButton_Click);
+            // 
+            // removeEntryButton
+            // 
+            this.removeEntryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.removeEntryButton.Location = new System.Drawing.Point(406, 3);
+            this.removeEntryButton.Name = "removeEntryButton";
+            this.removeEntryButton.Size = new System.Drawing.Size(75, 23);
+            this.removeEntryButton.TabIndex = 9;
+            this.removeEntryButton.Text = "Remove";
+            this.removeEntryButton.UseVisualStyleBackColor = true;
+            this.removeEntryButton.Click += new System.EventHandler(this.removeEntryButton_Click);
+            // 
+            // addSpawnDataButton
+            // 
+            this.addSpawnDataButton.Location = new System.Drawing.Point(84, 19);
+            this.addSpawnDataButton.Name = "addSpawnDataButton";
+            this.addSpawnDataButton.Size = new System.Drawing.Size(25, 23);
+            this.addSpawnDataButton.TabIndex = 48;
+            this.addSpawnDataButton.Text = "+";
+            this.addSpawnDataButton.UseVisualStyleBackColor = true;
+            this.addSpawnDataButton.Click += new System.EventHandler(this.addSpawnDataButton_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(31, 13);
+            this.label1.TabIndex = 37;
+            this.label1.Text = "Entry";
+            // 
+            // removeSpawnDataButton
+            // 
+            this.removeSpawnDataButton.Location = new System.Drawing.Point(115, 19);
+            this.removeSpawnDataButton.Name = "removeSpawnDataButton";
+            this.removeSpawnDataButton.Size = new System.Drawing.Size(23, 23);
+            this.removeSpawnDataButton.TabIndex = 49;
+            this.removeSpawnDataButton.Text = "-";
+            this.removeSpawnDataButton.UseVisualStyleBackColor = true;
+            this.removeSpawnDataButton.Click += new System.EventHandler(this.removeSpawnDataButton_Click);
+            // 
+            // removeArrangementButton
+            // 
+            this.removeArrangementButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.removeArrangementButton.Location = new System.Drawing.Point(406, 29);
+            this.removeArrangementButton.Name = "removeArrangementButton";
+            this.removeArrangementButton.Size = new System.Drawing.Size(75, 23);
+            this.removeArrangementButton.TabIndex = 11;
+            this.removeArrangementButton.Text = "Remove";
+            this.removeArrangementButton.UseVisualStyleBackColor = true;
+            this.removeArrangementButton.Click += new System.EventHandler(this.removeArrangementButton_Click);
+            // 
+            // addArrangementButton
+            // 
+            this.addArrangementButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.addArrangementButton.Location = new System.Drawing.Point(347, 29);
+            this.addArrangementButton.Name = "addArrangementButton";
+            this.addArrangementButton.Size = new System.Drawing.Size(57, 23);
+            this.addArrangementButton.TabIndex = 10;
+            this.addArrangementButton.Text = "Add";
+            this.addArrangementButton.UseVisualStyleBackColor = true;
+            this.addArrangementButton.Click += new System.EventHandler(this.addArrangementButton_Click);
+            // 
+            // removeMonsterButton
+            // 
+            this.removeMonsterButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.removeMonsterButton.Location = new System.Drawing.Point(253, 11);
+            this.removeMonsterButton.Name = "removeMonsterButton";
+            this.removeMonsterButton.Size = new System.Drawing.Size(57, 23);
+            this.removeMonsterButton.TabIndex = 39;
+            this.removeMonsterButton.Text = "Remove";
+            this.removeMonsterButton.UseVisualStyleBackColor = true;
+            this.removeMonsterButton.Click += new System.EventHandler(this.removeMonsterButton_Click);
+            // 
+            // addMonsterButton
+            // 
+            this.addMonsterButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.addMonsterButton.Location = new System.Drawing.Point(186, 11);
+            this.addMonsterButton.Name = "addMonsterButton";
+            this.addMonsterButton.Size = new System.Drawing.Size(61, 23);
+            this.addMonsterButton.TabIndex = 38;
+            this.addMonsterButton.Text = "Add";
+            this.addMonsterButton.UseVisualStyleBackColor = true;
+            this.addMonsterButton.Click += new System.EventHandler(this.addMonsterButton_Click);
+            // 
             // EnemyLayoutViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
+            this.AutoScrollMinSize = new System.Drawing.Size(484, 455);
+            this.Controls.Add(this.removeEntryButton);
+            this.Controls.Add(this.addEntryButton);
+            this.Controls.Add(this.removeArrangementButton);
             this.Controls.Add(this.arrangementGB);
+            this.Controls.Add(this.addArrangementButton);
             this.Controls.Add(this.spawnDataGroupBox);
             this.Controls.Add(this.monsterGB);
-            this.Controls.Add(this.spawnEntryGroupBox);
             this.Controls.Add(this.spawnEntryLabel);
             this.Controls.Add(this.spawnEntryCB);
             this.Controls.Add(this.ImportJSONButton);
+            this.Controls.Add(this.arrangementComboBox);
+            this.Controls.Add(this.monsterListLabel);
             this.Controls.Add(this.ExportJSONButton);
             this.Name = "EnemyLayoutViewer";
-            this.Size = new System.Drawing.Size(496, 347);
-            this.spawnEntryGroupBox.ResumeLayout(false);
-            this.spawnEntryGroupBox.PerformLayout();
+            this.Size = new System.Drawing.Size(484, 455);
             this.monsterGB.ResumeLayout(false);
             this.monsterGB.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.monUnkInt1UD)).EndInit();
@@ -1245,20 +1363,16 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.ComboBox spawnEntryCB;
         private System.Windows.Forms.Label spawnEntryLabel;
-        private System.Windows.Forms.GroupBox spawnEntryGroupBox;
         private System.Windows.Forms.ComboBox monstersCB;
-        private System.Windows.Forms.Label monstersLabel;
-        private System.Windows.Forms.ComboBox monsterListCB;
+        private System.Windows.Forms.ComboBox arrangementComboBox;
         private System.Windows.Forms.Label monsterListLabel;
-        private System.Windows.Forms.Label Arrangement;
-        private System.Windows.Forms.ComboBox arrangementCB;
         private System.Windows.Forms.GroupBox monsterGB;
         private System.Windows.Forms.Label monElementLabel;
         private System.Windows.Forms.NumericUpDown monElementUD;
         private System.Windows.Forms.Label monNumLabel;
         private System.Windows.Forms.NumericUpDown monNumUD;
-        private System.Windows.Forms.CheckBox monBootBuffCheck;
-        private System.Windows.Forms.CheckBox monShieldBuffCheck;
+        private System.Windows.Forms.CheckBox monBuff3Check;
+        private System.Windows.Forms.CheckBox monBuff2Check;
         private System.Windows.Forms.CheckBox monKingBuffCheck;
         private System.Windows.Forms.Label monUnkShort2Label;
         private System.Windows.Forms.NumericUpDown monUnkShort2UD;
@@ -1266,7 +1380,7 @@
         private System.Windows.Forms.NumericUpDown monUnkShort1UD;
         private System.Windows.Forms.Label monUnkByte1Label;
         private System.Windows.Forms.NumericUpDown monUnkByte1UD;
-        private System.Windows.Forms.CheckBox monStaffBuffCheck;
+        private System.Windows.Forms.CheckBox monBuff4Check;
         private System.Windows.Forms.Label monSpawnDelayLabel;
         private System.Windows.Forms.NumericUpDown monSpawnDelayUD;
         private System.Windows.Forms.Label monCountLabel;
@@ -1315,8 +1429,20 @@
         private System.Windows.Forms.NumericUpDown SDUnkShort2UD;
         private System.Windows.Forms.NumericUpDown SDUnkShort3UD;
         private System.Windows.Forms.NumericUpDown SDUnkShort1UD;
-        private System.Windows.Forms.CheckBox monSwordBuffCheck;
+        private System.Windows.Forms.CheckBox monBuff1Check;
         private System.Windows.Forms.Label arrSpawnDelayLabel;
         private System.Windows.Forms.NumericUpDown arrSpawnDelayUD;
+        private System.Windows.Forms.Label enemyNameLabel;
+        private System.Windows.Forms.ComboBox spawnDataSelectionComboBox;
+        private System.Windows.Forms.Label elementNameLabel;
+        private System.Windows.Forms.Button addEntryButton;
+        private System.Windows.Forms.Button removeEntryButton;
+        private System.Windows.Forms.Button addSpawnDataButton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button removeSpawnDataButton;
+        private System.Windows.Forms.Button removeMonsterButton;
+        private System.Windows.Forms.Button addMonsterButton;
+        private System.Windows.Forms.Button removeArrangementButton;
+        private System.Windows.Forms.Button addArrangementButton;
     }
 }

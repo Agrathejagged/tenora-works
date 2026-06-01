@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using PSULib.FileClasses.General;
+using PSULib.Support;
 
 namespace PSULib.FileClasses.Items
 {
@@ -332,7 +333,7 @@ namespace PSULib.FileClasses.Items
                 indexLocs[0] = (int)outStream.Position;
                 outWriter.Write(indexes[0]);
             }
-            outStream.Seek(outStream.Position + 0x3 & 0xFFFFFFFC, SeekOrigin.Begin);
+            outWriter.Trim(4);
 
             unitLocs[1] = (int)outStream.Position;
             for (int i = 0; i < armUnits.Count; i++)
@@ -366,7 +367,7 @@ namespace PSULib.FileClasses.Items
                 indexLocs[1] = (int)outStream.Position;
                 outWriter.Write(indexes[1]);
             }
-            outStream.Seek(outStream.Position + 0x3 & 0xFFFFFFFC, SeekOrigin.Begin);
+            outWriter.Trim(4);
 
             unitLocs[2] = (int)outStream.Position;
             for (int i = 0; i < bodyUnits.Count; i++)
@@ -396,7 +397,7 @@ namespace PSULib.FileClasses.Items
                 indexLocs[2] = (int)outStream.Position;
                 outWriter.Write(indexes[2]);
             }
-            outStream.Seek(outStream.Position + 0x3 & 0xFFFFFFFC, SeekOrigin.Begin);
+            outWriter.Trim(4);
 
             unitLocs[3] = (int)outStream.Position;
             for (int i = 0; i < extraUnits.Count; i++)
@@ -426,7 +427,7 @@ namespace PSULib.FileClasses.Items
                 indexLocs[3] = (int)outStream.Position;
                 outWriter.Write(indexes[3]);
             }
-            outStream.Seek(outStream.Position + 0x3 & 0xFFFFFFFC, SeekOrigin.Begin);
+            outWriter.Trim(4);
 
             List<int> ptrs = new List<int>();
             int headerLoc = (int)outStream.Position;
@@ -443,7 +444,7 @@ namespace PSULib.FileClasses.Items
                     outWriter.Write((short)0);
                 outWriter.Write((short)counts[i]);
             }
-            outStream.Seek(outStream.Position + 7 & 0xFFFFFFF8, SeekOrigin.Begin);
+            outWriter.Trim(8);
             int fileLength = (int)outStream.Position;
             outStream.Seek(0, SeekOrigin.Begin);
             outWriter.Write(0x0052584E);

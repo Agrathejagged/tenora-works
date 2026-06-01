@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PSULib.FileClasses.Textures
 {
-    class UvrTextureFile : PsuFile, ITextureFile
+    public class UvrTextureFile : PsuFile, ITextureFile
     {
         private UnpointeredFile backupRaw;
         public GimPaletteFormat palFormat { get; set; }

@@ -1,4 +1,5 @@
 ﻿using PSULib.FileClasses.General;
+using PSULib.Support;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -96,7 +97,7 @@ namespace PSULib.FileClasses.Models
             }
 
             int fileLength = (int)outStream.Position;
-            outStream.Seek(fileLength + 0xF & 0xFFFFFFF0, SeekOrigin.Begin);
+            outWriter.Trim(0x10);
             int paddedFileLength = (int)outStream.Position;
             outStream.Seek(stringTableLoc, SeekOrigin.Begin);
             for (int i = 0; i < boneReferences.Count; i++)

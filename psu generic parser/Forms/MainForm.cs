@@ -24,6 +24,8 @@ using PSULib.Support;
 using PSULib.FileClasses.Maps;
 using psu_generic_parser.Forms;
 using PSULib.FileClasses.General.Scripts;
+using PSULib.FileClasses;
+using psu_generic_parser.Forms.FileViewers.Bosses;
 
 namespace psu_generic_parser
 {
@@ -249,13 +251,15 @@ namespace psu_generic_parser
                         }
                         continue;
                     }
-                    else if (filename.Contains(".xvr") && batchPngExport)
+                    else if ((filename.Contains(".xvr") || filename.Contains(".uvr") || filename.Contains(".gim")) && batchPngExport)
                     {
                         if (toRead is AfsLoader || toRead is MiniAfsLoader)
                         {
                             filename = CheckForDupeFilenames(writtenFiles, filename);
                         }
                         filename = filename.Replace(".xvr", ".png");
+                        filename = filename.Replace(".uvr", ".png");
+                        filename = filename.Replace(".gim", ".png");
                         ((ITextureFile)toRead.getFileParsed(i)).mipMaps[0].Save(Path.Combine(outDirectory, filename));
                     }
                     else
@@ -264,7 +268,10 @@ namespace psu_generic_parser
                         {
                             filename = CheckForDupeFilenames(writtenFiles, filename);
                         }
-                        File.WriteAllBytes(Path.Combine(outDirectory, filename), toRead.getFileRaw(i).WriteToBytes(exportMetaData));
+                        RawFile currentFile = toRead.getFileRaw(i);
+                        //Because this file's getting discarded immediately, we can rebase it with no side effects.
+                        currentFile.RebaseFile(0);
+                        File.WriteAllBytes(Path.Combine(outDirectory, filename), currentFile.WriteToBytes(exportMetaData));
                     }
                 } 
                 catch
@@ -313,6 +320,22 @@ namespace psu_generic_parser
             {
                 toAdd = new ActDataFileViewer(actDataFile);
             }
+            else if (toRead is LndEffectFile lndEffectFile)
+            {
+                toAdd = new LndEffectViewer(lndEffectFile);
+            }
+            else if (toRead is LndEnemyLightFile lndEnemyLightFile)
+            {
+                toAdd = new LndEnemyLightViewer(lndEnemyLightFile);
+            }
+            else if (toRead is FogBankFile fogBankFile)
+            {
+                toAdd = new FogBankViewer(fogBankFile);
+            }
+            else if (toRead is ParamServerFile paramServerFile)
+            {
+                toAdd = new BossServerParamViewer(paramServerFile);
+            }
             else if (toRead is EnemySoundEffectFile seDataFile)
             {
                 toAdd = new EnemySoundEffectFileViewer(seDataFile);
@@ -344,6 +367,10 @@ namespace psu_generic_parser
             else if (toRead is ItemSkillParamFile itemSkillParamFile)
             {
                 toAdd = new ItemSkillParamViewer(itemSkillParamFile);
+            }
+            else if (toRead is Psp2ItemSkillParamFile itemSkillParamFilePsp2)
+            {
+                toAdd = new ItemSkillParamViewerPsp2(itemSkillParamFilePsp2);
             }
             else if (toRead is ItemBulletParamFile itemBulletParamFile)
             {
@@ -436,6 +463,10 @@ namespace psu_generic_parser
             else if(toRead is LndCommonFile lndCommonFile)
             {
                 toAdd = new LndCommonEditor(lndCommonFile);
+            }
+            else if (toRead is PsuSoundFile psuSoundFile)
+            {
+                toAdd = new SoundFileViewer(psuSoundFile);
             }
             else if (toRead is UnpointeredFile unpointeredFile)
             {
@@ -1237,7 +1268,7 @@ namespace psu_generic_parser
                                     ObjectParamFile paramFile = (ObjectParamFile)((NblChunk)nbl.getFileParsed(0)).getFileParsed("obj_param.xnr");
                                     foreach (int objectId in paramFile.ObjectDefinitions.Keys)
                                     {
-                                        if (objects.ContainsKey(objectId) && !objects[objectId].Item2.group2Entry.Equals(paramFile.ObjectDefinitions[objectId].group2Entry))
+                                        if (objects.ContainsKey(objectId) && !objects[objectId].Item2.Hitbox.Equals(paramFile.ObjectDefinitions[objectId].Hitbox))
                                         {
                                             Console.WriteLine("Mismatched object, ID = " + objectId + " compared to " + objects[objectId].Item1);
                                         }
@@ -1262,7 +1293,7 @@ namespace psu_generic_parser
 
                 foreach(int i in objects.Keys.OrderBy(a=>a))
                 {
-                    var hitbox = objects[i].Item2.group2Entry;
+                    var hitbox = objects[i].Item2.Hitbox;
                     Console.WriteLine("Object " + i + ", first found in " + objects[i].Item1 + ": group 0 = " + hitbox.hitboxShape + "; {" + hitbox.unknownFloat2 + ", " + hitbox.unknownFloat3 + ", " + hitbox.unknownFloat3 + "}; id 1 = " + hitbox.unknownInt5 + "; isolated float = " + hitbox.unknownFloat6 + "; last value = " + hitbox.unknownInt9);
                 }
             }
@@ -1309,25 +1340,25 @@ namespace psu_generic_parser
                                             {
                                                 EnemyLayoutFile layoutFile = (EnemyLayoutFile)((ContainerFile)nbl.getFileParsed(0)).getFileParsed(nblFile);
                                                 writer.WriteLine("\t" + nblFile + ":");
-                                                for (int i = 0; i < layoutFile.spawns.Length; i++)
+                                                for (int i = 0; i < layoutFile.spawns.Count; i++)
                                                 {
                                                         writer.WriteLine($"\t\tSpawn {i}:");
                                                         writer.WriteLine($"\t\tMonsters:");
-                                                        for (int j = 0; j < layoutFile.spawns[i].monsters.Length; j++)
+                                                        for (int j = 0; j < layoutFile.spawns[i].monsters.Count; j++)
                                                         {
                                                             writer.WriteLine($"\t\t\tGroup {j}:");
-                                                            for (int k = 0; k < layoutFile.spawns[i].monsters[j].Length; k++)
+                                                            for (int k = 0; k < layoutFile.spawns[i].monsters[j].Count; k++)
                                                             {
                                                                 writer.WriteLine("\t\t\t\t" + layoutFile.spawns[i].monsters[j][k].ToString());
                                                             }
                                                         }
                                                         writer.WriteLine($"\t\tArrangements:");
-                                                        for (int j = 0; j < layoutFile.spawns[i].arrangements.Length; j++)
+                                                        for (int j = 0; j < layoutFile.spawns[i].arrangements.Count; j++)
                                                         {
                                                             writer.WriteLine("\t\t\t" + layoutFile.spawns[i].arrangements[j].ToString());
                                                         }
                                                         writer.WriteLine($"\t\tSpawn Data:");
-                                                        for (int j = 0; j < layoutFile.spawns[i].spawnData.Length; j++)
+                                                        for (int j = 0; j < layoutFile.spawns[i].spawnData.Count; j++)
                                                         {
                                                             writer.WriteLine("\t\t\t" + layoutFile.spawns[i].spawnData[j].ToString());
                                                         }
@@ -1737,47 +1768,59 @@ namespace psu_generic_parser
             {
                 ContainerFile parent = tag.OwnerContainer;
                 OpenFileDialog replaceDialog = new OpenFileDialog();
+                replaceDialog.Multiselect = true;
                 NblChunk chunk = ((NblChunk)parent.getFileParsed(treeView1.SelectedNode.Index));
 
                 if (replaceDialog.ShowDialog() == DialogResult.OK)
                 {
-                    RawFile file = new RawFile(replaceDialog.OpenFile(), Path.GetFileName(replaceDialog.FileName));
-                    string filename = file.filename;
-                    if(!chunk.ValidateFilename(filename))
+                    TreeNode finalNode = null;
+                    foreach(var filepath in replaceDialog.FileNames)
                     {
-                        FileRenameForm rename = new FileRenameForm(filename);
-                        while (!chunk.ValidateFilename(filename))
+                        using(Stream fileStream = new FileStream(filepath, FileMode.Open))
                         {
-                            if (rename.ShowDialog() == DialogResult.OK)
+                            RawFile file = new RawFile(fileStream, Path.GetFileName(filepath));
+                            string filename = file.filename;
+                            if (!chunk.ValidateFilename(filename))
                             {
-                                filename = rename.FileName;
+                                FileRenameForm rename = new FileRenameForm(filename);
+                                while (!chunk.ValidateFilename(filename))
+                                {
+                                    if (rename.ShowDialog() == DialogResult.OK)
+                                    {
+                                        filename = rename.FileName;
+                                    }
+                                    else
+                                    {
+                                        return;
+                                    }
+                                }
                             }
-                            else
+                            if (filename != file.filename)
                             {
-                                return;
+                                file.filename = filename;
+                            }
+
+                            chunk.addFile(file);
+
+                            TreeNode newNode = new TreeNode(file.filename);
+                            FileTreeNodeTag newTag = new FileTreeNodeTag();
+                            newTag.OwnerContainer = chunk;
+                            newTag.FileName = file.filename;
+                            newNode.Tag = newTag;
+                            newNode.ContextMenuStrip = arbitraryFileContextMenuStrip;
+                            node.Nodes.Add(newNode);
+                            finalNode = newNode;
+
+                            if (file.fileheader == "NMLL" || file.fileheader == "NMLB")
+                            {
+                                addChildFiles(newNode.Nodes, (ContainerFile)chunk.getFileParsed(newNode.Index));
                             }
                         }
                     }
-                    if(filename != file.filename)
+                    if(finalNode != null)
                     {
-                        file.filename = filename;
+                        treeView1.SelectedNode = finalNode;
                     }
-
-                    chunk.addFile(file);
-
-                    TreeNode newNode = new TreeNode(file.filename);
-                    FileTreeNodeTag newTag = new FileTreeNodeTag();
-                    newTag.OwnerContainer = chunk;
-                    newTag.FileName = file.filename;
-                    newNode.Tag = newTag;
-                    newNode.ContextMenuStrip = arbitraryFileContextMenuStrip;
-                    node.Nodes.Add(newNode);
-
-                    if(file.fileheader == "NMLL" || file.fileheader == "NMLB")
-                    {
-                        addChildFiles(newNode.Nodes, (ContainerFile)chunk.getFileParsed(newNode.Index));
-                    }
-                    treeView1.SelectedNode = newNode;
                 }
             }
         }

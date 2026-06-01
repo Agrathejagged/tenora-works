@@ -46,34 +46,10 @@ namespace PSULib.FileClasses.Items
 
         public class EquipPacket
         {
-            private short value1;
-
-            public short Value1
-            {
-                get { return value1; }
-                set { value1 = value; }
-            }
-            short value2;
-
-            public short Value2
-            {
-                get { return value2; }
-                set { value2 = value; }
-            }
-            short value3;
-
-            public short Value3
-            {
-                get { return value3; }
-                set { value3 = value; }
-            }
-            short value4;
-
-            public short Value4
-            {
-                get { return value4; }
-                set { value4 = value; }
-            }
+            public short Range { get; set; }
+            public short AttackOffset { get; set; }
+            public short SweepAngle { get; set; }
+            public short HeightModifier { get; set; }
         }
 
         public Weapon[][] parsedWeapons;
@@ -226,10 +202,10 @@ namespace PSULib.FileClasses.Items
                 for (int i = 0; i < packetCount; i++)
                 {
                     EquipPacket tempPacket = new EquipPacket();
-                    tempPacket.Value1 = BitConverter.ToInt16(equipPacket, i * 8 + 0);
-                    tempPacket.Value2 = BitConverter.ToInt16(equipPacket, i * 8 + 2);
-                    tempPacket.Value3 = BitConverter.ToInt16(equipPacket, i * 8 + 4);
-                    tempPacket.Value4 = BitConverter.ToInt16(equipPacket, i * 8 + 6);
+                    tempPacket.Range = BitConverter.ToInt16(equipPacket, i * 8 + 0);
+                    tempPacket.AttackOffset = BitConverter.ToInt16(equipPacket, i * 8 + 2);
+                    tempPacket.SweepAngle = BitConverter.ToInt16(equipPacket, i * 8 + 4);
+                    tempPacket.HeightModifier = BitConverter.ToInt16(equipPacket, i * 8 + 6);
                     parsedPackets.Add(tempPacket);
                 }
             }
@@ -328,10 +304,10 @@ namespace PSULib.FileClasses.Items
                 equipPacketLoc = (int)outStream.Position;
                 for (int i = 0; i < parsedPackets.Count; i++)
                 {
-                    outWriter.Write(((EquipPacket)parsedPackets[i]).Value1);
-                    outWriter.Write(((EquipPacket)parsedPackets[i]).Value2);
-                    outWriter.Write(((EquipPacket)parsedPackets[i]).Value3);
-                    outWriter.Write(((EquipPacket)parsedPackets[i]).Value4);
+                    outWriter.Write(((EquipPacket)parsedPackets[i]).Range);
+                    outWriter.Write(((EquipPacket)parsedPackets[i]).AttackOffset);
+                    outWriter.Write(((EquipPacket)parsedPackets[i]).SweepAngle);
+                    outWriter.Write(((EquipPacket)parsedPackets[i]).HeightModifier);
                 }
                 //outWriter.Write(equipPacket);
             }
@@ -426,7 +402,7 @@ namespace PSULib.FileClasses.Items
                 outWriter.Write(weaponType);
                 outWriter.Write(equipStat);
             }
-            int padSize = (int)outStream.Position;//(int)((outStream.Position + 0xF) & 0xFFFFFFF0);
+            int padSize = (int)outStream.Position;
             int normSize = (int)outStream.Position;
             if ((padSize & 0xF) == 8)
             {
@@ -514,7 +490,7 @@ namespace PSULib.FileClasses.Items
             textOut.WriteLine("//'R'\tIndex\tValue 1\tValue 2\tValue 3\tValue 4");
             for (int i = 0; i < parsedPackets.Count; i++)
             {
-                textOut.WriteLine("R\t" + i + "\t" + parsedPackets[i].Value1 + "\t" + parsedPackets[i].Value2 + "\t" + parsedPackets[i].Value3 + "\t" + parsedPackets[i].Value4);
+                textOut.WriteLine("R\t" + i + "\t" + parsedPackets[i].Range + "\t" + parsedPackets[i].AttackOffset + "\t" + parsedPackets[i].SweepAngle + "\t" + parsedPackets[i].HeightModifier);
             }
             textOut.Close();
         }
@@ -537,10 +513,10 @@ namespace PSULib.FileClasses.Items
                         short val3 = Convert.ToInt16(splitLine[4]);
                         short val4 = Convert.ToInt16(splitLine[5]);
                         EquipPacket temp = new EquipPacket();
-                        temp.Value1 = val1;
-                        temp.Value2 = val2;
-                        temp.Value3 = val3;
-                        temp.Value4 = val4;
+                        temp.Range = val1;
+                        temp.AttackOffset = val2;
+                        temp.SweepAngle = val3;
+                        temp.HeightModifier = val4;
                         if (index >= parsedPackets.Count)
                             parsedPackets.Add(temp);
                         else

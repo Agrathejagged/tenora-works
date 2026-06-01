@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using PSULib.FileClasses.General;
+using PSULib.Support;
 
 namespace PSULib.FileClasses.Items
 {
@@ -184,8 +185,8 @@ namespace PSULib.FileClasses.Items
             outWriter.Write(specDropLoc);
             calculatedPointers[1] = (int)outStream.Position;
             outWriter.Write(mainDropLoc);
-            int padSize = (int)(outStream.Position + 0xF & 0xFFFFFFF0);
-            outWriter.Write(new byte[padSize - outStream.Position]);
+            outWriter.Trim(0x10);
+            int padSize = (int)outStream.Position;
             outStream.Seek(0, SeekOrigin.Begin);
             outWriter.Write(Encoding.ASCII.GetBytes("NXR\0"));
             outWriter.Write(padSize);    //Size to be.

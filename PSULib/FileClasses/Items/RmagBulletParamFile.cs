@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using PSULib.FileClasses.General;
+using PSULib.Support;
 
 namespace PSULib.FileClasses.Items
 {
@@ -179,7 +180,7 @@ namespace PSULib.FileClasses.Items
                 outWriter.Write(statusEffects[i].light);
                 outWriter.Write(statusEffects[i].dark);
             }
-            outStream.Seek(outStream.Position + 3 & 0xFFFFFFFC, SeekOrigin.Begin);
+            outWriter.Trim(4);
             int[] mfrLocs = new int[4];
             for (int i = 0; i < 4; i++)
             {
@@ -223,7 +224,7 @@ namespace PSULib.FileClasses.Items
                 {
                     if (!isPsp1)
                         outWriter.Write(bulletIndexes);
-                    outStream.Seek(outStream.Position + 3 & 0xFFFFFFFC, SeekOrigin.Begin);
+                    outWriter.Trim(4);
                     mfrLocs[i] = (int)outStream.Position;
                     ptrs.Add((int)outStream.Position);
                     outWriter.Write(bulletLoc);
@@ -252,7 +253,7 @@ namespace PSULib.FileClasses.Items
                     ptrs.Add((int)outStream.Position); //Manufacturer bullets
                 outWriter.Write(mfrLocs[i]);
             }
-            outStream.Seek(outStream.Position + 7 & 0xFFFFFFF8, SeekOrigin.Begin);
+            outWriter.Trim(8);
             int fileLength = (int)outStream.Position;
             outStream.Seek(0, SeekOrigin.Begin);
             outWriter.Write(0x0052584E);

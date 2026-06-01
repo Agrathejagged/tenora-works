@@ -409,7 +409,7 @@ namespace PSULib.FileClasses.Archives
 
         public PsuFile getFileParsed(string filename)
         {
-            return chunks.First(chunk => chunk.chunkID + " chunk" == filename);
+            return chunks.FirstOrDefault(chunk => chunk.chunkID + " chunk" == filename);
         }
 
         public RawFile getFileRaw(string filename)
@@ -657,7 +657,7 @@ namespace PSULib.FileClasses.Archives
 
         public RawFile getFileRaw(string filename)
         {
-            return fileContents.First(file => file.filename == filename);
+            return fileContents.FirstOrDefault(file => file.filename == filename);
         }
 
         public RawFile getFileRaw(int fileIndex)
@@ -681,11 +681,21 @@ namespace PSULib.FileClasses.Archives
             {
                 loadedFileCache.Remove(fileContents[index].filename);
             }
+            //Old bug exported files that had no chunk size.
+            if (toReplace.chunkSize == 0)
+            {
+                toReplace.chunkSize = 0x60;
+            }
             fileContents[index] = toReplace;
         }
 
         public void addFile(int index, RawFile toAdd)
         {
+            //Old bug exported files that had no chunk size.
+            if (toAdd.chunkSize == 0)
+            {
+                toAdd.chunkSize = 0x60;
+            }
             fileContents.Insert(index, toAdd);
         }
 

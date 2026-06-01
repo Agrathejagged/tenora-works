@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using PSULib.FileClasses.General;
+using PSULib.Support;
 
 namespace PSULib.FileClasses.Items
 {
@@ -43,6 +44,23 @@ namespace PSULib.FileClasses.Items
         public sbyte[] skillIndexes;
         public SkillTier[][] allSkills;
         public ushort[][] hitBoxes;
+
+        public static bool IsPsp2File(byte[] rawData, int[] ptrs, int baseAddr)
+        {
+            MemoryStream inStream = new MemoryStream(rawData);
+            BinaryReader inReader = new BinaryReader(inStream);
+            if (rawData[1] != 0x55)
+            {
+                return false;
+            }
+            inStream.Seek(8, SeekOrigin.Begin);
+            int headerLoc = inReader.ReadInt32();
+            if(ptrs.Contains(headerLoc + baseAddr))
+            {
+                return true;
+            }
+            return false;
+        }
 
         public ItemSkillParamFile(string inFilename, byte[] rawData, byte[] subHeader, int[] ptrs, int baseAddr)
         {
@@ -175,7 +193,7 @@ namespace PSULib.FileClasses.Items
                 else
                     outWriter.Write((byte)0xFF);
             }
-            outStream.Seek(outStream.Position + 7 & 0xFFFFFFF8, SeekOrigin.Begin);
+            outWriter.Trim(8);
             int fileLength = (int)outStream.Position;
             outStream.Seek(0, SeekOrigin.Begin);
             outWriter.Write(0x0052584E);

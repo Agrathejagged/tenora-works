@@ -144,6 +144,8 @@ namespace PSULib.FileClasses.Archives
                 afsList[index].fileContents = new NblLoader(new MemoryStream(afsList[index].rawContents));
             }
             afsList[index].fileSize = (uint)toImport.Length;
+            afsList[index].fileContents = null;
+            populateFile(afsList[index]);
         }
 
         public void addFile(string filename, Stream toImport)
@@ -167,7 +169,7 @@ namespace PSULib.FileClasses.Archives
 
         public void saveFile(Stream saveFile)
         {
-            BinaryWriter beta = new BinaryWriter(saveFile);
+            BinaryWriter saveWriter = new BinaryWriter(saveFile);
             int fileCount = afsList.Count;
             for (int i = 0; i < fileCount; i++)
             {
@@ -176,32 +178,33 @@ namespace PSULib.FileClasses.Archives
                     afsList[i].rawContents = afsList[i].fileContents.ToRaw();
                 }
             }
-            beta.Write(Encoding.ASCII.GetBytes("AFS\0"));
-            beta.Write(fileCount);
+            saveWriter.Write(Encoding.ASCII.GetBytes("AFS\0"));
+            saveWriter.Write(fileCount);
             uint[] fileLocs = new uint[fileCount + 1];
-            fileLocs[0] = (uint)((fileCount + 1) * 8 + 0x7FF & 0xFFFF800);
+            fileLocs[0] = (uint)((fileCount + 1) * 8 + 0x7FF & 0xFFFFF800);
             saveFile.Seek(fileLocs[0], SeekOrigin.Begin);
             for (int i = 0; i < fileCount; i++)
             {
                 fileLocs[i] = (uint)saveFile.Position;
-                beta.Write(afsList[i].rawContents);
+                saveWriter.Write(afsList[i].rawContents);
+                saveWriter.Trim(0x800);
             }
             fileLocs[fileCount] = (uint)saveFile.Position;
             for (int i = 0; i < fileCount; i++)
             {
-                beta.Write(StringUtilities.encodePaddedSjisString(afsList[i].fileName, 0x20));
-                beta.Write(new byte[0x10]);
+                saveWriter.Write(StringUtilities.encodePaddedSjisString(afsList[i].fileName, 0x20));
+                saveWriter.Write(new byte[0x10]);
             }
-            beta.Write(new byte[fileCount * 0x30 + 0x7FF & 0x800]);
+            saveWriter.Write(new byte[fileCount * 0x30 + 0x7FF & 0x800]);
             saveFile.Seek(8, SeekOrigin.Begin);
             for (int i = 0; i < fileCount; i++)
             {
-                beta.Write(fileLocs[i]);
-                beta.Write(afsList[i].rawContents.Length);
+                saveWriter.Write(fileLocs[i]);
+                saveWriter.Write(afsList[i].rawContents.Length);
             }
-            beta.Write(fileLocs[fileCount]);
-            beta.Write(fileCount * 0x30);
-            beta.Close();
+            saveWriter.Write(fileLocs[fileCount]);
+            saveWriter.Write(fileCount * 0x30);
+            saveWriter.Close();
         }
 
         public override byte[] ToRaw()
@@ -272,14 +275,14 @@ namespace PSULib.FileClasses.Archives
             int[] fileSizes = new int[fileCount];
             int metadataLoc = 0;
             int metadataLength = fileCount * 0x30;
-            outStream.Seek((fileCount + 1) * 8 + 0x7FF & 0xFFFF800, SeekOrigin.Begin);
+            outStream.Seek((fileCount + 1) * 8 + 0x7FF & 0xFFFFF800, SeekOrigin.Begin);
             for (int i = 0; i < fileCount; i++)
             {
                 byte[] currFile = File.ReadAllBytes(filenames[i]);
                 fileLocs[i] = (int)outStream.Position;
                 fileSizes[i] = currFile.Length;
                 outWriter.Write(currFile);
-                outStream.Seek(outStream.Position + 0x7FF & 0xFFFF800, SeekOrigin.Begin);
+                outStream.Seek(outStream.Position + 0x7FF & 0xFFFFF800, SeekOrigin.Begin);
             }
             metadataLoc = (int)outStream.Position;
             for (int i = 0; i < fileCount; i++)

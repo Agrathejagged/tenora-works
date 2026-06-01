@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections;
 using PSULib.FileClasses.General;
 using System.Globalization;
+using PSULib.Support;
 
 namespace PSULib.FileClasses.Items
 {
@@ -143,7 +144,8 @@ namespace PSULib.FileClasses.Items
                 outWriter.Write((short)0);
                 outWriter.Write((short)clothes[i].Count);
             }
-            int fileSize = (int)(outStream.Position + 0xF & 0xFFFFFF0);
+            outWriter.Trim(0x10);
+            int fileSize = (int)(outStream.Position);
             outStream.Seek(0x4, SeekOrigin.Begin);
             outWriter.Write(fileSize);
             outWriter.Write(headerLoc);

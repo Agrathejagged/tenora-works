@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using PSULib.FileClasses.General;
+using PSULib.Support;
 
 namespace PSULib.FileClasses.Items
 {
@@ -154,7 +155,7 @@ namespace PSULib.FileClasses.Items
             {
                 indexLoc = (int)outStream.Position;
                 outWriter.Write(techIndexes);
-                outStream.Seek(outStream.Position + 3 & 0xFFFFFFFC, SeekOrigin.Begin);
+                outWriter.Trim(4);
             }
             int headerLoc = (int)outStream.Position;
             outWriter.Write(allTechs[0].Length);
@@ -171,7 +172,7 @@ namespace PSULib.FileClasses.Items
             outWriter.Write(0x1C);
             ptrs[ptrShift + 1] = (int)outStream.Position;
             outWriter.Write(tierLoc);
-            outStream.Seek(outStream.Position + 7 & 0xFFFFFFF8, SeekOrigin.Begin);
+            outWriter.Trim(8);
             int fileLength = (int)outStream.Position;
             outStream.Seek(0, SeekOrigin.Begin);
             outWriter.Write(0x0052584E);

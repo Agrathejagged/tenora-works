@@ -83,7 +83,7 @@ namespace PSULib.FileClasses.Enemies
             public int StatusEffect { get; set; } //this one appears to be bitflags
             public int UnknownSubgroup2Int3 { get; set; }
             public int UnknownSubgroup2Int4 { get; set; }
-            public int UnknownSubgroup2Int5 { get; set; } //this one appears to be hitbox data
+            public int HitboxSweepAngle { get; set; } //this one appears to be hitbox data
 
             //Subgroup 3 stuff
             public float HpModifier { get; set; } // This would probably be HP, but obvious reasons.
@@ -379,7 +379,7 @@ namespace PSULib.FileClasses.Enemies
                 temp.StatusEffect = inReader.ReadInt32();
                 temp.UnknownSubgroup2Int3 = inReader.ReadInt32();
                 temp.UnknownSubgroup2Int4 = inReader.ReadInt32();
-                temp.UnknownSubgroup2Int5 = inReader.ReadInt32();
+                temp.HitboxSweepAngle = inReader.ReadInt32();
 
                 inStream.Seek(subGroup3Loc + i * 56, SeekOrigin.Begin);
                 temp.HpModifier = inReader.ReadSingle();
@@ -509,7 +509,7 @@ namespace PSULib.FileClasses.Enemies
                 outWriter.Write(attack.StatusEffect);
                 outWriter.Write(attack.UnknownSubgroup2Int3);
                 outWriter.Write(attack.UnknownSubgroup2Int4);
-                outWriter.Write(attack.UnknownSubgroup2Int5);
+                outWriter.Write(attack.HitboxSweepAngle);
             }
             int attackSubgroup3Loc = (int)outStream.Position;
             foreach (var attack in attackParams)
