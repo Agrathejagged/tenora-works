@@ -1,31 +1,31 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using psu_generic_parser.FileViewers;
+using psu_generic_parser.Forms;
+using psu_generic_parser.Forms.FileViewers;
+using psu_generic_parser.Forms.FileViewers.Bosses;
+using psu_generic_parser.Forms.FileViewers.Enemies;
+using PSULib;
+using PSULib.FileClasses;
+using PSULib.FileClasses.Archives;
+using PSULib.FileClasses.Bosses;
+using PSULib.FileClasses.Characters;
+using PSULib.FileClasses.Enemies;
+using PSULib.FileClasses.General;
+using PSULib.FileClasses.General.Scripts;
+using PSULib.FileClasses.Items;
+using PSULib.FileClasses.Maps;
+using PSULib.FileClasses.Missions;
+using PSULib.FileClasses.Models;
+using PSULib.FileClasses.Textures;
+using PSULib.Support;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
-using System.IO;
-using psu_generic_parser.FileViewers;
-using System.Security.Cryptography;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using PSULib;
-using System.Drawing;
-using psu_generic_parser.Forms.FileViewers;
-using PSULib.FileClasses.Enemies;
-using psu_generic_parser.Forms.FileViewers.Enemies;
-using PSULib.FileClasses.Archives;
-using PSULib.FileClasses.Missions;
-using PSULib.FileClasses.Items;
-using PSULib.FileClasses.General;
-using PSULib.FileClasses.Characters;
-using PSULib.FileClasses.Bosses;
-using PSULib.FileClasses.Textures;
-using PSULib.FileClasses.Models;
-using PSULib.Support;
-using PSULib.FileClasses.Maps;
-using psu_generic_parser.Forms;
-using PSULib.FileClasses.General.Scripts;
-using PSULib.FileClasses;
-using psu_generic_parser.Forms.FileViewers.Bosses;
 
 namespace psu_generic_parser
 {
@@ -415,6 +415,14 @@ namespace psu_generic_parser
             else if (toRead is ThinkDragonFile thinkDragonFile)
             {
                 toAdd = new ThinkDragonViewer(thinkDragonFile);
+            }
+            else if (toRead is ThinkFakis2Falz2File thinkFakis2Falz2File)
+            {
+                toAdd = new ThinkFakis2Falz2Viewer(thinkFakis2Falz2File);
+            }
+            else if (toRead is ThinkFakis1MotherBrainFile thinkFakis1MotherBrainFile)
+            {
+                toAdd = new ThinkFakis1MotherBrainViewer(thinkFakis1MotherBrainFile);
             }
             else if (toRead is WeaponParamFile weaponParamFile)
             {
@@ -1870,6 +1878,70 @@ namespace psu_generic_parser
                 {
                     e.CancelEdit = true;
                 }
+            }
+        }
+
+        private void decompressBlobToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var file = fileDialog.FileName;
+                byte[] fileContents = File.ReadAllBytes(file);
+                byte[] output = PrsCompDecomp.Decompress(fileContents, (uint)fileContents.Length);
+            }
+        }
+
+        private void touchAllUVRsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                var files = Directory.GetFiles(folderBrowserDialog1.SelectedPath);
+                StreamWriter touchedFiles = new StreamWriter(Path.Combine(folderBrowserDialog1.SelectedPath, "touchedFiles.txt"));
+                foreach (string filename in files)
+                {
+                    if (new FileInfo(filename).Length > 4 && !filename.EndsWith(".txt"))
+                    {
+                        using (var stream = File.OpenRead(filename))
+                        {
+                            byte[] identifier = new byte[4];
+                            stream.Read(identifier, 0, 4);
+                            //Verify we're an NBL.
+                            if (identifier[0] == 'N' && identifier[1] == 'M' && identifier[2] == 'L' && identifier[3] == 'L')
+                            {
+                                bool printedFile = false;
+                                stream.Seek(0, SeekOrigin.Begin);
+                                NblLoader nbl = new NblLoader(stream);
+                                if (nbl.chunks.Count > 1)
+                                {
+                                    NblChunk tmll = nbl.chunks[1];
+                                    List<string> filenames = tmll.getFilenames();
+                                    foreach (var tmllFile in filenames)
+                                    {
+                                        if (tmllFile.EndsWith(".uvr"))
+                                        {
+                                            UvrTextureFile uvrTextureFile = (UvrTextureFile)tmll.getFileParsed(tmllFile);
+                                            if(uvrTextureFile.RasterOrIndex == "raster")
+                                            {
+                                                if(!printedFile)
+                                                {
+                                                    touchedFiles.WriteLine("NBL : " + filename);
+                                                    printedFile = true;
+                                                }
+                                                touchedFiles.WriteLine("->" + tmllFile + "\t" + uvrTextureFile.RasterOrIndex + "\t" + uvrTextureFile.palFormat);
+                                            }
+                                        }
+                                    }
+                                }
+                                if (printedFile)
+                                {
+                                    touchedFiles.WriteLine();
+                                    touchedFiles.WriteLine();
+                                }
+                            }
+                        }
+                    }
+                }
+                touchedFiles.Close();
             }
         }
     }

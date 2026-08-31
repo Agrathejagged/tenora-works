@@ -109,7 +109,7 @@ namespace PSULib.FileClasses.General
             "Binary Xor",
             "Increment",
             "Decrement",
-            "Negate",
+            "Negate", // 0x10
             "Absolute Value",
             "Test equal",
             "Test not equal",
@@ -125,7 +125,7 @@ namespace PSULib.FileClasses.General
             "Copy top after next",
             "Roll 3 (down)",
             "Copy top two",
-            "Pop two",
+            "Pop two", // 0x20
             "Swap top four",
             "Copy top three",
             "Pop three",
@@ -141,7 +141,7 @@ namespace PSULib.FileClasses.General
             "Branch (false)",
             "Branch (true)",
             "",
-            "",
+            "", // 0x30
             "",
             "",
             "",
@@ -157,7 +157,7 @@ namespace PSULib.FileClasses.General
             "Set variable",
             "",
             "",
-            "",
+            "", // 0x40
             "",
             "",
             "",

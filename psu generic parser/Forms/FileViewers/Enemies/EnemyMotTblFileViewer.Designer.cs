@@ -41,6 +41,7 @@ namespace psu_generic_parser.Forms.FileViewers.Enemies
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(654, 429);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.dataGridView1_RowPostPaint);
             // 
             // EnemyMotTblFileViewer
             // 

@@ -34,15 +34,15 @@
             this.attackDataGrid = new System.Windows.Forms.DataGridView();
             this.hitboxSplitContainer = new System.Windows.Forms.SplitContainer();
             this.overallSplitContainer = new System.Windows.Forms.SplitContainer();
-            this.mysteryStatDataGrid = new System.Windows.Forms.DataGridView();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.elementNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.unknown1UpDown = new System.Windows.Forms.NumericUpDown();
-            this.unknown2UpDown = new System.Windows.Forms.NumericUpDown();
-            this.baseStatPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.testSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.baseStatPropertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.mysteryStatDataGrid = new System.Windows.Forms.DataGridView();
+            this.unknown2UpDown = new System.Windows.Forms.NumericUpDown();
+            this.unknown1UpDown = new System.Windows.Forms.NumericUpDown();
+            this.elementNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.hitboxDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.attackDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hitboxSplitContainer)).BeginInit();
@@ -53,14 +53,14 @@
             this.overallSplitContainer.Panel1.SuspendLayout();
             this.overallSplitContainer.Panel2.SuspendLayout();
             this.overallSplitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.mysteryStatDataGrid)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.elementNumericUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.unknown1UpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.unknown2UpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.testSplitContainer)).BeginInit();
             this.testSplitContainer.Panel1.SuspendLayout();
             this.testSplitContainer.Panel2.SuspendLayout();
             this.testSplitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mysteryStatDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.unknown2UpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.unknown1UpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.elementNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // hitboxDataGrid
@@ -74,6 +74,7 @@
             this.hitboxDataGrid.Size = new System.Drawing.Size(319, 212);
             this.hitboxDataGrid.TabIndex = 0;
             this.hitboxDataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.hitboxDataGrid_CellValueChanged);
+            this.hitboxDataGrid.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.hitboxDataGrid_RowPostPaint);
             // 
             // label1
             // 
@@ -104,6 +105,7 @@
             this.attackDataGrid.Size = new System.Drawing.Size(320, 231);
             this.attackDataGrid.TabIndex = 3;
             this.attackDataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.attackDataGrid_CellValueChanged);
+            this.attackDataGrid.RowPostPaint += new System.Windows.Forms.DataGridViewRowPostPaintEventHandler(this.hitboxDataGrid_RowPostPaint);
             // 
             // hitboxSplitContainer
             // 
@@ -148,6 +150,36 @@
             this.overallSplitContainer.SplitterDistance = 214;
             this.overallSplitContainer.TabIndex = 2;
             // 
+            // testSplitContainer
+            // 
+            this.testSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.testSplitContainer.Location = new System.Drawing.Point(7, 82);
+            this.testSplitContainer.Name = "testSplitContainer";
+            this.testSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // testSplitContainer.Panel1
+            // 
+            this.testSplitContainer.Panel1.Controls.Add(this.baseStatPropertyGrid);
+            // 
+            // testSplitContainer.Panel2
+            // 
+            this.testSplitContainer.Panel2.Controls.Add(this.mysteryStatDataGrid);
+            this.testSplitContainer.Size = new System.Drawing.Size(204, 406);
+            this.testSplitContainer.SplitterDistance = 203;
+            this.testSplitContainer.TabIndex = 8;
+            // 
+            // baseStatPropertyGrid
+            // 
+            this.baseStatPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.baseStatPropertyGrid.HelpVisible = false;
+            this.baseStatPropertyGrid.Location = new System.Drawing.Point(0, 0);
+            this.baseStatPropertyGrid.Name = "baseStatPropertyGrid";
+            this.baseStatPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
+            this.baseStatPropertyGrid.Size = new System.Drawing.Size(204, 203);
+            this.baseStatPropertyGrid.TabIndex = 7;
+            // 
             // mysteryStatDataGrid
             // 
             this.mysteryStatDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -158,32 +190,33 @@
             this.mysteryStatDataGrid.TabIndex = 0;
             this.mysteryStatDataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             // 
-            // label3
+            // unknown2UpDown
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 6);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(48, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Element:";
+            this.unknown2UpDown.Hexadecimal = true;
+            this.unknown2UpDown.Location = new System.Drawing.Point(102, 56);
+            this.unknown2UpDown.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.unknown2UpDown.Name = "unknown2UpDown";
+            this.unknown2UpDown.Size = new System.Drawing.Size(75, 20);
+            this.unknown2UpDown.TabIndex = 6;
+            this.unknown2UpDown.ValueChanged += new System.EventHandler(this.unknown2UpDown_ValueChanged);
             // 
-            // label4
+            // unknown1UpDown
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 32);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(93, 13);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "Unknown Short 1:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(4, 58);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(93, 13);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Unknown Short 2:";
+            this.unknown1UpDown.Hexadecimal = true;
+            this.unknown1UpDown.Location = new System.Drawing.Point(102, 30);
+            this.unknown1UpDown.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.unknown1UpDown.Name = "unknown1UpDown";
+            this.unknown1UpDown.Size = new System.Drawing.Size(75, 20);
+            this.unknown1UpDown.TabIndex = 5;
+            this.unknown1UpDown.ValueChanged += new System.EventHandler(this.unknown1UpDown_ValueChanged);
             // 
             // elementNumericUpDown
             // 
@@ -204,63 +237,32 @@
             this.elementNumericUpDown.TabIndex = 4;
             this.elementNumericUpDown.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
-            // unknown1UpDown
+            // label5
             // 
-            this.unknown1UpDown.Hexadecimal = true;
-            this.unknown1UpDown.Location = new System.Drawing.Point(102, 30);
-            this.unknown1UpDown.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.unknown1UpDown.Name = "unknown1UpDown";
-            this.unknown1UpDown.Size = new System.Drawing.Size(75, 20);
-            this.unknown1UpDown.TabIndex = 5;
-            this.unknown1UpDown.ValueChanged += new System.EventHandler(this.unknown1UpDown_ValueChanged);
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(4, 58);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(93, 13);
+            this.label5.TabIndex = 3;
+            this.label5.Text = "Unknown Short 2:";
             // 
-            // unknown2UpDown
+            // label4
             // 
-            this.unknown2UpDown.Hexadecimal = true;
-            this.unknown2UpDown.Location = new System.Drawing.Point(102, 56);
-            this.unknown2UpDown.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.unknown2UpDown.Name = "unknown2UpDown";
-            this.unknown2UpDown.Size = new System.Drawing.Size(75, 20);
-            this.unknown2UpDown.TabIndex = 6;
-            this.unknown2UpDown.ValueChanged += new System.EventHandler(this.unknown2UpDown_ValueChanged);
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(4, 32);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(93, 13);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "Unknown Short 1:";
             // 
-            // baseStatPropertyGrid
+            // label3
             // 
-            this.baseStatPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.baseStatPropertyGrid.HelpVisible = false;
-            this.baseStatPropertyGrid.Location = new System.Drawing.Point(0, 0);
-            this.baseStatPropertyGrid.Name = "baseStatPropertyGrid";
-            this.baseStatPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.baseStatPropertyGrid.Size = new System.Drawing.Size(204, 203);
-            this.baseStatPropertyGrid.TabIndex = 7;
-            // 
-            // testSplitContainer
-            // 
-            this.testSplitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.testSplitContainer.Location = new System.Drawing.Point(7, 82);
-            this.testSplitContainer.Name = "testSplitContainer";
-            this.testSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // testSplitContainer.Panel1
-            // 
-            this.testSplitContainer.Panel1.Controls.Add(this.baseStatPropertyGrid);
-            // 
-            // testSplitContainer.Panel2
-            // 
-            this.testSplitContainer.Panel2.Controls.Add(this.mysteryStatDataGrid);
-            this.testSplitContainer.Size = new System.Drawing.Size(204, 406);
-            this.testSplitContainer.SplitterDistance = 203;
-            this.testSplitContainer.TabIndex = 8;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(4, 6);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(48, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Element:";
             // 
             // BossServerParamViewer
             // 
@@ -282,14 +284,14 @@
             this.overallSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.overallSplitContainer)).EndInit();
             this.overallSplitContainer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.mysteryStatDataGrid)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.elementNumericUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.unknown1UpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.unknown2UpDown)).EndInit();
             this.testSplitContainer.Panel1.ResumeLayout(false);
             this.testSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.testSplitContainer)).EndInit();
             this.testSplitContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mysteryStatDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.unknown2UpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.unknown1UpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.elementNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }

@@ -167,6 +167,14 @@ namespace PSULib.FileClasses.General
                     return new ItemBulletParamFile(filename, rawData, inHeader, ptrs, baseAddr);
                 else if (filename.StartsWith("Think") && Regex.IsMatch(filename, ".*Dragon\\.[uxs]nr"))
                     return new ThinkDragonFile(filename, rawData, inHeader, ptrs, baseAddr);
+                else if (filename.StartsWith("ThinkDulkFakis2") || filename.StartsWith("ThinkDarkFals"))
+                {
+                    return new ThinkFakis2Falz2File(filename, rawData, inHeader, ptrs, baseAddr);
+                }
+                else if (filename.StartsWith("ThinkDulkFakis1") || filename.StartsWith("ThinkMotherBrain"))
+                {
+                    return new ThinkFakis1MotherBrainFile(filename, rawData, inHeader, ptrs, baseAddr);
+                }
                 else if (filename.Contains("itemSkillParam"))
                 {
                     if (ItemSkillParamFile.IsPsp2File(rawData, ptrs, baseAddr))

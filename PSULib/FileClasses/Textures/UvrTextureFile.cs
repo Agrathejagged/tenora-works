@@ -15,8 +15,8 @@ namespace PSULib.FileClasses.Textures
     public class UvrTextureFile : PsuFile, ITextureFile
     {
         private UnpointeredFile backupRaw;
-        public GimPaletteFormat palFormat { get; set; }
-        PixelFormat imageFormat;
+        public UvrPaletteFormat palFormat { get; set; }
+        public PixelFormat imageFormat;
         public Bitmap[] mipMaps;
         public int mipCount = 1;
         byte[] rawData;
@@ -27,6 +27,17 @@ namespace PSULib.FileClasses.Textures
         string superFormat;
         string subFormat;
         private byte[] inHeader;
+
+        public string RasterOrIndex = "";
+
+        public enum UvrPaletteFormat
+        {
+            Argb1555 = 0x00,
+            Rgb565 = 0x01,
+            Argb4444 = 0x02,
+            Argb8888 = 0x03,
+            Unknown = 0xFF,
+        }
 
         public UvrTextureFile(byte[] inHeader, byte[] rawData, string filename)
         {
@@ -102,16 +113,18 @@ namespace PSULib.FileClasses.Textures
             int paletteSize = 16;
             int bpp = 4;// flags & 0xE;mipCount = 1;
 
-            palFormat = (GimPaletteFormat)colorDepth;
+            palFormat = (UvrPaletteFormat)colorDepth;
             imageReader.ReadInt16();
             width = imageReader.ReadInt16();
             height = imageReader.ReadInt16();
             if ((flags & 0xF) == 0) //I think this is unpalettized data?
             {
+                RasterOrIndex = "raster";
                 readRawImage(imageReader, imageStream);
             }
             else
             {
+                RasterOrIndex = "index";
                 int maxU = (int)Math.Log(width, 2);
                 int maxV = (int)Math.Log(height, 2);
                 imageFormat = PixelFormat.Format4bppIndexed;
@@ -159,33 +172,33 @@ namespace PSULib.FileClasses.Textures
                     int blue = 0;
                     switch (palFormat)
                     {
-                        case GimPaletteFormat.Argb1555: //ACTUALLY 565
-                            ushort currentColor = imageReader.ReadUInt16();
+                        case UvrPaletteFormat.Rgb565:
+                        ushort currentColor = imageReader.ReadUInt16();
                             red = (currentColor >> 11 & 0x1F) << 3;
                             green = (currentColor >> 5 & 0x3F) << 2;
                             blue = (currentColor >> 0 & 0x1F) << 3;
                             break;
-                        case GimPaletteFormat.Argb4444:
+                        case UvrPaletteFormat.Argb4444:
                             currentColor = imageReader.ReadUInt16();
                             blue = (currentColor & 0xF000) >> 8;
                             green = (currentColor & 0xF00) >> 4;
                             red = (currentColor & 0xF0) >> 0;
                             alpha = (currentColor & 0xF) << 4;
                             break;
-                        case GimPaletteFormat.Argb8888:
+                        case UvrPaletteFormat.Argb8888:
                             blue = imageReader.ReadByte();
                             green = imageReader.ReadByte();
                             red = imageReader.ReadByte();
                             alpha = imageReader.ReadByte();
                             break;
-                        case GimPaletteFormat.Rgb565: //ACTUALLY 1555
+                        case UvrPaletteFormat.Argb1555:
                             currentColor = imageReader.ReadUInt16();
                             alpha = 255 * (currentColor >> 15 & 0x1) >> 0;
                             red = (currentColor >> 10 & 0x1F) << 3;
                             green = (currentColor >> 5 & 0x1F) << 3;
                             blue = (currentColor >> 0 & 0x1F) << 3;
                             break;
-                        case GimPaletteFormat.Unknown: throw new Exception("Bad format: " + colorDepth);
+                        case UvrPaletteFormat.Unknown: throw new Exception("Bad format: " + colorDepth);
                     }
                     pal.Entries[i] = Color.FromArgb(alpha << 24 | red << 0 | blue << 16 | green << 8);
                 }
@@ -233,27 +246,83 @@ namespace PSULib.FileClasses.Textures
 
         private void readRawImage(BinaryReader imageReader, Stream imageStream)
         {
-
+            //The raster version has red and blue swapped for whatever reason compared to the palettized version.
             int bpp = 4;
             switch (palFormat)
             {
-                case GimPaletteFormat.Argb1555: imageFormat = PixelFormat.Format16bppRgb565; bpp = 16; break;
-                case GimPaletteFormat.Rgb565: imageFormat = PixelFormat.Format16bppArgb1555; bpp = 16; break;
+                //On palettized, this appears to be RGB565. On raster, it's... BGR565? Peculiar.
+                case UvrPaletteFormat.Rgb565: imageFormat = PixelFormat.Format16bppRgb565; bpp = 16; break;
+                case UvrPaletteFormat.Argb1555: imageFormat = PixelFormat.Format16bppArgb1555; bpp = 16; break;
                 //hoping this one never appears...
                 //case GimPaletteFormat.Argb4444: imageFormat = PixelFormat.Format.Format16bppRgb565; bpp = 4; break;
-                case GimPaletteFormat.Argb8888: imageFormat = PixelFormat.Format32bppArgb; bpp = 32; break;
+                case UvrPaletteFormat.Argb8888: imageFormat = PixelFormat.Format32bppArgb; bpp = 32; break;
                 //This'll make it crash quick.
                 default: imageFormat = PixelFormat.Format32bppArgb; bpp = 8; break;
             }
             byte[] pixelData = imageReader.ReadBytes(bpp * width * height / 8);
+            byte[] correctedPixelData = invertRedBlue(pixelData, palFormat);
 
-            byte[] untwiddledPixels = UnSwizzle(pixelData, 0, width, height, bpp);
+            byte[] untwiddledPixels = UnSwizzle(correctedPixelData, 0, width, height, bpp);
             Bitmap parsedImage = new Bitmap(width, height, imageFormat);
             BitmapData temp = parsedImage.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, imageFormat);
-            Marshal.Copy(untwiddledPixels, 0, temp.Scan0, pixelData.Length);
+            Marshal.Copy(untwiddledPixels, 0, temp.Scan0, untwiddledPixels.Length);
             parsedImage.UnlockBits(temp);
             mipMaps = new Bitmap[1];
             mipMaps[0] = parsedImage;
+        }
+
+        byte[] invertRedBlue(byte[] bytes, UvrPaletteFormat paletteFormat)
+        {
+            byte[] inverted = new byte[bytes.Length];
+            if (paletteFormat == UvrPaletteFormat.Argb8888) {
+                for(int i = 0; i < bytes.Length; i += 4)
+                {
+                    swapColorsArgb8888(bytes, inverted, i);
+                }
+            } else if(paletteFormat == UvrPaletteFormat.Argb1555)
+            {
+                for (int i = 0; i < bytes.Length; i += 2)
+                {
+                    swapColorsArgb1555(bytes, inverted, i);
+                }
+            } else if(paletteFormat == UvrPaletteFormat.Rgb565)
+            {
+                for(int i = 0; i < bytes.Length; i+=2)
+                {
+                    swapColorsRgb565(bytes, inverted, i);
+                }
+            }
+            return inverted;
+        }
+
+        private void swapColorsArgb1555(byte[] from, byte[] to, int index)
+        {
+            ushort values = BitConverter.ToUInt16(from, index);
+            byte a = (byte)((values & 0x8000) >> 15);
+            byte r = (byte)(((values) & 0xE900) >> 10);
+            byte g = (byte)(((values & 0x6E0) >> 5));
+            byte b = (byte)(((values) & 0x1F));
+            ushort swappedValues = (ushort)((r << 0) | (g << 5) | (b << 10) | (a << 15));
+            BitConverter.GetBytes(swappedValues).CopyTo(to, index);
+        }
+
+        private void swapColorsRgb565(byte[] from, byte[] to, int index)
+        {
+            ushort values = BitConverter.ToUInt16(from, index);
+            byte r = (byte)(((values) & 0xF800) >> 11);
+            byte g = (byte)(((values & 0x7E0) >> 5));
+            byte b = (byte)(((values) & 0x1F));
+            ushort swappedValues = (ushort)((r << 0) | (g << 5) | (b << 11));
+            BitConverter.GetBytes(swappedValues).CopyTo(to, index);
+        }
+
+        private void swapColorsArgb8888(byte[] from, byte[] to, int index)
+        {
+            //Easy since it's on byte boundaries
+            to[index] = from[index + 2];
+            to[index + 1] = from[index + 1];
+            to[index + 2] = from[index];
+            to[index + 3] = from[index + 3];
         }
 
         private void setPixel(byte[] rasterData, int x, int y, byte value)

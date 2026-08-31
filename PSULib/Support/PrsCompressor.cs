@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,10 +27,6 @@ namespace PSULib.Support
         int ctrlBitCounter;
         Tuple<List<int>, int> emptyTuple = new Tuple<List<int>, int>(new List<int>(), 0);
 
-        const int MAXIMUM_SHORT_WINDOW_MATCH = 7;
-        const int MAXIMUM_LONG_WINDOW_MATCH = 0x100;
-        const int SHORT_WINDOW_SIZE = 0x100;
-
         //This one is aiming for speed at the expense of space.
         public byte[] compress(byte[] inCompress)
         {
@@ -49,61 +46,59 @@ namespace PSULib.Support
             Array.Copy(toCompress, 0, compBuffer, 1, 2);
             int i = 2;
 
-            //flag value; -1 means "did not check"
-            int maxMatchOffset = -1;
-            int maxMatch = -1;
             while (i < compressLength - 1)
             {
-                OffsetDictionaryEntry currentOffsetList = getOffsetList(offsetDictionary, toCompress[i], i);
-                if (maxMatch == -1)
-                {
-                    var findLoc = findBestRange(i, currentOffsetList.matchList, currentOffsetList.currentFirstOffset);
-                    maxMatchOffset = findLoc.Item1;
-                    maxMatch = findLoc.Item2;
-                }
+                OffsetDictionaryEntry currentOffsetList = getOffsetList(offsetDictionary, toCompress[i], i); ;
+
+                var findLoc = findBestRange(i, currentOffsetList.matchList, currentOffsetList.currentFirstOffset);
+                int maxMatchOffset = findLoc.Item1;
+                int maxMatch = findLoc.Item2;
 
 
                 int maxMatchIfCopy = 0;
                 int maxMatchIfDirect = 0;
-                int nextMatchIfDirect = -1;
-                int nextMatchOffsetIfDirect = -1;
-                int nextMatchIfCopy = 0;
-                int nextMatchOffsetIfCopy = 0;
                 if (maxMatchOffset != -1 && i + maxMatch < compressLength)
                 {
                     var nextIfCopy = getOffsetList(offsetDictionary, toCompress[i + maxMatch], i + maxMatch, false);
                     var lookaheadIfCopy = findBestRange(i + maxMatch, nextIfCopy.matchList, nextIfCopy.currentFirstOffset);
                     maxMatchIfCopy = lookaheadIfCopy.Item2 - 1;
-                    nextMatchOffsetIfCopy = lookaheadIfCopy.Item1;
-                    nextMatchIfCopy = lookaheadIfCopy.Item2;
 
                     var nextIfDirect = getOffsetList(offsetDictionary, toCompress[i + 1], i + 1, false);
                     var lookaheadIfDirect = findBestRange(i + 1, nextIfDirect.matchList, nextIfDirect.currentFirstOffset);
                     maxMatchIfDirect = lookaheadIfDirect.Item2 + 1;
-                    nextMatchOffsetIfDirect = lookaheadIfDirect.Item1;
-                    nextMatchIfDirect = lookaheadIfDirect.Item2;
                 }
 
 
-                if (maxMatchOffset == -1 || i - maxMatchOffset > 0x100 && maxMatch < 3 || (maxMatchIfCopy > 0 && maxMatchIfDirect > maxMatch + maxMatchIfCopy))
+                if (maxMatchOffset == -1 || i - maxMatchOffset > 0x100 && maxMatch < 3 || maxMatchIfDirect > maxMatch + maxMatchIfCopy)
                 {
+                    Debug.Write("Writing raw byte " + toCompress[i] + " from " + i);
+                    if (maxMatchOffset == -1)
+                    {
+                        Debug.WriteLine(" Reason: no match.");
+                    }
+                    else if (i - maxMatchOffset > 0x100 && maxMatch < 3)
+                    {
+                        Debug.WriteLine(" Reason: 2 byte max match over 0x100 bytes away");
+                    }
+                    else if ((maxMatchIfCopy > 0 && maxMatchIfDirect > maxMatch + maxMatchIfCopy))
+                    {
+                        Debug.WriteLine(" Reason: maxMatchIfCopy > 0 && maxMatchIfDirect > maxMatch + maxMatchIfCopy");
+                    }
                     writeRawByte(toCompress[i++]);
-                    maxMatch = nextMatchIfDirect;
-                    maxMatchOffset = nextMatchOffsetIfDirect;
                 }
                 else
                 {
                     if (maxMatch < 6 && i - maxMatchOffset < 0x100)
                     {
+                        Debug.WriteLine("Writing short reference of offset " + maxMatchOffset + " and length " + maxMatch);
                         writeShortReference(maxMatch, (byte)(maxMatchOffset - (i - 0x100)));
                     }
                     else
                     {
+                        Debug.WriteLine("Writing long reference of offset " + maxMatchOffset + " and length " + maxMatch);
                         writeLongReference(maxMatch, maxMatchOffset - (i - 0x2000));
                     }
                     i += maxMatch;
-                    maxMatch = nextMatchIfCopy;
-                    maxMatchOffset = nextMatchOffsetIfCopy;
                 }
 
             }
@@ -119,49 +114,20 @@ namespace PSULib.Support
             int maxMatch = 2;
             int maxMatchOffset = -1;
             int smallCopyWindow = currentOffset - 0x100;
-            int maxLength = Math.Min(toCompress.Length, currentOffset + 0x100);
 
             //Take each instance of the byte that's in range, check 
             for (int j = matchOffset; j < matches.Count && matches[j] < currentOffset; j++)
             {
                 int startLoc = matches[j];
                 int currentFind = 0;
-                //If the new match can't possibly be better, we can skip the expensive byte-by-byte checking.
-                //we can stop looking if:
-                //we've hit the maximum size.
-                //we've hit the end of the file.
-                //You can't get better than that, only different.
-                
-
-                //Note that if we can go from a small match in the large window to an equivalent match in the small window, we should do that.
-                if (currentOffset + maxMatch < maxLength && (toCompress[startLoc + maxMatch] == toCompress[currentOffset + maxMatch]))
-                {
-                    while (currentOffset + currentFind < maxLength && toCompress[startLoc + currentFind] == toCompress[currentOffset + currentFind] && currentFind < 0x100)
-                    {
-                        currentFind++;
-                    }
-                    //Small references:
-                    //At least 2 bytes
-                    //No more than 0x100 bytes away.
-
-                    //Large references:
-                    //At least 1 byte
-                    //No more than 0x2000 bytes away.
-                    if ((currentFind > maxMatch || currentFind == maxMatch && startLoc > maxMatchOffset))
+                while (currentOffset + currentFind < toCompress.Length && toCompress[startLoc + currentFind] == toCompress[currentOffset + currentFind] && currentFind < 0x100)
+                    currentFind++;
+                if (currentFind > 2 || startLoc > smallCopyWindow)
+                    if (currentFind > maxMatch || currentFind == maxMatch && startLoc > maxMatchOffset)
                     {
                         maxMatch = currentFind;
                         maxMatchOffset = startLoc;
                     }
-                    //If we've reached the end of the file, or we've eaten a full 0x100 bytes, we've hit the end of our match.
-                    if((currentOffset + currentFind == maxLength) || (currentFind == 0x100))
-                    {
-                        break;
-                    }
-                }
-            }
-            if(maxMatchOffset == -1)
-            {
-                maxMatch = -1;
             }
             return new Tuple<int, int>(maxMatchOffset, maxMatch);
         }
@@ -171,6 +137,7 @@ namespace PSULib.Support
             var offsets = offsetDictionary[currentVal];
             if (offsets.currentFirstOffset < currentOffset - 0x1FF0)
             {
+                int startIndex = offsets.currentFirstOffset;
                 while (offsets.matchList[offsets.currentFirstOffset] < currentOffset - 0x1FF0 && offsets.currentFirstOffset < offsets.matchList.Count)
                     offsets.currentFirstOffset++;
                 if (persistUpdates)
@@ -231,7 +198,6 @@ namespace PSULib.Support
             temp.CopyTo(compBuffer, outLoc);
             outLoc += 2;
             //CHANGED FOR PSO2
-            //was this a typo in PSU? It doesn't make much sense to use count - 1 here, it should be count - 9.
             if (count > 9)
                 compBuffer[outLoc++] = (byte)(count - 1);
         }

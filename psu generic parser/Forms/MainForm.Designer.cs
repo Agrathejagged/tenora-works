@@ -56,6 +56,7 @@
             this.decryptNMLLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textureCatalogueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.catalogueEnemyparamToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.decompressBlobToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
@@ -80,6 +81,7 @@
             this.nblChunkContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.compressChunkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.touchAllUVRsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -224,7 +226,9 @@
             this.decryptNMLBToolStripMenuItem,
             this.decryptNMLLToolStripMenuItem,
             this.textureCatalogueToolStripMenuItem,
-            this.catalogueEnemyparamToolStripMenuItem});
+            this.catalogueEnemyparamToolStripMenuItem,
+            this.decompressBlobToolStripMenuItem,
+            this.touchAllUVRsToolStripMenuItem});
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.debugToolStripMenuItem.Text = "Debug";
@@ -298,6 +302,13 @@
             this.catalogueEnemyparamToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
             this.catalogueEnemyparamToolStripMenuItem.Text = "Catalogue enemyparam";
             this.catalogueEnemyparamToolStripMenuItem.Click += new System.EventHandler(this.catalogueEnemyparamToolStripMenuItem_Click);
+            // 
+            // decompressBlobToolStripMenuItem
+            // 
+            this.decompressBlobToolStripMenuItem.Name = "decompressBlobToolStripMenuItem";
+            this.decompressBlobToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.decompressBlobToolStripMenuItem.Text = "Decompress blob";
+            this.decompressBlobToolStripMenuItem.Click += new System.EventHandler(this.decompressBlobToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -497,6 +508,13 @@
             this.addFileToolStripMenuItem.Text = "Add File(s)";
             this.addFileToolStripMenuItem.Click += new System.EventHandler(this.addFileToolStripMenuItem_Click);
             // 
+            // touchAllUVRsToolStripMenuItem
+            // 
+            this.touchAllUVRsToolStripMenuItem.Name = "touchAllUVRsToolStripMenuItem";
+            this.touchAllUVRsToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.touchAllUVRsToolStripMenuItem.Text = "Touch all UVRs";
+            this.touchAllUVRsToolStripMenuItem.Click += new System.EventHandler(this.touchAllUVRsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -582,6 +600,8 @@
         private System.Windows.Forms.ToolStripMenuItem renameFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem decompressBlobToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem touchAllUVRsToolStripMenuItem;
     }
 }
 

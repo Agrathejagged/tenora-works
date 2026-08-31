@@ -28,24 +28,29 @@ namespace psu_generic_parser
             {
                 filename = (toLoad as PsuFile).filename;
             }
-            if (toLoad is XvrTextureFile)
+            if (toLoad is XvrTextureFile xvr)
             {
-                label3.Text = (toLoad as XvrTextureFile).OriginalPixelFormat.ToString();
-                label5.Text = (toLoad as XvrTextureFile).OriginalTextureType.ToString();
-                label5.Text = (toLoad as XvrTextureFile).SaveTextureType.ToString();
-                if((toLoad as XvrTextureFile).SaveTextureType != (toLoad as XvrTextureFile).OriginalTextureType)
+                label3.Text = xvr.OriginalPixelFormat.ToString();
+                label5.Text = xvr.OriginalTextureType.ToString();
+                label5.Text = xvr.SaveTextureType.ToString();
+                if (xvr.SaveTextureType != xvr.OriginalTextureType)
                 {
                     label5.ForeColor = Color.Green;
                 }
                 pixelFormatDropDown.DataSource = permittedFormats;
-                pixelFormatDropDown.SelectedItem = (toLoad as XvrTextureFile).SavePixelFormat;
+                pixelFormatDropDown.SelectedItem = xvr.SavePixelFormat;
             }
-            else if (toLoad is GimTextureFile)
+            else if (toLoad is GimTextureFile gim)
             {
-                label3.Text = (toLoad as GimTextureFile).palFormat.ToString();
-                label5.Text = (toLoad as GimTextureFile).dataFormat.ToString();
+                label3.Text = gim.palFormat.ToString();
+                label5.Text = gim.dataFormat.ToString();
             }
-            internalTexture = toLoad;
+            else if (toLoad is UvrTextureFile uvr)
+            {
+                label3.Text = uvr.palFormat.ToString();
+                label5.Text = uvr.imageFormat.ToString();
+            }
+                internalTexture = toLoad;
             currentMip = 0;
             mipCount = internalTexture.mipMaps.Length;
             refreshMip();

@@ -147,6 +147,18 @@
     <Compile Include="Forms\FileViewers\Bosses\BossServerParamViewer.Designer.cs">
       <DependentUpon>BossServerParamViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FileViewers\Bosses\ThinkFakis1MotherBrainViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Bosses\ThinkFakis1MotherBrainViewer.Designer.cs">
+      <DependentUpon>ThinkFakis1MotherBrainViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Bosses\ThinkFakis2Falz2Viewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FileViewers\Bosses\ThinkFakis2Falz2Viewer.Designer.cs">
+      <DependentUpon>ThinkFakis2Falz2Viewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FileViewers\ClothingFileViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -440,6 +452,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\FileViewers\Bosses\BossServerParamViewer.resx">
       <DependentUpon>BossServerParamViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Bosses\ThinkFakis1MotherBrainViewer.resx">
+      <DependentUpon>ThinkFakis1MotherBrainViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FileViewers\Bosses\ThinkFakis2Falz2Viewer.resx">
+      <DependentUpon>ThinkFakis2Falz2Viewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FileViewers\ClothingFileViewer.resx">
       <DependentUpon>ClothingFileViewer.cs</DependentUpon>

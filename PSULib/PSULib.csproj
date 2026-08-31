@@ -59,6 +59,8 @@
     <Compile Include="FileClasses\Bosses\Data\BossAttackStat.cs" />
     <Compile Include="FileClasses\Bosses\Data\BossHitboxStat.cs" />
     <Compile Include="FileClasses\Bosses\ParamServerFile.cs" />
+    <Compile Include="FileClasses\Bosses\ThinkFakis1MotherBrainFile.cs" />
+    <Compile Include="FileClasses\Bosses\ThinkFakis2Falz2File.cs" />
     <Compile Include="FileClasses\Characters\PartsInfoFile.cs" />
     <Compile Include="FileClasses\Enemies\DamageDataFile.cs" />
     <Compile Include="FileClasses\Enemies\EnemySoundEffectFile.cs" />
